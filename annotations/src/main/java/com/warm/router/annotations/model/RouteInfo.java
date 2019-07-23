@@ -13,9 +13,9 @@ public class RouteInfo {
     private String path;
     private Class<?> target;
 
-
-
-
-
-
+    public RouteInfo(int type, String path, Class<?> target) {
+        this.type = type;
+        this.path = path;
+        this.target = target;
+    }
 }

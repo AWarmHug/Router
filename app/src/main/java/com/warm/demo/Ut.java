@@ -12,8 +12,8 @@ import java.util.Map;
  */
 public class Ut {
 
-    public static void assembly(Map<String, RouteInfo> map, String path, RouteInfo routeInfo){
-        map.put(path,routeInfo);
+    public static void assembly(Map<String, RouteInfo> map){
+//        map.put("",new RouteInfo());
     }
 
 }
