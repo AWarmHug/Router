@@ -10,4 +10,8 @@ public class Router {
 
     }
 
+    public static void bind(Object obj){
+
+    }
+
 }
