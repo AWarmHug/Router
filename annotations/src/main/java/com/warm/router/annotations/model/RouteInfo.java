@@ -9,13 +9,17 @@ public class RouteInfo {
     public static final int TYPE_ACTIVITY=1;
 
 
-    private int type;
-    private String path;
-    private Class<?> target;
+    protected int type;
+    protected String path;
+    protected Class<?> target;
 
     public RouteInfo(int type, String path, Class<?> target) {
         this.type = type;
         this.path = path;
         this.target = target;
+    }
+
+    public Class<?> getTarget() {
+        return target;
     }
 }

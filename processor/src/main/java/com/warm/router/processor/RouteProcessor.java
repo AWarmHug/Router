@@ -31,19 +31,18 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
+import com.warm.router.annotations.model.Const;
+
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.warm.router.annotations.Route"})
 public class RouteProcessor extends BaseProcessor {
-    public static final String ROUTE_PKG = "com.warm.router.route";
-    public static final String ROUTE_CLASS_NAME = "RouteLoader";
-    public static final String METHOD_LODE = "load";
 
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Set<? extends Element> routes = roundEnvironment.getElementsAnnotatedWith(Route.class);
 
-        MethodSpec.Builder builder = MethodSpec.methodBuilder(METHOD_LODE)
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
                 .addParameter(ParameterizedTypeName.get(Map.class, String.class, RouteInfo.class), "route", Modifier.FINAL);
@@ -70,11 +69,11 @@ public class RouteProcessor extends BaseProcessor {
         }
         builder.build();
 
-        TypeSpec typeSpec = TypeSpec.classBuilder(ROUTE_CLASS_NAME)
+        TypeSpec typeSpec = TypeSpec.classBuilder(Const.ROUTE_CLASS_NAME)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(ROUTE_PKG, typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.ROUTE_PKG, typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {
