@@ -43,7 +43,6 @@ public class Router {
 
     }
 
-
     public static RouteIntent startActivity(String path) {
         //此处进行拦截
         return new RouteIntent(mRouteInfoMap.get(path));
