@@ -7,6 +7,7 @@ package com.warm.router.annotations.model;
  */
 public class RouteInfo {
     public static final int TYPE_ACTIVITY=1;
+    public static final int TYPE_FRAGMENT=2;
 
 
     protected int type;
