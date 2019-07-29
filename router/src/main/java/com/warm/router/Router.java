@@ -1,7 +1,5 @@
 package com.warm.router;
 
-import android.support.v4.app.Fragment;
-
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.RouteInfo;
 
@@ -43,9 +41,14 @@ public class Router {
 
     }
 
-    public static RouteIntent startActivity(String path) {
+    public static ActivityBundle startActivity(String path) {
         //此处进行拦截
-        return new RouteIntent(mRouteInfoMap.get(path));
+        return new ActivityBundle(mRouteInfoMap.get(path));
+    }
+
+    public static ActivityBundle startActivityForResult(String path) {
+        //此处进行拦截
+        return new ActivityBundle(mRouteInfoMap.get(path));
     }
 
     public static FragmentBundle newInstance(String path){
