@@ -10,6 +10,7 @@ import com.warm.demo.R;
 import com.warm.demo.databinding.ActivityUserDetailBinding;
 import com.warm.demo.news.HomeFragment;
 import com.warm.router.Router;
+import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
 
 
@@ -22,9 +23,16 @@ import com.warm.router.annotations.Route;
 public class DetailActivity extends AppCompatActivity {
     private ActivityUserDetailBinding mBinding;
 
+    @Autowired
+    long id;
+    @Autowired
+    String from;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
         HomeFragment fragment = (HomeFragment) Router.newInstance("news/home").by(this);
 

@@ -5,8 +5,8 @@ package com.warm.router.demo;
  * 时间：2019-07-29 20:54
  * 描述：
  */
-public interface Interceptor {
+public interface Handler {
 
-    Response intercept(Chain chain);
+    void handle(Chain chain);
 
 }

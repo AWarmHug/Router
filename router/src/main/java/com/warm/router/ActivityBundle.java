@@ -1,8 +1,10 @@
 package com.warm.router;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.warm.router.annotations.model.RouteInfo;
@@ -11,14 +13,18 @@ public class ActivityBundle {
 
     private RouteInfo mRouteInfo;
 
-    private boolean mForResult;
+    private Integer mRequestCode;
 
     private Bundle mBundle;
 
     public ActivityBundle(RouteInfo routeInfo) {
-        mRouteInfo = routeInfo;
+        this(routeInfo, null);
+    }
 
+    public ActivityBundle(RouteInfo routeInfo, Integer requestCode) {
+        mRouteInfo = routeInfo;
         mBundle = new Bundle();
+        mRequestCode = requestCode;
     }
 
 
@@ -41,6 +47,12 @@ public class ActivityBundle {
     public void by(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, mRouteInfo.getTarget());
-        ContextCompat.startActivity(context, intent, mBundle);
+        if (mRequestCode == null) {
+            ActivityCompat.startActivity(context, intent, mBundle);
+        } else {
+            if (context instanceof Activity) {
+                ActivityCompat.startActivityForResult((Activity) context, intent, mRequestCode, mBundle);
+            }
+        }
     }
 }

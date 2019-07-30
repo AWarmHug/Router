@@ -5,6 +5,10 @@ package com.warm.router.demo;
  * 时间：2019-07-29 20:54
  * 描述：
  */
-public class Request {
-    
+public class Action {
+
+    public Action() {
+
+    }
+
 }

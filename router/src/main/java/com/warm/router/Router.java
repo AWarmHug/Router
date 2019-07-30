@@ -16,10 +16,11 @@ import java.util.Map;
 public class Router {
 
     private static Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
+    private static Map<String, RouteInfo> mBinderInfoMap = new HashMap<>();
 
 
     public static void init() {
-        String classPkg = Const.ROUTE_PKG + Const.DOT + Const.ROUTE_CLASS_NAME;
+        String classPkg = Const.LOADER_PKG + Const.DOT + Const.ROUTER_LOADER_CLASS_NAME;
         try {
             Class<?> route = Class.forName(classPkg);
             Method methodLoad = route.getMethod(Const.METHOD_LODE, Map.class);
@@ -37,7 +38,8 @@ public class Router {
         }
     }
 
-    public static void bind(Object obj) {
+    public static <T> void bind(T obj) {
+
 
     }
 
@@ -51,7 +53,7 @@ public class Router {
         return new ActivityBundle(mRouteInfoMap.get(path));
     }
 
-    public static FragmentBundle newInstance(String path){
+    public static FragmentBundle newInstance(String path) {
         //此处进行拦截
         return new FragmentBundle(mRouteInfoMap.get(path));
     }

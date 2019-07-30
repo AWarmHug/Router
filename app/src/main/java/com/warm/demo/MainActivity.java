@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.startActivity("test/user/detail")
+                Router.startActivity("test/detail")
                         .putExtra("type",1)
                         .by(MainActivity.this);
             }

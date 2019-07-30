@@ -9,6 +9,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -46,11 +47,11 @@ public abstract class BaseProcessor extends AbstractProcessor {
         mFiler = processingEnvironment.getFiler();
     }
 
-    protected boolean isActivity(TypeElement typeElement) {
+    protected boolean isActivity(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(ACTIVITY).asType());
     }
 
-    protected boolean isFragment(TypeElement typeElement) {
+    protected boolean isFragment(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType());
     }
 }

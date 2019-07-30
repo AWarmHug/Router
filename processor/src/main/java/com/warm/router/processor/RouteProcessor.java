@@ -58,13 +58,12 @@ public class RouteProcessor extends BaseProcessor {
             }
 
         }
-        builder.build();
 
-        TypeSpec typeSpec = TypeSpec.classBuilder(Const.ROUTE_CLASS_NAME)
+        TypeSpec typeSpec = TypeSpec.classBuilder(Const.ROUTER_LOADER_CLASS_NAME)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(Const.ROUTE_PKG, typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG, typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {

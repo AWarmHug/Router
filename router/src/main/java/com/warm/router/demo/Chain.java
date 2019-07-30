@@ -7,7 +7,13 @@ package com.warm.router.demo;
  */
 public interface Chain {
 
-    Request request();
-    Response proceed(Request request);
+    //操作请求
+    Action action();
+
+    //执行
+    void proceed(Action action);
+
+    //终止
+    void abort();
 
 }

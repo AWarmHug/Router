@@ -11,11 +11,23 @@ import android.view.ViewGroup;
 
 import com.warm.demo.R;
 import com.warm.demo.databinding.FragmentNewsBinding;
+import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
 
 @Route("news/home")
 public class HomeFragment extends Fragment {
     private FragmentNewsBinding mBinding;
+
+    @Autowired
+    long id;
+
+    @Autowired
+    long typeId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
