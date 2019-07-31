@@ -38,7 +38,7 @@ public class RouteProcessor extends BaseProcessor {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
-                .addParameter(ParameterizedTypeName.get(Map.class, String.class, RouteInfo.class), "route", Modifier.FINAL);
+                .addParameter(ParameterizedTypeName.get(Map.class, String.class, RouteInfo.class), "routers");
 
         for (Element element : routes) {
             if (element instanceof TypeElement) {
@@ -53,7 +53,7 @@ public class RouteProcessor extends BaseProcessor {
                 String className = e.getQualifiedName().toString();
                 Route route = e.getAnnotation(Route.class);
                 String path = route.value();
-                builder.addStatement("route.put($S,new $T(" + type + ",$S,$T.class))", path, TypeName.get(RouteInfo.class), path, ClassName.get(e));
+                builder.addStatement("routers.put($S,new $T(" + type + ",$S,$T.class))", path, TypeName.get(RouteInfo.class), path, ClassName.get(e));
 
             }
 

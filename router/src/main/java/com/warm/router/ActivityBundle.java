@@ -46,9 +46,12 @@ public class ActivityBundle {
 
     public void by(Context context) {
         Intent intent = new Intent();
+        intent.putExtras(mBundle);
         intent.setClass(context, mRouteInfo.getTarget());
         if (mRequestCode == null) {
-            ActivityCompat.startActivity(context, intent, mBundle);
+
+
+            ActivityCompat.startActivity(context, intent, null);
         } else {
             if (context instanceof Activity) {
                 ActivityCompat.startActivityForResult((Activity) context, intent, mRequestCode, mBundle);

@@ -14,6 +14,8 @@ import com.warm.demo.databinding.FragmentNewsBinding;
 import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
 
+import java.lang.reflect.Array;
+
 @Route("news/home")
 public class HomeFragment extends Fragment {
     private FragmentNewsBinding mBinding;
@@ -23,6 +25,9 @@ public class HomeFragment extends Fragment {
 
     @Autowired
     long typeId;
+
+    @Autowired
+    long[] moduleIds;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

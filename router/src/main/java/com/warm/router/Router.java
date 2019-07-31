@@ -1,8 +1,10 @@
 package com.warm.router;
 
+import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.RouteInfo;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -16,15 +18,19 @@ import java.util.Map;
 public class Router {
 
     private static Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
-    private static Map<String, RouteInfo> mBinderInfoMap = new HashMap<>();
+    private static Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
 
 
     public static void init() {
-        String classPkg = Const.LOADER_PKG + Const.DOT + Const.ROUTER_LOADER_CLASS_NAME;
         try {
-            Class<?> route = Class.forName(classPkg);
-            Method methodLoad = route.getMethod(Const.METHOD_LODE, Map.class);
-            methodLoad.invoke(route.newInstance(), mRouteInfoMap);
+            Class<?> routerLoader = Class.forName(Const.LOADER_PKG + Const.DOT + Const.ROUTER_LOADER_CLASS_NAME);
+            Method routerMethodLoad = routerLoader.getMethod(Const.METHOD_LODE, Map.class);
+            routerMethodLoad.invoke(routerLoader.newInstance(), mRouteInfoMap);
+
+
+            Class<?> binderLoader = Class.forName(Const.LOADER_PKG + Const.DOT + Const.BINDER_LOADER_CLASS_NAME);
+            Method binderMethodLoad = binderLoader.getMethod(Const.METHOD_LODE, Map.class);
+            binderMethodLoad.invoke(binderLoader.newInstance(), mBinderInfoMap);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -39,8 +45,11 @@ public class Router {
     }
 
     public static <T> void bind(T obj) {
-
-
+        AutowiredBinder binder = mBinderInfoMap.get(obj.getClass().getName());
+        //此处进行拦截
+        if (binder!=null) {
+            binder.bind(obj);
+        }
     }
 
     public static ActivityBundle startActivity(String path) {

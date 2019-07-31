@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.warm.demo.R;
+import com.warm.demo.data.PayInfo;
+import com.warm.demo.data.UserInfo;
 import com.warm.demo.databinding.ActivityUserDetailBinding;
 import com.warm.demo.news.HomeFragment;
 import com.warm.router.Router;
 import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
+
+import java.util.List;
 
 
 /**
@@ -26,12 +30,29 @@ public class DetailActivity extends AppCompatActivity {
     @Autowired
     long id;
     @Autowired
+    long[] ids;
+    @Autowired
+    List<Long> idList;
+
+    @Autowired
     String from;
+    @Autowired
+    String[] froms;
+    @Autowired
+    List<String> fromList;
+
+    @Autowired
+    UserInfo mUserInfo;
+
+    @Autowired
+    PayInfo mPayInfo;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fromList=getIntent().getStringArrayListExtra("s");
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
         HomeFragment fragment = (HomeFragment) Router.newInstance("news/home").by(this);
