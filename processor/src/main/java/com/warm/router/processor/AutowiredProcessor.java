@@ -81,6 +81,7 @@ public class AutowiredProcessor extends BaseProcessor {
             public void accept(Element element, Set<VariableElement> variableElements) {
                 MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_BIND)
                         .addModifiers(Modifier.PUBLIC)
+                        .addAnnotation(Override.class)
                         .returns(void.class)
                         .addParameter(Object.class, "obj");
                 builder.addStatement("if(!(obj instanceof $T)) return", TypeName.get(element.asType()));
