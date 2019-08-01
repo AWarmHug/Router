@@ -37,6 +37,8 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * 作者：warm
@@ -131,120 +133,104 @@ public class AutowiredProcessor extends BaseProcessor {
         Autowired autowired = vElement.getAnnotation(Autowired.class);
         String eName = "\"" + (!autowired.name().isEmpty() ? autowired.name() : vElement.getSimpleName().toString()) + "\"";
 
-        switch (vElement.asType().getKind()) {
-            case BOOLEAN:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Boolean");
-            case BYTE:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Byte");
-            case SHORT:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Short");
-            case INT:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Int");
-            case LONG:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Long");
-            case CHAR:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Char");
-            case FLOAT:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Float");
-            case DOUBLE:
-                return getDefaultTemplate(name, vElement, isIntent, eName, "Double");
-            case ARRAY:
-                switch (((ArrayType) vElement.asType()).getComponentType().getKind()) {
-                    case BOOLEAN:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "BooleanArray");
-                    case BYTE:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "ByteArray");
-                    case SHORT:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "ShortArray");
-                    case INT:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "IntArray");
-                    case LONG:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "LongArray");
-                    case CHAR:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "CharArray");
-                    case FLOAT:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "FloatArray");
-                    case DOUBLE:
-                        return getNoDefaultTemplate(name, vElement, isIntent, eName, "DoubleArray");
-                    default:
-                        if (mTypes.isSameType(vElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
-                            return getNoDefaultTemplate(name, vElement, isIntent, eName, "StringArray");
-                        }
-                        break;
-
+        if (vElement.asType().getKind().isPrimitive()) {
+            String kindName = vElement.asType().toString().substring(0, 1).toUpperCase() + vElement.asType().toString().substring(1);
+            return getDefaultTemplate(name, vElement, isIntent, eName, kindName);
+        } else if (vElement.asType().getKind() == TypeKind.ARRAY) {
+            TypeMirror typeMirror = ((ArrayType) vElement.asType()).getComponentType();
+            if (typeMirror.getKind().isPrimitive()) {
+                String kindName = typeMirror.toString().substring(0, 1).toUpperCase() + typeMirror.toString().substring(1) + "Array";
+                return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
+            } else {
+                String kindName = ClassName.get(mElementUtils.getTypeElement(typeMirror.toString())).simpleName() + "Array";
+                if (mTypes.isSameType(typeMirror, mElementUtils.getTypeElement(String.class.getName()).asType())) {
+                    return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
                 }
-                break;
-            default:
-                if (mTypes.isSameType(vElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
-                    return getNoDefaultTemplate(name, vElement, isIntent, eName, "String");
+                if (mTypes.isSameType(typeMirror, mElementUtils.getTypeElement(CharSequence.class.getName()).asType())) {
+                    return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
                 }
-                if (mTypes.isSubtype(vElement.asType(), mElementUtils.getTypeElement(Serializable.class.getName()).asType())) {
-                    return getSerializableTemplate(name, vElement, isIntent, eName, "Serializable");
+                if (mTypes.isSubtype(typeMirror, mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
+                    return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
                 }
-                if (mTypes.isSubtype(vElement.asType(), mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
-                    return getSerializableTemplate(name, vElement, isIntent, eName, "Parcelable");
+            }
+        } else {
+            if (mTypes.isSameType(vElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
+                return getNoDefaultTemplate(name, vElement, isIntent, eName, "String");
+            }
+            if (mTypes.isSameType(vElement.asType(), mElementUtils.getTypeElement(CharSequence.class.getName()).asType())) {
+                return getNoDefaultTemplate(name, vElement, isIntent, eName, "CharSequence");
+            }
+            if (vElement.asType().toString().contains(List.class.getName()) || vElement.asType().toString().contains(ArrayList.class.getName())) {
+                Pattern pattern = Pattern.compile("<(.*?)>");
+                Matcher m = pattern.matcher(vElement.asType().toString());
+                if (m.find()) {
+                    String sou = m.group(1);
+                    switch (ClassName.get(mElementUtils.getTypeElement(sou)).simpleName()) {
+                        case "Integer":
+                        case "String":
+                        case "CharSequence":
+                        case "Parcelable":
+                            return getNoDefaultTemplate(name, vElement, isIntent, eName, ClassName.get(mElementUtils.getTypeElement(sou)).simpleName() + "ArrayList");
+                        default:
+                            if (mTypes.isSubtype(mElementUtils.getTypeElement(sou).asType(), mElementUtils.getTypeElement(Serializable.class.getName()).asType())) {
+                                return getSerializableTemplate(name, vElement, isIntent, eName, "Serializable");
+                            }
+                    }
                 }
-                if (mTypes.isSubtype(vElement.asType(), mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
-                    return getSerializableTemplate(name, vElement, isIntent, eName, "Parcelable");
-                }
-                // TODO: 2019/7/31 实现ArrayList相关内容
-//                if (vElement.asType().toString().contains(List.class.getName()) || vElement.asType().toString().contains(ArrayList.class.getName())) {
-//                    Pattern pattern = Pattern.compile("^<*>$");
-//                    Matcher m = pattern.matcher(vElement.asType().toString());
-//
-//                    String s = m.group();
-//                    return getNoDefaultTemplate(name, vElement, isIntent, eName, s + "ArrayList");
-//                }
-
-
-                break;
+            }
+            if (mTypes.isSubtype(vElement.asType(), mElementUtils.getTypeElement(Serializable.class.getName()).asType())) {
+                return getSerializableTemplate(name, vElement, isIntent, eName, "Serializable");
+            }
+            if (mTypes.isSubtype(vElement.asType(), mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
+                return getSerializableTemplate(name, vElement, isIntent, eName, "Parcelable");
+            }
         }
         return CodeBlock.builder().build();
     }
 
-    private CodeBlock getNoDefaultTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kind) {
+    private CodeBlock getNoDefaultTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kindName) {
 
         if (isIntent) {
             return CodeBlock.builder()
-                    .beginControlFlow("if(" + name + ".getIntent().get" + kind + "Extra(" + eName + ")!=null)")
-                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kind + "Extra(" + eName + ")")
+                    .beginControlFlow("if(" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")!=null)")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")")
                     .endControlFlow()
                     .build();
         } else {
             return CodeBlock.builder()
-                    .beginControlFlow("if(" + name + ".getArguments().get" + kind + "(" + eName + ")!=null)")
-                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kind + "(" + eName + ")")
+                    .beginControlFlow("if(" + name + ".getArguments().get" + kindName + "(" + eName + ")!=null)")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + ")")
                     .endControlFlow()
                     .build();
         }
     }
 
-    private CodeBlock getDefaultTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kind) {
+    private CodeBlock getDefaultTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kindName) {
 
         if (isIntent) {
             return CodeBlock.builder()
-                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kind + "Extra(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
                     .build();
         } else {
             return CodeBlock.builder()
-                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kind + "(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
                     .build();
         }
     }
 
 
-    private CodeBlock getSerializableTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kind) {
+    private CodeBlock getSerializableTemplate(String name, VariableElement vElement, boolean isIntent, String eName, String kindName) {
         if (isIntent) {
             return CodeBlock.builder()
-                    .beginControlFlow("if(" + name + ".getIntent().get" + kind + "Extra(" + eName + ")!=null)")
-                    .addStatement(name + "." + vElement.getSimpleName() + "=($T)" + name + ".getIntent().get" + kind + "Extra(" + eName + ")", TypeName.get(vElement.asType()))
+                    .beginControlFlow("if(" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")!=null)")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=($T)" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")", TypeName.get(vElement.asType()))
                     .endControlFlow()
                     .build();
 
         } else {
             return CodeBlock.builder()
-                    .beginControlFlow("if(" + name + ".getArguments().get" + kind + "(" + eName + ")!=null)")
-                    .addStatement(name + "." + vElement.getSimpleName() + "=($T)" + name + ".getArguments().get" + kind + "(" + eName + ")", TypeName.get(vElement.asType()))
+                    .beginControlFlow("if(" + name + ".getArguments().get" + kindName + "(" + eName + ")!=null)")
+                    .addStatement(name + "." + vElement.getSimpleName() + "=($T)" + name + ".getArguments().get" + kindName + "(" + eName + ")", TypeName.get(vElement.asType()))
                     .endControlFlow()
                     .build();
         }

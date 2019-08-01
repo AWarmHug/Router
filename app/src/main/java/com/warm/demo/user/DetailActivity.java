@@ -52,11 +52,9 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromList=getIntent().getStringArrayListExtra("s");
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
         HomeFragment fragment = (HomeFragment) Router.newInstance("news/home").by(this);
-
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
 
     }
