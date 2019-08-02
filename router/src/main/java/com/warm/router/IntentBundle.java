@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.warm.router.annotations.model.RouteInfo;
 
-public class ActivityBundle {
+public class IntentBundle {
 
     private RouteInfo mRouteInfo;
 
@@ -17,28 +16,28 @@ public class ActivityBundle {
 
     private Bundle mBundle;
 
-    public ActivityBundle(RouteInfo routeInfo) {
+    public IntentBundle(RouteInfo routeInfo) {
         this(routeInfo, null);
     }
 
-    public ActivityBundle(RouteInfo routeInfo, Integer requestCode) {
+    public IntentBundle(RouteInfo routeInfo, Integer requestCode) {
         mRouteInfo = routeInfo;
         mBundle = new Bundle();
         mRequestCode = requestCode;
     }
 
 
-    public ActivityBundle putExtra(String name, String value) {
+    public IntentBundle putExtra(String name, String value) {
         mBundle.putString(name, value);
         return this;
     }
 
-    public ActivityBundle putExtra(String name, int value) {
+    public IntentBundle putExtra(String name, int value) {
         mBundle.putInt(name, value);
         return this;
     }
 
-    public ActivityBundle putExtra(String name, long value) {
+    public IntentBundle putExtra(String name, long value) {
         mBundle.putLong(name, value);
         return this;
     }

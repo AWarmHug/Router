@@ -17,8 +17,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity" />
+        <activity android:name=".DetailActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:host="reader.app"
+                    android:path="/appweb"
+                    android:scheme="myapp" />
+            </intent-filter>
+        </activity>
         <activity android:name=".user.DetailActivity" />
+        <activity android:name=".read.ReadActivity">
+
+        </activity>
     </application>
 
 </manifest>

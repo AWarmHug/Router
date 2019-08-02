@@ -1,10 +1,11 @@
 package com.warm.router;
 
+import android.net.Uri;
+
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.RouteInfo;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -17,9 +18,10 @@ import java.util.Map;
  */
 public class Router {
 
-    private static Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
+    public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
     private static Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
 
+    private static RouteClient sRouteClient = new RouteClient();
 
     public static void init() {
         try {
@@ -47,24 +49,21 @@ public class Router {
     public static <T> void bind(T obj) {
         AutowiredBinder binder = mBinderInfoMap.get(obj.getClass().getName());
         //此处进行拦截
-        if (binder!=null) {
+        if (binder != null) {
             binder.bind(obj);
         }
     }
 
-    public static ActivityBundle startActivity(String path) {
-        //此处进行拦截
-        return new ActivityBundle(mRouteInfoMap.get(path));
+    public static IRoute build(String path) {
+        return sRouteClient.build(Uri.parse(path));
     }
 
-    public static ActivityBundle startActivityForResult(String path) {
-        //此处进行拦截
-        return new ActivityBundle(mRouteInfoMap.get(path));
+    public static IRoute build(Uri uri) {
+        return sRouteClient.build(uri);
     }
 
-    public static FragmentBundle newInstance(String path) {
-        //此处进行拦截
-        return new FragmentBundle(mRouteInfoMap.get(path));
+    public static IRoute build(Request request) {
+        return sRouteClient.build(request);
     }
 
 }

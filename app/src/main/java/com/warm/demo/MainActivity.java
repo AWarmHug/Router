@@ -1,7 +1,6 @@
 package com.warm.demo;
 
 import android.databinding.DataBindingUtil;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.startActivity("test/detail")
+                Router.build("test/detail")
                         .putExtra("type",1)
                         .by(MainActivity.this);
             }
