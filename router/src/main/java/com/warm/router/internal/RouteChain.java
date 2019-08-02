@@ -1,4 +1,4 @@
-package com.warm.router.internal.chain;
+package com.warm.router.internal;
 
 import com.warm.router.Interceptor;
 import com.warm.router.Request;

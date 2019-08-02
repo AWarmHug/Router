@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.warm.router.internal.chain.IntentInterceptor;
-import com.warm.router.internal.chain.RouteChain;
+import com.warm.router.internal.RouteChain;
 import com.warm.router.internal.matcher.Matcher;
 import com.warm.router.internal.matcher.MatcherCenter;
 
