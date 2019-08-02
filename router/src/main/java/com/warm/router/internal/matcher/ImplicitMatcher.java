@@ -8,10 +8,10 @@ import android.net.Uri;
 
 import com.warm.router.Request;
 
- class ImplicitMatcher extends Matcher {
+class ImplicitMatcher extends Matcher {
 
     @Override
-    boolean match(Context context, Uri uri, Request request) {
+    public boolean match(Context context, Uri uri, Request request) {
         ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(
                 new Intent(Intent.ACTION_VIEW, uri), PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfo != null) {
