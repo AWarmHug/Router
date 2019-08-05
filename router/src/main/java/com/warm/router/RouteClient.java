@@ -57,6 +57,13 @@ public class RouteClient implements IRoute {
     public Intent getIntent(Object obj) {
         //针对Intent进行匹配
         Context context = (Context) obj;
+
+//        List<Interceptor> interceptors = new ArrayList<>();
+//        interceptors.add(new IntentInterceptor());
+//
+//        RouteChain chain = new RouteChain(mRequest, interceptors);
+//        chain.proceed(mRequest);
+
         Intent intent = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
             if (matcher.match(context, mRequest.getUri(), mRequest)) {
@@ -67,15 +74,9 @@ public class RouteClient implements IRoute {
                 break;
             }
         }
-        if (intent!=null) {
+        if (intent != null) {
             intent.putExtras(mRequest.getExtra());
         }
-//        List<Interceptor> interceptors = new ArrayList<>();
-//        interceptors.add(new IntentInterceptor());
-//
-//
-//        RouteChain chain = new RouteChain(mRequest, interceptors);
-//        chain.proceed(mRequest);
         return intent;
     }
 
@@ -93,7 +94,7 @@ public class RouteClient implements IRoute {
                 break;
             }
         }
-        if (fragment!=null){
+        if (fragment != null) {
             fragment.setArguments(mRequest.getExtra());
         }
         return fragment;
