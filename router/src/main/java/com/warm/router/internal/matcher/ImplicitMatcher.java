@@ -26,6 +26,6 @@ class ImplicitMatcher extends Matcher {
 
     @Override
     public Object generate(Context context, Uri uri, Class<?> clazz) {
-        return new Intent(Intent.ACTION_VIEW);
+        return new Intent(Intent.ACTION_VIEW,uri);
     }
 }

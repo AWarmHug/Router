@@ -21,5 +21,17 @@
             android:layout_height="wrap_content"
             android:text="跳转Activity" />
 
+        <Button
+            android:id="@+id/bt2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="跳转Web" />
+
+        <Button
+            android:id="@+id/bt3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="隐式跳转" />
+
     </LinearLayout>
 </layout>

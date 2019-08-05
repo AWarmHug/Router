@@ -29,5 +29,21 @@ public class MainActivity extends AppCompatActivity {
                         .start(MainActivity.this);
             }
         });
+        mBinding.bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("https://www.jianshu.com/p/d57abb5b87f3")
+                        .with("type",1)
+                        .start(MainActivity.this);
+            }
+        });
+        mBinding.bt3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("myapp://reader.app/appweb")
+                        .with("type",1)
+                        .start(MainActivity.this);
+            }
+        });
     }
 }

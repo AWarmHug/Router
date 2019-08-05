@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" >
+        </activity>
+        <activity android:name=".user.DetailActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -27,7 +29,6 @@
                     android:scheme="myapp" />
             </intent-filter>
         </activity>
-        <activity android:name=".user.DetailActivity" />
         <activity android:name=".read.ReadActivity">
 
         </activity>
