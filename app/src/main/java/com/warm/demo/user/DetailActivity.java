@@ -48,12 +48,12 @@ public class DetailActivity extends AppCompatActivity {
     PayInfo mPayInfo;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
+        mBinding.tvInfo.setText(String.valueOf(id));
         HomeFragment fragment = (HomeFragment) Router.build("news/home").getFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
 
