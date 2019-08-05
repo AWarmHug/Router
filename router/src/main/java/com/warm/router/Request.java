@@ -13,7 +13,7 @@ public class Request implements Serializable {
 
     private Bundle mOptionsBundle;
 
-    private int mRequestCode;
+    private int mRequestCode = -1;
 
     public Request(Uri uri) {
         mUri = uri;
@@ -40,6 +40,13 @@ public class Request implements Serializable {
         mExtra = extra;
     }
 
+    public Bundle getOptionsBundle() {
+        return mOptionsBundle;
+    }
+
+    public void setOptionsBundle(Bundle optionsBundle) {
+        mOptionsBundle = optionsBundle;
+    }
 
     public int getRequestCode() {
         return mRequestCode;

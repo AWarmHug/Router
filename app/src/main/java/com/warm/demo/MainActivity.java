@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.build("test/detail")
-                        .putExtra("type",1)
-                        .by(MainActivity.this);
+                        .with("type",1)
+                        .start(MainActivity.this);
             }
         });
     }

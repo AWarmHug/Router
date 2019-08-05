@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
-        HomeFragment fragment = (HomeFragment) Router.newInstance("news/home").by(this);
+        HomeFragment fragment = (HomeFragment) Router.build("news/home").getFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
 
     }

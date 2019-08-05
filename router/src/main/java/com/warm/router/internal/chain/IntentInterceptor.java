@@ -11,8 +11,6 @@ public class IntentInterceptor implements Interceptor {
         if (request.getUri() == null) {
             return;
         }
-
-
         chain.proceed(chain.request());
     }
 }
