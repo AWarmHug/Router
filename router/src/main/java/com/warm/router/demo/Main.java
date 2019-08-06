@@ -19,9 +19,30 @@ public class Main {
 //        LeaveRequest req1 = new LeaveRequest("TOM", 15, "老婆生孩子回家探望！");
 //        a.handleRequest(req1);
 
-        System.out.println("2^3的结果:"+(2^3));
-        System.out.println("2&3的结果:"+(3&5));
+        System.out.println("2^3的结果:" + (2 ^ 3));
+        System.out.println("2&3的结果:" + (8 << 2));
+        System.out.println(5);
+        System.out.println(~5);
+        int statues = 0;
+
+        int statue_a = 0b01;
+        int statue_b = 0b10;
+        int statue_c = 0b100;
+        int statue_d = 0b1000;
+        int statue_f = 0b10000;
+        int statue_g = 0b100000;
 
 
+        statues = statue_b | statue_d;
+
+        System.out.println(statues);
+
+        System.out.println(isStatusEnabled(statues,statue_f));
+        System.out.println(1010&1010);
+
+    }
+
+    public static boolean isStatusEnabled(int statuses, int status) {
+        return (statuses & status) != 0;
     }
 }
