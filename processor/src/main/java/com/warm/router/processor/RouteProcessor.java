@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
@@ -63,7 +64,7 @@ public class RouteProcessor extends BaseProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG, typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG+Const.DOT+getModuleName(), typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {

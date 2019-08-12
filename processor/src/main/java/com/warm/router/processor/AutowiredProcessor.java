@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
@@ -99,7 +100,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 }
 
 
-                TypeSpec typeSpec = TypeSpec.classBuilder(element.getSimpleName() + Const.BINDER_CLASS_NAME)
+                TypeSpec typeSpec = TypeSpec.classBuilder(getModuleName()+element.getSimpleName() + Const.BINDER_CLASS_NAME)
                         .addSuperinterface(AutowiredBinder.class)
                         .addModifiers(Modifier.PUBLIC)
                         .addMethod(builder.build())
@@ -112,7 +113,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                loadBuilder.addStatement("binders.put($T.class.getName(),new $T())", ClassName.get(element.asType()), ClassName.get(pElement.getQualifiedName().toString(), element.getSimpleName() + Const.BINDER_CLASS_NAME));
+                loadBuilder.addStatement("binders.put($T.class.getName(),new $T())", ClassName.get(element.asType()), ClassName.get(pElement.getQualifiedName().toString(), typeSpec.name));
             }
         });
 
@@ -120,7 +121,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(loadBuilder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG, typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG+Const.DOT+getModuleName(), typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {

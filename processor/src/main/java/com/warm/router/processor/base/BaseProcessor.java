@@ -4,13 +4,14 @@ import com.warm.router.annotations.model.RouteInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
@@ -19,6 +20,7 @@ import javax.lang.model.util.Types;
  * 时间：2019-07-20 15:20
  * 描述：
  */
+@SupportedOptions("moduleName")
 public abstract class BaseProcessor extends AbstractProcessor {
     public static final String ACTIVITY = "android.app.Activity";
     public static final String FRAGMENT = "android.support.v4.app.Fragment";
@@ -36,6 +38,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
     protected Elements mElementUtils;
     protected Types mTypes;
     protected Filer mFiler;
+    protected Map<String, String> mOptions;
 
 
     @Override
@@ -45,6 +48,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
         mElementUtils = processingEnv.getElementUtils();
         mTypes = processingEnvironment.getTypeUtils();
         mFiler = processingEnvironment.getFiler();
+        mOptions =processingEnvironment.getOptions();
     }
 
     protected boolean isActivity(Element typeElement) {
@@ -53,5 +57,8 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     protected boolean isFragment(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType());
+    }
+    protected String getModuleName(){
+        return mOptions.get("moduleName");
     }
 }

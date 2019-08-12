@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Request implements Serializable {
     private Uri mUri;
@@ -14,6 +16,8 @@ public class Request implements Serializable {
     private Bundle mOptionsBundle;
 
     private int mRequestCode = -1;
+
+    private List<Interceptor> mInterceptors = new ArrayList<>();
 
     public Request(Uri uri) {
         mUri = uri;
@@ -56,5 +60,18 @@ public class Request implements Serializable {
         mRequestCode = requestCode;
     }
 
+    public List<Interceptor> getInterceptors() {
+        return mInterceptors;
+    }
+
+    public void addInterceptor(Interceptor interceptor) {
+        if (!mInterceptors.contains(interceptor)) {
+            mInterceptors.add(interceptor);
+        }
+    }
+
+    public void removeInterceptor(Interceptor interceptor) {
+        mInterceptors.remove(interceptor);
+    }
 
 }

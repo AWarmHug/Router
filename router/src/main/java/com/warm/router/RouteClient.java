@@ -58,11 +58,14 @@ public class RouteClient implements IRoute {
         //针对Intent进行匹配
         Context context = (Context) obj;
 
-//        List<Interceptor> interceptors = new ArrayList<>();
-//        interceptors.add(new IntentInterceptor());
-//
-//        RouteChain chain = new RouteChain(mRequest, interceptors);
-//        chain.proceed(mRequest);
+        List<Interceptor> interceptors = new ArrayList<>();
+        if (!mRequest.getInterceptors().isEmpty()){
+            interceptors.addAll(mRequest.getInterceptors());
+        }
+        interceptors.add(new IntentInterceptor());
+
+        RouteChain chain = new RouteChain(mRequest, interceptors);
+        chain.proceed(mRequest);
 
         Intent intent = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
@@ -112,6 +115,9 @@ public class RouteClient implements IRoute {
             } else {
                 ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
             }
+            //成功
+        }else {
+            //失败
         }
     }
 
@@ -125,6 +131,9 @@ public class RouteClient implements IRoute {
             } else {
                 fragment.startActivity(intent, mRequest.getOptionsBundle());
             }
+            //成功
+        }else {
+            //失败
         }
     }
 

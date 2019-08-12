@@ -25,6 +25,7 @@ public class Router {
 
     public static void init() {
         try {
+
             Class<?> routerLoader = Class.forName(Const.LOADER_PKG + Const.DOT + Const.ROUTER_LOADER_CLASS_NAME);
             Method routerMethodLoad = routerLoader.getMethod(Const.METHOD_LODE, Map.class);
             routerMethodLoad.invoke(routerLoader.newInstance(), mRouteInfoMap);
