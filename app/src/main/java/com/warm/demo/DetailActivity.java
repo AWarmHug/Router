@@ -3,7 +3,9 @@ package com.warm.demo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -37,5 +39,7 @@ public class DetailActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         Router.bind(this);
         mBinding.tv.setText("type=" + type);
+//        BottomSheetBehavior<NestedScrollView> behavior = BottomSheetBehavior.from(mBinding.scrollView);
+//        behavior.setPeekHeight(128);
     }
 }
