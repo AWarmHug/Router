@@ -15,6 +15,8 @@ import com.squareup.javapoet.TypeSpec;
 import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
+import com.warm.router.annotations.model.Loader;
+import com.warm.router.annotations.model.RouteInfo;
 import com.warm.router.processor.base.BaseProcessor;
 
 import java.io.IOException;
@@ -74,6 +76,7 @@ public class AutowiredProcessor extends BaseProcessor {
 
 
         final MethodSpec.Builder loadBuilder = MethodSpec.methodBuilder(Const.METHOD_LODE)
+                .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
                 .addParameter(ParameterizedTypeName.get(Map.class, String.class, AutowiredBinder.class), "binders");
@@ -118,6 +121,7 @@ public class AutowiredProcessor extends BaseProcessor {
         });
 
         TypeSpec typeSpec = TypeSpec.classBuilder(Const.BINDER_LOADER_CLASS_NAME)
+                .addSuperinterface(ParameterizedTypeName.get(Loader.class, AutowiredBinder.class))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(loadBuilder.build())
                 .build();

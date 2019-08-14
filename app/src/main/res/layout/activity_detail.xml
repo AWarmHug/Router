@@ -24,20 +24,25 @@
         </FrameLayout>
 
 
-        <android.support.v4.widget.NestedScrollView
+        <com.warm.demo.utils.NoScrollNestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:fitsSystemWindows="true"
-            app:behavior_peekHeight="200dp"
-            app:layout_behavior="com.warm.demo.utils.BottomSheetBehavior">
+            app:behavior_peekHeight="500dp"
+            app:layout_behavior="com.warm.demo.utils.BottomSheetBehavior2">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <Space
+                    android:id="@+id/spacer"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
 
 
                 <FrameLayout
@@ -73,16 +78,16 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </com.warm.demo.utils.NoScrollNestedScrollView>
 
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:title="标题"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            app:layout_behavior="com.warm.demo.utils.ToolbarBehavior"
+            app:title="标题">
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.CoordinatorLayout>

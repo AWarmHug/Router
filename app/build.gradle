@@ -42,4 +42,7 @@ dependencies {
 
     implementation project(':router')
     annotationProcessor project(':processor')
+
+    implementation project(':app2')
+
 }

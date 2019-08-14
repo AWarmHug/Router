@@ -9,7 +9,9 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.warm.router.annotations.Route;
+import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
+import com.warm.router.annotations.model.Loader;
 import com.warm.router.annotations.model.RouteInfo;
 import com.warm.router.processor.base.BaseProcessor;
 
@@ -37,6 +39,7 @@ public class RouteProcessor extends BaseProcessor {
         Set<? extends Element> routes = roundEnvironment.getElementsAnnotatedWith(Route.class);
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
+                .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
                 .addParameter(ParameterizedTypeName.get(Map.class, String.class, RouteInfo.class), "routers");
@@ -61,6 +64,7 @@ public class RouteProcessor extends BaseProcessor {
         }
 
         TypeSpec typeSpec = TypeSpec.classBuilder(Const.ROUTER_LOADER_CLASS_NAME)
+                .addSuperinterface(ParameterizedTypeName.get(Loader.class,RouteInfo.class))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
