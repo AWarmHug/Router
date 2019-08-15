@@ -52,6 +52,7 @@ import javax.lang.model.type.TypeMirror;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.warm.router.annotations.Autowired"})
+@SupportedOptions({"moduleName"})
 public class AutowiredProcessor extends BaseProcessor {
 
     private Map<Element, Set<VariableElement>> mMap = new HashMap<>();

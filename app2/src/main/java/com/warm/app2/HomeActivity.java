@@ -6,8 +6,8 @@ import android.os.Bundle;
 import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
 
-@Route("app2")
-public class App2Activity extends AppCompatActivity {
+@Route("app2/home")
+public class HomeActivity extends AppCompatActivity {
 
     @Autowired(name = "type")
     int type;

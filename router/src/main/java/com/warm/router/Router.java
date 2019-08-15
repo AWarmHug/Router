@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
+import com.warm.router.annotations.model.Loader;
 import com.warm.router.annotations.model.RouteInfo;
+
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,33 +23,15 @@ public class Router {
     public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
     private static Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
 
+    static {
+        init();
+    }
+
+
     private static RouteClient sRouteClient = new RouteClient();
 
     public static void init() {
-        try {
 
-
-
-
-            Class<?> routerLoader = Class.forName(Const.LOADER_PKG + Const.DOT + Const.ROUTER_LOADER_CLASS_NAME);
-            Method routerMethodLoad = routerLoader.getMethod(Const.METHOD_LODE, Map.class);
-            routerMethodLoad.invoke(routerLoader.newInstance(), mRouteInfoMap);
-
-
-            Class<?> binderLoader = Class.forName(Const.LOADER_PKG + Const.DOT + Const.BINDER_LOADER_CLASS_NAME);
-            Method binderMethodLoad = binderLoader.getMethod(Const.METHOD_LODE, Map.class);
-            binderMethodLoad.invoke(binderLoader.newInstance(), mBinderInfoMap);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
     }
 
     public static <T> void bind(T obj) {

@@ -20,7 +20,6 @@ import javax.lang.model.util.Types;
  * 时间：2019-07-20 15:20
  * 描述：
  */
-@SupportedOptions("moduleName")
 public abstract class BaseProcessor extends AbstractProcessor {
     public static final String ACTIVITY = "android.app.Activity";
     public static final String FRAGMENT = "android.support.v4.app.Fragment";

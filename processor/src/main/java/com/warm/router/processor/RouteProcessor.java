@@ -31,6 +31,7 @@ import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.warm.router.annotations.Route"})
+@SupportedOptions({"moduleName"})
 public class RouteProcessor extends BaseProcessor {
 
 
@@ -64,11 +65,11 @@ public class RouteProcessor extends BaseProcessor {
         }
 
         TypeSpec typeSpec = TypeSpec.classBuilder(Const.ROUTER_LOADER_CLASS_NAME)
-                .addSuperinterface(ParameterizedTypeName.get(Loader.class,RouteInfo.class))
+                .addSuperinterface(ParameterizedTypeName.get(Loader.class, RouteInfo.class))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG+Const.DOT+getModuleName(), typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG + Const.DOT + getModuleName(), typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {

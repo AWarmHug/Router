@@ -19,16 +19,16 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.init();
+//                Router.init();
             }
         });
         mBinding.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,DetailActivity.class));
-//                Router.build("test/detail")
-//                        .with("type",1)
-//                        .start(MainActivity.this);
+//                startActivity(new Intent(HomeActivity.this,DetailActivity.class));
+                Router.build("test/detail")
+                        .with("type",1)
+                        .start(MainActivity.this);
             }
         });
         mBinding.bt2.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Router.build("myapp://reader.app/appweb?id=10001")
                         .with("type",1)
+                        .start(MainActivity.this);
+            }
+        });
+
+        mBinding.bt4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.build("app2/car")
                         .start(MainActivity.this);
             }
         });
