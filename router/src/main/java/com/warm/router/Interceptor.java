@@ -1,5 +1,9 @@
 package com.warm.router;
 
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+
 public interface Interceptor {
 
     void intercept(Chain chain);
@@ -10,6 +14,12 @@ public interface Interceptor {
         Request request();
 
         void proceed(Request request);
+
+        @Nullable
+        Context getContext();
+
+        @Nullable
+        Fragment getFragment();
 
 
     }

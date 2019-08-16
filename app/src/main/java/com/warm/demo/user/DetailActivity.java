@@ -10,6 +10,7 @@ import com.warm.demo.R;
 import com.warm.demo.data.PayInfo;
 import com.warm.demo.data.UserInfo;
 import com.warm.demo.databinding.ActivityUserDetailBinding;
+import com.warm.demo.login.LoginInterceptor;
 import com.warm.demo.news.HomeFragment;
 import com.warm.router.Router;
 import com.warm.router.annotations.Autowired;
@@ -23,7 +24,7 @@ import java.util.List;
  * 时间：2019-07-20 14:52
  * 描述：
  */
-@Route("test/user/detail")
+@Route(value = "test/user/detail",interceptors = {LoginInterceptor.class})
 public class DetailActivity extends AppCompatActivity {
     private ActivityUserDetailBinding mBinding;
 

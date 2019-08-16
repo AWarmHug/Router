@@ -1,6 +1,8 @@
 package com.warm.router.annotations.model;
 
 public class Const {
+    public static final String KEY_MODULE_NAME = "moduleName";
+
     public static final String DOT = ".";
     public static final String PKG_ROUTER = "com.warm.router";
     public static final String LOADER_PKG = PKG_ROUTER + DOT + "loader";

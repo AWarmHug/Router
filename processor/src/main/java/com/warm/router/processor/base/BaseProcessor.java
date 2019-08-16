@@ -1,5 +1,6 @@
 package com.warm.router.processor.base;
 
+import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.RouteInfo;
 
 import java.util.HashMap;
@@ -58,6 +59,6 @@ public abstract class BaseProcessor extends AbstractProcessor {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType());
     }
     protected String getModuleName(){
-        return mOptions.get("moduleName");
+        return mOptions.get(Const.KEY_MODULE_NAME);
     }
 }

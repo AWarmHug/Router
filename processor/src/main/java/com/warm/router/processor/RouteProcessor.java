@@ -58,7 +58,21 @@ public class RouteProcessor extends BaseProcessor {
                 String className = e.getQualifiedName().toString();
                 Route route = e.getAnnotation(Route.class);
                 String path = route.value();
-                builder.addStatement("routers.put($S,new $T(" + type + ",$S,$T.class))", path, TypeName.get(RouteInfo.class), path, ClassName.get(e));
+                Class<?>[] interceptorClas=route.interceptors();
+
+                for (Class<?> interceptorClass:interceptorClas) {
+
+                }
+
+
+                builder.addStatement("$T route =new $T(" + type + ",$S,$T.class)",ClassName.get(e), TypeName.get(RouteInfo.class), path, ClassName.get(e));
+
+
+
+//                builder.addStatement("route.setInterceptors("+);
+
+
+                builder.addStatement("routers.put($S,route)", path);
 
             }
 

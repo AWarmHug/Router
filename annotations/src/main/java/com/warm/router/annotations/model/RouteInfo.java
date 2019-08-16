@@ -14,10 +14,20 @@ public class RouteInfo {
     protected String path;
     protected Class<?> target;
 
+    private Class<?>[] interceptors;
+
     public RouteInfo(int type, String path, Class<?> target) {
         this.type = type;
         this.path = path;
         this.target = target;
+    }
+
+    public Class<?>[] getInterceptors() {
+        return interceptors;
+    }
+
+    public void setInterceptors(Class<?>[] interceptors) {
+        this.interceptors = interceptors;
     }
 
     public Class<?> getTarget() {

@@ -14,4 +14,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface Route {
     String value();
+
+    Class<?>[] interceptors() default {};
 }

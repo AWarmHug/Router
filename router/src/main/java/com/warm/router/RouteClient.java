@@ -64,7 +64,7 @@ public class RouteClient implements IRoute {
         }
         interceptors.add(new IntentInterceptor());
 
-        RouteChain chain = new RouteChain(mRequest, interceptors);
+        RouteChain chain = new RouteChain(obj,mRequest, interceptors);
         chain.proceed(mRequest);
 
         Intent intent = null;

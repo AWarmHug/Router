@@ -15,7 +15,7 @@ class RPlugin implements Plugin<Project> {
         def android = project.extensions.findByName("android")
 
         if (android) {
-            android.defaultConfig.javaCompileOptions.annotationProcessorOptions.argument("moduleName", project.name)
+            android.defaultConfig.javaCompileOptions.annotationProcessorOptions.argument(Config.KEY_MODULE_NAME, project.name)
         }
         if (project.plugins.hasPlugin(AppPlugin)) {
             project.android.registerTransform(new RTransform(project))

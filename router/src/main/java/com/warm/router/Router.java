@@ -7,6 +7,7 @@ import com.warm.router.annotations.model.RouteInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 作者：warm
@@ -17,6 +18,8 @@ public class Router {
 
     public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
     private static Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
+//    private static Set<Interceptor> sInterceptors
+
 
     static {
         init();
