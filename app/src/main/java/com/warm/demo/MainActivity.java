@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.init();
+                Router.build("test/user/detail")
+                        .with("id",1L)
+                        .start(MainActivity.this);
             }
         });
         mBinding.bt1.setOnClickListener(new View.OnClickListener() {

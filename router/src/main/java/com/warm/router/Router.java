@@ -3,13 +3,8 @@ package com.warm.router;
 import android.net.Uri;
 
 import com.warm.router.annotations.model.AutowiredBinder;
-import com.warm.router.annotations.model.Const;
-import com.warm.router.annotations.model.Loader;
 import com.warm.router.annotations.model.RouteInfo;
 
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -13,13 +13,13 @@
             android:id="@+id/bt0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="init" />
+            android:text="test/user/detail" />
 
         <Button
             android:id="@+id/bt1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="跳转Activity" />
+            android:text="test/detail" />
 
         <Button
             android:id="@+id/bt2"
