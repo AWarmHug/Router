@@ -6,6 +6,7 @@ import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.RouteInfo;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,19 +18,26 @@ import java.util.Set;
 public class Router {
 
     public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
-    private static Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
-//    private static Set<Interceptor> sInterceptors
-
+    public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
+    public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
+    public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
 
     static {
         init();
     }
 
-
     private static RouteClient sRouteClient = new RouteClient();
 
     public static void init() {
 
+    }
+
+    private static void loadGlobalInterceptors(String[] keys) {
+        if (keys != null) {
+            for (String key : keys) {
+                sGlobalInterceptors.add(mInterceptorMap.get(key));
+            }
+        }
     }
 
     public static <T> void bind(T obj) {

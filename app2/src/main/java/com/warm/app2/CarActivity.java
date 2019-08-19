@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.warm.router.annotations.Route;
 
-@Route("app2/car")
+@Route(value = "app2/car", interceptors = "CarInterceptor")
 public class CarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.car_activity);
+        setContentView(R.layout.car_activity);
 
     }
 }

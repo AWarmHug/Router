@@ -24,7 +24,7 @@ import java.util.List;
  * 时间：2019-07-20 14:52
  * 描述：
  */
-@Route(value = "test/user/detail",interceptors = {LoginInterceptor.class})
+@Route(value = "test/user/detail", interceptors = {"LoginInterceptor"})
 public class DetailActivity extends AppCompatActivity {
     private ActivityUserDetailBinding mBinding;
 

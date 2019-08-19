@@ -58,10 +58,18 @@ public class RouteClient implements IRoute {
         //针对Intent进行匹配
         Context context = (Context) obj;
 
-        List<Interceptor> interceptors = new ArrayList<>();
+        //添加全局拦截器
+        List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
+        //添加针对拦截器
+        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
+        for (String key:info.getInterceptorKeys()) {
+            interceptors.add(Router.mInterceptorMap.get(key));
+        }
+
         if (!mRequest.getInterceptors().isEmpty()){
             interceptors.addAll(mRequest.getInterceptors());
         }
+
         interceptors.add(new IntentInterceptor());
 
         RouteChain chain = new RouteChain(obj,mRequest, interceptors);

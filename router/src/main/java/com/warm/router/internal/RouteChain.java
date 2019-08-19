@@ -32,7 +32,7 @@ public class RouteChain implements Interceptor.Chain {
             return;
         }
         Interceptor interceptor = mInterceptors.remove(0);
-        interceptor.intercept(this);
+         interceptor.intercept(this);
     }
 
     @Nullable

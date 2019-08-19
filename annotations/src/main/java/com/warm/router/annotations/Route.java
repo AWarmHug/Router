@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
 public @interface Route {
     String value();
 
-    Class<?>[] interceptors() default {};
+    String[] interceptors() default {};
 }

@@ -44,6 +44,7 @@ public class RouteProcessor extends BaseProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .returns(void.class)
                 .addParameter(ParameterizedTypeName.get(Map.class, String.class, RouteInfo.class), "routers");
+        int pos = 0;
 
         for (Element element : routes) {
             if (element instanceof TypeElement) {
@@ -58,21 +59,23 @@ public class RouteProcessor extends BaseProcessor {
                 String className = e.getQualifiedName().toString();
                 Route route = e.getAnnotation(Route.class);
                 String path = route.value();
-                Class<?>[] interceptorClas=route.interceptors();
+                builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), pos, TypeName.get(RouteInfo.class), path, ClassName.get(e));
 
-                for (Class<?> interceptorClass:interceptorClas) {
+                if (route.interceptors().length != 0) {
+                    StringBuilder interceptorKeys = new StringBuilder("new String[]{");
+                    for (int i = 0; i < route.interceptors().length; i++) {
+                        interceptorKeys.append("\""+route.interceptors()[i]+"\"");
+                        if (i != route.interceptors().length-1) {
+                            interceptorKeys.append(",");
+                        }
+                    }
+                    interceptorKeys.append("}");
 
+                    builder.addStatement("route$L.setInterceptorKeys($L)" , pos, interceptorKeys.toString());
                 }
 
-
-                builder.addStatement("$T route =new $T(" + type + ",$S,$T.class)",ClassName.get(e), TypeName.get(RouteInfo.class), path, ClassName.get(e));
-
-
-
-//                builder.addStatement("route.setInterceptors("+);
-
-
-                builder.addStatement("routers.put($S,route)", path);
+                builder.addStatement("routers.put($S,route$L)", path, pos);
+                pos++;
 
             }
 

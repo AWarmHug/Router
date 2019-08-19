@@ -8,10 +8,12 @@ import android.widget.Toast;
 import com.warm.demo.login.rx.RxLogin;
 import com.warm.router.Interceptor;
 import com.warm.router.Request;
+import com.warm.router.annotations.RouteInterceptor;
 
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
+@RouteInterceptor(name = "LoginInterceptor")
 public class LoginInterceptor implements Interceptor {
     @Override
     public void intercept(final Chain chain) {
@@ -24,7 +26,7 @@ public class LoginInterceptor implements Interceptor {
         if (fragment != null) {
             rxLogin = new RxLogin(fragment);
         } else if (context instanceof FragmentActivity) {
-            rxLogin = new RxLogin((FragmentActivity) chain);
+            rxLogin = new RxLogin((FragmentActivity) context);
         }
 
         if (rxLogin != null) {

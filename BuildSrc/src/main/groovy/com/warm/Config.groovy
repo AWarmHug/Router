@@ -9,6 +9,7 @@ class Config {
 
     static final String ROUTER_LOADER_CLASS_NAME = "RouteLoader";
     static final String BINDER_LOADER_CLASS_NAME = "BinderLoader";
+    static final String INTERCEPTOR_LOADER_CLASS_NAME = "InterceptorLoader";
 
     static final String METHOD_LODE = "load";
 

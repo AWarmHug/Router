@@ -60,8 +60,6 @@ public class RxLogin  {
 
     public Observable<Boolean> login() {
 
-
-
         if (!isLogin) {
             mLoginFragmentLazy.get().login();
             return mLoginFragmentLazy.get().getSubject();

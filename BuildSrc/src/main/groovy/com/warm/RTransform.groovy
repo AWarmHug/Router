@@ -25,10 +25,12 @@ import java.util.zip.ZipOutputStream
 
 class RTransform extends Transform {
 
-    String routerJarPath;
+    String routerJarPath
 
     Set<String> routerLoaders = new HashSet<>();
     Set<String> binderLoaders = new HashSet<>();
+    Set<String> interceptorLoaders = new HashSet<>();
+
 
     Project project
 
@@ -134,6 +136,11 @@ class RTransform extends Transform {
                             println(ctClass.name)
                             binderLoaders.add(ctClass.name)
                         }
+
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.warm.router.annotations.model.Loader") {
+                            println(ctClass.name)
+                            interceptorLoaders.add(ctClass.name)
+                        }
                     }
                 }
             }
@@ -168,6 +175,11 @@ class RTransform extends Transform {
                     if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.warm.router.annotations.model.Loader") {
                         println(ctClass.name)
                         binderLoaders.add(ctClass.name)
+                    }
+
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.warm.router.annotations.model.Loader") {
+                        println(ctClass.name)
+                        interceptorLoaders.add(ctClass.name)
                     }
 
 
@@ -212,15 +224,26 @@ class RTransform extends Transform {
 
                     CtMethod ctMethod = ctClass.getDeclaredMethod("init")
                     StringBuilder sb = new StringBuilder();
-                    sb.append("{")
+                    sb.append("{\n")
                     routerLoaders.each {
-                        sb.append("new ${it}().load(mRouteInfoMap);")
+                        sb.append("new ${it}().load(mRouteInfoMap);\n")
                     }
 
                     binderLoaders.each {
-                        sb.append("new ${it}().load(mBinderInfoMap);")
+                        sb.append("new ${it}().load(mBinderInfoMap);\n")
                     }
-                    sb.append("}")
+
+                    int a = 0
+                    interceptorLoaders.each {
+                        sb.append("${it} interceptorLoader${a}=new ${it}();\n")
+                        sb.append("interceptorLoader${a}.load(mInterceptorMap);\n")
+                        sb.append("loadGlobalInterceptors(interceptorLoader${a}.mGlobalInterceptorKeys);\n")
+                        a++
+                    }
+
+                    sb.append("}\n")
+
+                    println(sb.toString())
 
                     ctMethod.setBody(sb.toString())
                     IOUtils.write(ctClass.toBytecode(), zos)

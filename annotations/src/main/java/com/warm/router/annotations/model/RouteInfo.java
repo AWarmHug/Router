@@ -13,8 +13,7 @@ public class RouteInfo {
     protected int type;
     protected String path;
     protected Class<?> target;
-
-    private Class<?>[] interceptors;
+    private String[] interceptorKeys;
 
     public RouteInfo(int type, String path, Class<?> target) {
         this.type = type;
@@ -22,12 +21,12 @@ public class RouteInfo {
         this.target = target;
     }
 
-    public Class<?>[] getInterceptors() {
-        return interceptors;
+    public String[] getInterceptorKeys() {
+        return interceptorKeys;
     }
 
-    public void setInterceptors(Class<?>[] interceptors) {
-        this.interceptors = interceptors;
+    public void setInterceptorKeys(String[] interceptorKeys) {
+        this.interceptorKeys = interceptorKeys;
     }
 
     public Class<?> getTarget() {
