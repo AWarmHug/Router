@@ -1,6 +1,5 @@
 package com.warm.demo;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Router.init();
                 Router.build("test/user/detail")
-                        .with("id", 1L)
+                        .put("id", 1L)
                         .start(MainActivity.this);
             }
         });
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                startActivity(new Intent(HomeActivity.this,DetailActivity.class));
                 Router.build("test/detail")
-                        .with("type", 1)
+                        .put("type", 1)
                         .start(MainActivity.this);
             }
         });
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.build("https://www.jianshu.com/p/d57abb5b87f3")
-                        .with("type", 1)
+                        .put("type", 1)
                         .start(MainActivity.this);
             }
         });
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.build("myapp://reader.app/appweb?id=10001")
-                        .with("type", 1)
+                        .put("type", 1)
                         .start(MainActivity.this);
             }
         });

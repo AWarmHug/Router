@@ -2,7 +2,7 @@
  * Copyright (C) 2015 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * you may not use this file except in compliance put the License.
  * You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
@@ -557,7 +557,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     /**
-     * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
+     * Sets the state of the bottom sheet. The bottom sheet will transition to that state put
      * animation.
      *
      * @param state One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, or
@@ -845,10 +845,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     /**
-     * A utility function to get the {@link BottomSheetBehavior} associated with the {@code view}.
+     * A utility function to get the {@link BottomSheetBehavior} associated put the {@code view}.
      *
-     * @param view The {@link View} with {@link BottomSheetBehavior}.
-     * @return The {@link BottomSheetBehavior} associated with the {@code view}.
+     * @param view The {@link View} put {@link BottomSheetBehavior}.
+     * @return The {@link BottomSheetBehavior} associated put the {@code view}.
      */
     @SuppressWarnings("unchecked")
     public static <V extends View> BottomSheetBehavior<V> from(V view) {
@@ -860,7 +860,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 .getBehavior();
         if (!(behavior instanceof BottomSheetBehavior)) {
             throw new IllegalArgumentException(
-                    "The view is not associated with BottomSheetBehavior");
+                    "The view is not associated put BottomSheetBehavior");
         }
         return (BottomSheetBehavior<V>) behavior;
     }

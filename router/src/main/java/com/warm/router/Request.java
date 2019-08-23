@@ -20,6 +20,10 @@ public class Request implements Serializable {
 
     private int mRequestCode = -1;
 
+    private int mFlags;
+
+    private String action;
+
     private List<Interceptor> mInterceptors = new ArrayList<>();
 
     public Request(Uri uri) {
@@ -77,6 +81,25 @@ public class Request implements Serializable {
         mInterceptors.remove(interceptor);
     }
 
+    public int getFlags() {
+        return mFlags;
+    }
+
+    public void setFlags(int flags) {
+        mFlags = flags;
+    }
+
+    public void addFlags(int flags) {
+        mFlags |= flags;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 
     @Nullable
     public Class<?> getTarget() {
