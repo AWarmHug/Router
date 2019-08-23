@@ -39,7 +39,7 @@
             android:id="@+id/bt4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="app2" />
+            android:text="app2/car" />
 
         <Button
             android:id="@+id/bt5"

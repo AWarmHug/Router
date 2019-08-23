@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("myapp://reader.app/appweb?id=10001")
+                Router.build("myapp://demo.app/userdetail?id=10001")
                         .put("type", 1)
                         .start(MainActivity.this);
             }

@@ -25,8 +25,8 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                    android:host="reader.app"
-                    android:path="/appweb"
+                    android:host="demo.app"
+                    android:path="/userdetail"
                     android:scheme="myapp" />
             </intent-filter>
         </activity>
