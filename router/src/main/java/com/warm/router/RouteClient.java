@@ -42,14 +42,16 @@ public class RouteClient implements IRoute {
         Bundle bundle = mRequest.getExtra();
         if (value instanceof String) {
             bundle.putString(key, (String) value);
-        } else if (value instanceof Integer){
+        } else if (value instanceof Integer) {
             bundle.putInt(key, (int) value);
-        }else if (value instanceof Long) {
+        } else if (value instanceof Long) {
             bundle.putLong(key, (long) value);
         } else if (value instanceof Float) {
             bundle.putFloat(key, (float) value);
-        } else if (value instanceof Double){
-            bundle.putDouble(key,(double)value);
+        } else if (value instanceof Double) {
+            bundle.putDouble(key, (double) value);
+        } else if (value instanceof long[]) {
+            bundle.putLongArray(key, (long[]) value);
         }
 
         return this;
