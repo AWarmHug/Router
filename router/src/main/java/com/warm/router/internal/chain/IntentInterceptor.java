@@ -6,6 +6,9 @@ import com.warm.router.Request;
 public class IntentInterceptor implements Interceptor {
    private Callback mCallback;
 
+    public IntentInterceptor() {
+    }
+
     public IntentInterceptor(Callback callback) {
         mCallback = callback;
     }

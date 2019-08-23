@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 
 import com.warm.router.annotations.model.RouteInfo;
 import com.warm.router.internal.chain.Callback;
+import com.warm.router.internal.chain.FragmentInterceptor;
 import com.warm.router.internal.chain.IntentInterceptor;
 import com.warm.router.internal.RouteChain;
 import com.warm.router.internal.matcher.Matcher;
@@ -64,15 +65,19 @@ public class RouteClient implements IRoute {
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
         //添加针对拦截器
         RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
-        for (String key:info.getInterceptorKeys()) {
-            interceptors.add(Router.mInterceptorMap.get(key));
+        if (info.getInterceptorKeys() != null) {
+            for (String key : info.getInterceptorKeys()) {
+                interceptors.add(Router.mInterceptorMap.get(key));
+            }
         }
 
-        if (!mRequest.getInterceptors().isEmpty()){
+        if (!mRequest.getInterceptors().isEmpty()) {
             interceptors.addAll(mRequest.getInterceptors());
         }
 
-        RouteChain chain = new RouteChain(obj,mRequest, interceptors);
+        interceptors.add(new IntentInterceptor());
+
+        RouteChain chain = new RouteChain(obj, mRequest, interceptors);
         chain.proceed(mRequest);
 
         Intent intent = null;
@@ -96,6 +101,25 @@ public class RouteClient implements IRoute {
     public Fragment getFragment(Object obj) {
         //针对Fragment进行匹配
         Context context = (Context) obj;
+        //添加全局拦截器
+        List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
+        //添加针对拦截器
+        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
+        if (info.getInterceptorKeys() != null) {
+            for (String key : info.getInterceptorKeys()) {
+                interceptors.add(Router.mInterceptorMap.get(key));
+            }
+        }
+
+        if (!mRequest.getInterceptors().isEmpty()) {
+            interceptors.addAll(mRequest.getInterceptors());
+        }
+
+        interceptors.add(new FragmentInterceptor());
+
+        RouteChain chain = new RouteChain(obj, mRequest, interceptors);
+        chain.proceed(mRequest);
+
         Fragment fragment = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
             if (matcher.match(context, mRequest.getUri(), mRequest)) {
@@ -113,21 +137,37 @@ public class RouteClient implements IRoute {
     }
 
     @Override
-    public void start(final Context context) {
+    public void start(final Object obj) {
+        if (!(obj instanceof Context) && !(obj instanceof Fragment)) {
+            return;
+        }
+
+        boolean isFragment = obj instanceof Fragment;
+
+        Fragment fragment = null;
+        final Context context;
+        if (isFragment) {
+            fragment = (Fragment) obj;
+            context = fragment.getContext();
+        } else {
+            context = (Context) obj;
+        }
+
 
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
         //添加针对拦截器
         RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
-        for (String key:info.getInterceptorKeys()) {
+        for (String key : info.getInterceptorKeys()) {
             interceptors.add(Router.mInterceptorMap.get(key));
         }
 
-        if (!mRequest.getInterceptors().isEmpty()){
+        if (!mRequest.getInterceptors().isEmpty()) {
             interceptors.addAll(mRequest.getInterceptors());
         }
 
-        IntentInterceptor intentInterceptor=new IntentInterceptor(new Callback() {
+        final Fragment finalFragment = fragment;
+        Callback callback = new Callback() {
             @Override
             public void callback() {
                 Intent intent = null;
@@ -143,44 +183,37 @@ public class RouteClient implements IRoute {
                 if (intent != null) {
                     intent.putExtras(mRequest.getExtra());
                 }
-
-
-
                 int requestCode = mRequest.getRequestCode();
 
                 if (intent != null) {
                     if (requestCode != -1) {
-                        ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, mRequest.getOptionsBundle());
+                        if (finalFragment != null) {
+                            finalFragment.startActivityForResult(intent, requestCode, mRequest.getOptionsBundle());
+                        } else {
+                            ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, mRequest.getOptionsBundle());
+                        }
                     } else {
-                        ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
+                        if (finalFragment != null) {
+                            finalFragment.startActivityForResult(intent, requestCode, mRequest.getOptionsBundle());
+                        } else {
+                            ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
+                        }
                     }
                     //成功
                 } else {
                     //失败
                 }
             }
-        });
+        };
+
+        IntentInterceptor intentInterceptor = new IntentInterceptor(callback);
 
         interceptors.add(intentInterceptor);
 
-        RouteChain chain = new RouteChain(context,mRequest, interceptors);
+        RouteChain chain = new RouteChain(obj, mRequest, interceptors);
         chain.proceed(mRequest);
+
     }
 
-    @Override
-    public void start(Fragment fragment) {
-        Intent intent = getIntent(fragment.getActivity());
-        int requestCode = mRequest.getRequestCode();
-        if (intent != null) {
-            if (requestCode != -1) {
-                fragment.startActivityForResult(intent, requestCode);
-            } else {
-                fragment.startActivity(intent, mRequest.getOptionsBundle());
-            }
-            //成功
-        } else {
-            //失败
-        }
-    }
 
 }

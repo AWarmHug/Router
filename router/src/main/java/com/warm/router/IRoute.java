@@ -22,8 +22,6 @@ public interface IRoute {
     @Nullable
     Fragment getFragment(Object obj);
 
-    void start(Context context);
-
-    void start(Fragment fragment);
+    void start(Object obj);
 
 }
