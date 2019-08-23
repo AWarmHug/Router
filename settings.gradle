@@ -1,1 +1,1 @@
-include ':app', ':annotations', ':processor', ':router', ':app2'
+include ':app', ':annotations', ':processor', ':router', ':app2', ':apphybrid'

@@ -243,7 +243,6 @@ class RTransform extends Transform {
 
                     sb.append("}\n")
 
-                    println(sb.toString())
 
                     ctMethod.setBody(sb.toString())
                     IOUtils.write(ctClass.toBytecode(), zos)
