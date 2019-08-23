@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
 import com.warm.router.annotations.model.RouteInfo;
+import com.warm.router.internal.chain.Callback;
 import com.warm.router.internal.chain.IntentInterceptor;
 import com.warm.router.internal.RouteChain;
 import com.warm.router.internal.matcher.Matcher;
@@ -53,6 +54,7 @@ public class RouteClient implements IRoute {
         return this;
     }
 
+    @Nullable
     @Override
     public Intent getIntent(Object obj) {
         //针对Intent进行匹配
@@ -70,15 +72,13 @@ public class RouteClient implements IRoute {
             interceptors.addAll(mRequest.getInterceptors());
         }
 
-        interceptors.add(new IntentInterceptor());
-
         RouteChain chain = new RouteChain(obj,mRequest, interceptors);
         chain.proceed(mRequest);
 
         Intent intent = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
             if (matcher.match(context, mRequest.getUri(), mRequest)) {
-                Object target = matcher.generate(context, mRequest.getUri(), getClazz());
+                Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
                 if (target instanceof Intent) {
                     intent = (Intent) target;
                 }
@@ -91,6 +91,7 @@ public class RouteClient implements IRoute {
         return intent;
     }
 
+    @Nullable
     @Override
     public Fragment getFragment(Object obj) {
         //针对Fragment进行匹配
@@ -98,7 +99,7 @@ public class RouteClient implements IRoute {
         Fragment fragment = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
             if (matcher.match(context, mRequest.getUri(), mRequest)) {
-                Object target = matcher.generate(context, mRequest.getUri(), getClazz());
+                Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
                 if (target instanceof Fragment) {
                     fragment = (Fragment) target;
                 }
@@ -112,21 +113,58 @@ public class RouteClient implements IRoute {
     }
 
     @Override
-    public void start(Context context) {
-        Intent intent = getIntent(context);
+    public void start(final Context context) {
 
-        int requestCode = mRequest.getRequestCode();
-
-        if (intent != null) {
-            if (requestCode != -1) {
-                ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, mRequest.getOptionsBundle());
-            } else {
-                ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
-            }
-            //成功
-        }else {
-            //失败
+        //添加全局拦截器
+        List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
+        //添加针对拦截器
+        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
+        for (String key:info.getInterceptorKeys()) {
+            interceptors.add(Router.mInterceptorMap.get(key));
         }
+
+        if (!mRequest.getInterceptors().isEmpty()){
+            interceptors.addAll(mRequest.getInterceptors());
+        }
+
+        IntentInterceptor intentInterceptor=new IntentInterceptor(new Callback() {
+            @Override
+            public void callback() {
+                Intent intent = null;
+                for (Matcher matcher : MatcherCenter.sMatcher) {
+                    if (matcher.match(context, mRequest.getUri(), mRequest)) {
+                        Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
+                        if (target instanceof Intent) {
+                            intent = (Intent) target;
+                        }
+                        break;
+                    }
+                }
+                if (intent != null) {
+                    intent.putExtras(mRequest.getExtra());
+                }
+
+
+
+                int requestCode = mRequest.getRequestCode();
+
+                if (intent != null) {
+                    if (requestCode != -1) {
+                        ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, mRequest.getOptionsBundle());
+                    } else {
+                        ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
+                    }
+                    //成功
+                } else {
+                    //失败
+                }
+            }
+        });
+
+        interceptors.add(intentInterceptor);
+
+        RouteChain chain = new RouteChain(context,mRequest, interceptors);
+        chain.proceed(mRequest);
     }
 
     @Override
@@ -140,17 +178,9 @@ public class RouteClient implements IRoute {
                 fragment.startActivity(intent, mRequest.getOptionsBundle());
             }
             //成功
-        }else {
+        } else {
             //失败
         }
     }
 
-    @Nullable
-    public Class<?> getClazz() {
-        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
-        if (info != null) {
-            return info.getTarget();
-        }
-        return null;
-    }
 }

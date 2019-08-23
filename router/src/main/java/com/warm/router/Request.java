@@ -3,6 +3,9 @@ package com.warm.router;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.warm.router.annotations.model.RouteInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -74,4 +77,13 @@ public class Request implements Serializable {
         mInterceptors.remove(interceptor);
     }
 
+
+    @Nullable
+    public Class<?> getTarget() {
+        RouteInfo info = Router.mRouteInfoMap.get(getUri().getPath());
+        if (info != null) {
+            return info.getTarget();
+        }
+        return null;
+    }
 }

@@ -3,10 +3,14 @@ package com.warm.router.internal.chain;
 import com.warm.router.Interceptor;
 import com.warm.router.Request;
 
-public class IntentInterceptor implements Interceptor {
-   private Callback mCallback;
+public class FragmentInterceptor implements Interceptor {
 
-    public IntentInterceptor(Callback callback) {
+    private Callback mCallback;
+
+    public FragmentInterceptor() {
+    }
+
+    public FragmentInterceptor(Callback callback) {
         mCallback = callback;
     }
 

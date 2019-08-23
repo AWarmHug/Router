@@ -15,6 +15,8 @@ import io.reactivex.functions.Consumer;
 
 @RouteInterceptor(name = "LoginInterceptor")
 public class LoginInterceptor implements Interceptor {
+    Object result;
+
     @Override
     public void intercept(final Chain chain) {
         final Request request = chain.request();
@@ -28,7 +30,6 @@ public class LoginInterceptor implements Interceptor {
         } else if (context instanceof FragmentActivity) {
             rxLogin = new RxLogin((FragmentActivity) context);
         }
-
         if (rxLogin != null) {
             rxLogin.login()
                     .subscribe(new Consumer<Boolean>() {
@@ -45,11 +46,8 @@ public class LoginInterceptor implements Interceptor {
                         public void accept(Throwable throwable) throws Exception {
 
                         }
-                    })
-                    .dispose();
+                    });
 
         }
-
-
     }
 }
