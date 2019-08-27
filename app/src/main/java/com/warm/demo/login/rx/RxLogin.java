@@ -9,13 +9,10 @@ import com.warm.demo.utils.Lazy;
 
 import io.reactivex.Observable;
 
-public class RxLogin  {
-
-    public static boolean isLogin;
+public class RxLogin {
 
     static final String TAG = RxLogin.class.getSimpleName();
-
-
+    public static boolean isLogin;
     private Lazy<RxLoginFragment> mLoginFragmentLazy;
 
 

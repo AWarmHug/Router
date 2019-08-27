@@ -11,7 +11,7 @@ public abstract class Matcher {
 
     public abstract boolean match(Context context, Uri uri, Request request);
 
-    public abstract Object generate(Context context, Uri uri, Class<?> clazz);
+    public abstract Object generate(Context context, Uri uri, Request request);
 
     protected void putParameter(Uri uri, Bundle bundle) {
         if (TextUtils.isEmpty(uri.getQuery())) {

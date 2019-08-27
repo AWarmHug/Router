@@ -9,7 +9,6 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.warm.router.annotations.Route;
-import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.Loader;
 import com.warm.router.annotations.model.RouteInfo;
@@ -64,14 +63,14 @@ public class RouteProcessor extends BaseProcessor {
                 if (route.interceptors().length != 0) {
                     StringBuilder interceptorKeys = new StringBuilder("new String[]{");
                     for (int i = 0; i < route.interceptors().length; i++) {
-                        interceptorKeys.append("\""+route.interceptors()[i]+"\"");
-                        if (i != route.interceptors().length-1) {
+                        interceptorKeys.append("\"" + route.interceptors()[i] + "\"");
+                        if (i != route.interceptors().length - 1) {
                             interceptorKeys.append(",");
                         }
                     }
                     interceptorKeys.append("}");
 
-                    builder.addStatement("route$L.setInterceptorKeys($L)" , pos, interceptorKeys.toString());
+                    builder.addStatement("route$L.setInterceptorKeys($L)", pos, interceptorKeys.toString());
                 }
 
                 builder.addStatement("routers.put($S,route$L)", path, pos);

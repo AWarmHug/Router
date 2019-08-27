@@ -10,7 +10,6 @@ import com.warm.router.Interceptor;
 import com.warm.router.Request;
 import com.warm.router.annotations.RouteInterceptor;
 
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 @RouteInterceptor(name = "LoginInterceptor")

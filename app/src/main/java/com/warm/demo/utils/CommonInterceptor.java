@@ -6,7 +6,7 @@ import com.warm.router.Interceptor;
 import com.warm.router.Request;
 import com.warm.router.annotations.RouteInterceptor;
 
-@RouteInterceptor(name = "CommonInterceptor",isGlobal = true)
+@RouteInterceptor(name = "CommonInterceptor", isGlobal = true)
 public class CommonInterceptor implements Interceptor {
     @Override
     public void intercept(final Chain chain) {

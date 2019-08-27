@@ -1,7 +1,6 @@
 package com.warm.router;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -24,14 +23,10 @@ public interface IRoute {
 
     IRoute addFlags(int flags);
 
-
     IRoute setRequestCode(int requestCode);
 
     @Nullable
-    Intent getIntent(Object obj);
-
-    @Nullable
-    Fragment getFragment(Object obj);
+    Fragment getFragment(Context obj);
 
     void start(Object obj);
 

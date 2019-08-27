@@ -20,7 +20,7 @@ public class FragmentInterceptor implements Interceptor {
         if (request.getUri() == null) {
             return;
         }
-        if (mCallback!=null) {
+        if (mCallback != null) {
             mCallback.callback();
         }
     }

@@ -6,8 +6,8 @@ package com.warm.router.annotations.model;
  * 描述：
  */
 public class RouteInfo {
-    public static final int TYPE_ACTIVITY=1;
-    public static final int TYPE_FRAGMENT=2;
+    public static final int TYPE_ACTIVITY = 1;
+    public static final int TYPE_FRAGMENT = 2;
 
 
     protected int type;

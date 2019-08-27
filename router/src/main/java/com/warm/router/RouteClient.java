@@ -1,24 +1,26 @@
 package com.warm.router;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.util.SparseArray;
 
 import com.warm.router.annotations.model.RouteInfo;
-import com.warm.router.internal.chain.Callback;
+import com.warm.router.internal.RouteChain;
 import com.warm.router.internal.chain.FragmentInterceptor;
 import com.warm.router.internal.chain.IntentInterceptor;
-import com.warm.router.internal.RouteChain;
 import com.warm.router.internal.matcher.Matcher;
 import com.warm.router.internal.matcher.MatcherCenter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,18 +42,64 @@ public class RouteClient implements IRoute {
     @Override
     public IRoute put(String key, Object value) {
         Bundle bundle = mRequest.getExtra();
-        if (value instanceof String) {
-            bundle.putString(key, (String) value);
+        if (value instanceof Bundle) {
+            bundle.putBundle(key, (Bundle) value);
+        } else if (value instanceof Byte) {
+            bundle.putByte(key, (byte) value);
+        } else if (value instanceof Short) {
+            bundle.putShort(key, (short) value);
         } else if (value instanceof Integer) {
             bundle.putInt(key, (int) value);
         } else if (value instanceof Long) {
             bundle.putLong(key, (long) value);
+        } else if (value instanceof Character) {
+            bundle.putChar(key, (char) value);
+        } else if (value instanceof Boolean) {
+            bundle.putBoolean(key, (boolean) value);
         } else if (value instanceof Float) {
             bundle.putFloat(key, (float) value);
         } else if (value instanceof Double) {
             bundle.putDouble(key, (double) value);
+        } else if (value instanceof String) {
+            bundle.putString(key, (String) value);
+        } else if (value instanceof CharSequence) {
+            bundle.putCharSequence(key, (CharSequence) value);
+        } else if (value instanceof byte[]) {
+            bundle.putByteArray(key, (byte[]) value);
+        } else if (value instanceof short[]) {
+            bundle.putShortArray(key, (short[]) value);
+        } else if (value instanceof int[]) {
+            bundle.putIntArray(key, (int[]) value);
         } else if (value instanceof long[]) {
             bundle.putLongArray(key, (long[]) value);
+        } else if (value instanceof char[]) {
+            bundle.putCharArray(key, (char[]) value);
+        } else if (value instanceof boolean[]) {
+            bundle.putBooleanArray(key, (boolean[]) value);
+        } else if (value instanceof float[]) {
+            bundle.putFloatArray(key, (float[]) value);
+        } else if (value instanceof double[]) {
+            bundle.putDoubleArray(key, (double[]) value);
+        } else if (value instanceof String[]) {
+            bundle.putStringArray(key, (String[]) value);
+        } else if (value instanceof CharSequence[]) {
+            bundle.putCharSequenceArray(key, (CharSequence[]) value);
+        } else if (value instanceof IBinder) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                bundle.putBinder(key, (IBinder) value);
+            } else {
+                Log.d("aaa", "putBinder() requires api 18.");
+            }
+        } else if (value instanceof SparseArray) {
+            bundle.putSparseParcelableArray(key, (SparseArray<? extends Parcelable>) value);
+        } else if (value instanceof Parcelable) {
+            bundle.putParcelable(key, (Parcelable) value);
+        } else if (value instanceof Parcelable[]) {
+            bundle.putParcelableArray(key, (Parcelable[]) value);
+        } else if (value instanceof Serializable) {
+            bundle.putSerializable(key, (Serializable) value);
+        } else {
+            Log.d("aaa", "Unknown object type: " + value.getClass().getName());
         }
 
         return this;
@@ -94,50 +142,8 @@ public class RouteClient implements IRoute {
 
     @Nullable
     @Override
-    public Intent getIntent(Object obj) {
-        //针对Intent进行匹配
-        Context context = (Context) obj;
-
-        //添加全局拦截器
-        List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
-        //添加针对拦截器
-        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
-        if (info.getInterceptorKeys() != null) {
-            for (String key : info.getInterceptorKeys()) {
-                interceptors.add(Router.mInterceptorMap.get(key));
-            }
-        }
-
-        if (!mRequest.getInterceptors().isEmpty()) {
-            interceptors.addAll(mRequest.getInterceptors());
-        }
-
-        interceptors.add(new IntentInterceptor());
-
-        RouteChain chain = new RouteChain(obj, mRequest, interceptors);
-        chain.proceed(mRequest);
-
-        Intent intent = null;
-        for (Matcher matcher : MatcherCenter.sMatcher) {
-            if (matcher.match(context, mRequest.getUri(), mRequest)) {
-                Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
-                if (target instanceof Intent) {
-                    intent = (Intent) target;
-                }
-                break;
-            }
-        }
-        if (intent != null) {
-            intent.putExtras(mRequest.getExtra());
-        }
-        return intent;
-    }
-
-    @Nullable
-    @Override
-    public Fragment getFragment(Object obj) {
+    public Fragment getFragment(Context context) {
         //针对Fragment进行匹配
-        Context context = (Context) obj;
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
         //添加针对拦截器
@@ -154,13 +160,13 @@ public class RouteClient implements IRoute {
 
         interceptors.add(new FragmentInterceptor());
 
-        RouteChain chain = new RouteChain(obj, mRequest, interceptors);
+        RouteChain chain = new RouteChain(context, mRequest, interceptors);
         chain.proceed(mRequest);
 
         Fragment fragment = null;
         for (Matcher matcher : MatcherCenter.sMatcher) {
             if (matcher.match(context, mRequest.getUri(), mRequest)) {
-                Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
+                Object target = matcher.generate(context, mRequest.getUri(), mRequest);
                 if (target instanceof Fragment) {
                     fragment = (Fragment) target;
                 }
@@ -175,21 +181,6 @@ public class RouteClient implements IRoute {
 
     @Override
     public void start(final Object obj) {
-        if (!(obj instanceof Context) && !(obj instanceof Fragment)) {
-            return;
-        }
-
-        boolean isFragment = obj instanceof Fragment;
-
-        Fragment fragment = null;
-        final Context context;
-        if (isFragment) {
-            fragment = (Fragment) obj;
-            context = fragment.getContext();
-        } else {
-            context = (Context) obj;
-        }
-
 
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
@@ -205,49 +196,8 @@ public class RouteClient implements IRoute {
             interceptors.addAll(mRequest.getInterceptors());
         }
 
-        final Fragment finalFragment = fragment;
-        Callback callback = new Callback() {
-            @Override
-            public void callback() {
-                Intent intent = null;
-                for (Matcher matcher : MatcherCenter.sMatcher) {
-                    if (matcher.match(context, mRequest.getUri(), mRequest)) {
-                        Object target = matcher.generate(context, mRequest.getUri(), mRequest.getTarget());
-                        if (target instanceof Intent) {
-                            intent = (Intent) target;
-                        }
-                        break;
-                    }
-                }
-                if (intent != null) {
-                    intent.putExtras(mRequest.getExtra());
-                    intent.addFlags(mRequest.getFlags());
-                    intent.setAction(mRequest.getAction());
-                }
-                int requestCode = mRequest.getRequestCode();
 
-                if (intent != null) {
-                    if (requestCode != -1) {
-                        if (finalFragment != null) {
-                            finalFragment.startActivityForResult(intent, requestCode, mRequest.getOptionsBundle());
-                        } else {
-                            ActivityCompat.startActivityForResult((Activity) context, intent, requestCode, mRequest.getOptionsBundle());
-                        }
-                    } else {
-                        if (finalFragment != null) {
-                            finalFragment.startActivityForResult(intent, requestCode, mRequest.getOptionsBundle());
-                        } else {
-                            ActivityCompat.startActivity(context, intent, mRequest.getOptionsBundle());
-                        }
-                    }
-                    //成功
-                } else {
-                    //失败
-                }
-            }
-        };
-
-        IntentInterceptor intentInterceptor = new IntentInterceptor(callback);
+        IntentInterceptor intentInterceptor = new IntentInterceptor();
 
         interceptors.add(intentInterceptor);
 

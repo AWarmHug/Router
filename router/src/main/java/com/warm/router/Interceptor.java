@@ -1,6 +1,7 @@
 package com.warm.router;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -15,7 +16,7 @@ public interface Interceptor {
 
         void proceed(Request request);
 
-        @Nullable
+        @NonNull
         Context getContext();
 
         @Nullable

@@ -7,6 +7,6 @@ class Utils {
     }
 
     static String getFileName(String name) {
-        return name.replace('.', File.separator).replace('\\', File.separator).replace('/',File.separator)
+        return name.replace('.', File.separator).replace('\\', File.separator).replace('/', File.separator)
     }
 }

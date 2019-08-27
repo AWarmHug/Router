@@ -21,12 +21,11 @@ public class Router {
     public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
     public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
+    private static RouteClient sRouteClient = new RouteClient();
 
     static {
         init();
     }
-
-    private static RouteClient sRouteClient = new RouteClient();
 
     public static void init() {
 

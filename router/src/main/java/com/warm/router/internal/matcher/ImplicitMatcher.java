@@ -13,7 +13,7 @@ class ImplicitMatcher extends Matcher {
     @Override
     public boolean match(Context context, Uri uri, Request request) {
         ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(
-                new Intent(Intent.ACTION_VIEW, uri), PackageManager.MATCH_DEFAULT_ONLY);
+                new Intent(request.getAction(), uri), PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfo != null) {
             // bundle parser
             if (uri.getQuery() != null) {
@@ -25,7 +25,7 @@ class ImplicitMatcher extends Matcher {
     }
 
     @Override
-    public Object generate(Context context, Uri uri, Class<?> clazz) {
-        return new Intent(Intent.ACTION_VIEW,uri);
+    public Object generate(Context context, Uri uri, Request request) {
+        return new Intent(request.getAction(), uri);
     }
 }

@@ -1,6 +1,7 @@
 package com.warm.router.internal;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -32,19 +33,21 @@ public class RouteChain implements Interceptor.Chain {
             return;
         }
         Interceptor interceptor = mInterceptors.remove(0);
-         interceptor.intercept(this);
+        interceptor.intercept(this);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public Context getContext() {
+        Context context = null;
         if (mObject instanceof Context) {
-            return (Context) mObject;
+            context = (Context) mObject;
         }
         if (mObject instanceof Fragment) {
-            return ((Fragment) mObject).getContext();
+            context = ((Fragment) mObject).requireContext();
         }
-        return null;
+        assert context != null;
+        return context;
     }
 
     @Nullable

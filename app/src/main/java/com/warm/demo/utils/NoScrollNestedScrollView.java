@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Space;
 
 import com.warm.demo.R;
@@ -33,7 +32,7 @@ public class NoScrollNestedScrollView extends NestedScrollView {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            Space space=findViewById(R.id.spacer);
+            Space space = findViewById(R.id.spacer);
             if (space != null) {
                 int[] location = new int[2];
                 space.getLocationInWindow(location);

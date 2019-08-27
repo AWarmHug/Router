@@ -1,7 +1,5 @@
 package com.warm.router.processor;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
 
 import com.google.auto.service.AutoService;
@@ -16,7 +14,6 @@ import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.Loader;
-import com.warm.router.annotations.model.RouteInfo;
 import com.warm.router.processor.base.BaseProcessor;
 
 import java.io.IOException;
@@ -104,7 +101,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 }
 
 
-                TypeSpec typeSpec = TypeSpec.classBuilder(getModuleName()+element.getSimpleName() + Const.BINDER_CLASS_NAME)
+                TypeSpec typeSpec = TypeSpec.classBuilder(getModuleName() + element.getSimpleName() + Const.BINDER_CLASS_NAME)
                         .addSuperinterface(AutowiredBinder.class)
                         .addModifiers(Modifier.PUBLIC)
                         .addMethod(builder.build())
@@ -126,7 +123,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(loadBuilder.build())
                 .build();
-        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG+Const.DOT+getModuleName(), typeSpec).build();
+        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG + Const.DOT + getModuleName(), typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {

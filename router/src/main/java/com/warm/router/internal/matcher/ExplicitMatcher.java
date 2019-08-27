@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
+import com.warm.router.Request;
+
 abstract class ExplicitMatcher extends Matcher {
 
 
     @Override
-    public Object generate(Context context, Uri uri, Class<?> clazz) {
+    public Object generate(Context context, Uri uri, Request request) {
+        Class<?> clazz = request.getTarget();
+
         if (clazz == null) {
             return null;
         }

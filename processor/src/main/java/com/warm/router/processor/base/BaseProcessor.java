@@ -5,13 +5,11 @@ import com.warm.router.annotations.model.RouteInfo;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -48,7 +46,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
         mElementUtils = processingEnv.getElementUtils();
         mTypes = processingEnvironment.getTypeUtils();
         mFiler = processingEnvironment.getFiler();
-        mOptions =processingEnvironment.getOptions();
+        mOptions = processingEnvironment.getOptions();
     }
 
     protected boolean isActivity(Element typeElement) {
@@ -58,7 +56,8 @@ public abstract class BaseProcessor extends AbstractProcessor {
     protected boolean isFragment(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType());
     }
-    protected String getModuleName(){
+
+    protected String getModuleName() {
         return mOptions.get(Const.KEY_MODULE_NAME);
     }
 }

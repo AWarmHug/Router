@@ -8,11 +8,9 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.warm.router.annotations.Route;
 import com.warm.router.annotations.RouteInterceptor;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.Loader;
-import com.warm.router.annotations.model.RouteInfo;
 import com.warm.router.processor.base.BaseProcessor;
 
 import java.io.IOException;
@@ -28,7 +26,6 @@ import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)

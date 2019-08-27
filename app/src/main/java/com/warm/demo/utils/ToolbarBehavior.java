@@ -2,19 +2,13 @@ package com.warm.demo.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-
-import com.warm.demo.R;
 
 public class ToolbarBehavior extends CoordinatorLayout.Behavior<Toolbar> {
 
@@ -72,7 +66,7 @@ public class ToolbarBehavior extends CoordinatorLayout.Behavior<Toolbar> {
     @Override
     public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull Toolbar child, @NonNull View target, int type) {
         super.onStopNestedScroll(coordinatorLayout, child, target, type);
-        Log.d(TAG, "onStopNestedScroll: "+mLastNestedScrollDy);
+        Log.d(TAG, "onStopNestedScroll: " + mLastNestedScrollDy);
 
     }
 
@@ -84,7 +78,7 @@ public class ToolbarBehavior extends CoordinatorLayout.Behavior<Toolbar> {
 
     @Override
     public boolean onNestedFling(@NonNull CoordinatorLayout coordinatorLayout, @NonNull Toolbar child, @NonNull View target, float velocityX, float velocityY, boolean consumed) {
-        Log.d(TAG, "onNestedFling: "+velocityY);
+        Log.d(TAG, "onNestedFling: " + velocityY);
         return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
 
     }

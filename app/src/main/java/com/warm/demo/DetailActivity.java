@@ -3,18 +3,12 @@ package com.warm.demo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.warm.demo.databinding.ActivityDetailBinding;
 import com.warm.router.Router;
 import com.warm.router.annotations.Autowired;
 import com.warm.router.annotations.Route;
-
-import java.lang.reflect.Array;
 
 
 /**
@@ -24,14 +18,11 @@ import java.lang.reflect.Array;
  */
 @Route("test/detail")
 public class DetailActivity extends AppCompatActivity {
-    private ActivityDetailBinding mBinding;
-
-
     @Autowired(name = "type")
     int type;
-
     @Autowired
     String[] name;
+    private ActivityDetailBinding mBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
