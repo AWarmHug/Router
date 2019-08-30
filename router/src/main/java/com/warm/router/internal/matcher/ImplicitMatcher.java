@@ -17,7 +17,7 @@ class ImplicitMatcher extends Matcher {
         if (resolveInfo != null) {
             // bundle parser
             if (uri.getQuery() != null) {
-                putParameter(uri, request.getExtra());
+                putParameter(uri, request.getExtras());
             }
             return true;
         }

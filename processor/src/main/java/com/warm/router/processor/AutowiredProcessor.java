@@ -201,12 +201,14 @@ public class AutowiredProcessor extends BaseProcessor {
                     .beginControlFlow("if(" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")!=null)")
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")")
                     .endControlFlow()
+//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.warm.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
                     .build();
         } else {
             return CodeBlock.builder()
                     .beginControlFlow("if(" + name + ".getArguments().get" + kindName + "(" + eName + ")!=null)")
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + ")")
                     .endControlFlow()
+//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.warm.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
                     .build();
         }
     }
@@ -216,10 +218,12 @@ public class AutowiredProcessor extends BaseProcessor {
         if (isIntent) {
             return CodeBlock.builder()
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
+//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.warm.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
                     .build();
         } else {
             return CodeBlock.builder()
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
+//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.warm.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
                     .build();
         }
     }

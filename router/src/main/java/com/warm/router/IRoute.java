@@ -10,20 +10,9 @@ import android.support.v4.app.Fragment;
 
 public interface IRoute {
 
-    IRoute build(Uri uri);
+    Request newRequest(Uri uri);
 
-    IRoute build(Request request);
-
-    IRoute put(String key, Object value);
-
-    IRoute put(Bundle bundle);
-
-    @RequiresApi(21)
-    IRoute put(PersistableBundle bundle);
-
-    IRoute addFlags(int flags);
-
-    IRoute setRequestCode(int requestCode);
+    Request newRequest(Request request);
 
     @Nullable
     Fragment getFragment(Context obj);

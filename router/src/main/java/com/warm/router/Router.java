@@ -21,7 +21,6 @@ public class Router {
     public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
     public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
-    private static RouteClient sRouteClient = new RouteClient();
 
     static {
         init();
@@ -47,16 +46,22 @@ public class Router {
         }
     }
 
+    public static Request newRequest(String path) {
+        return newRequest(Uri.parse(path));
+    }
+
+
+    public static Request newRequest(Uri uri) {
+        return new Request(uri);
+
+    }
+
     public static IRoute build(String path) {
-        return sRouteClient.build(Uri.parse(path));
+        return newRequest(path).build();
     }
 
     public static IRoute build(Uri uri) {
-        return sRouteClient.build(uri);
-    }
-
-    public static IRoute build(Request request) {
-        return sRouteClient.build(request);
+        return newRequest(uri).build();
     }
 
 }

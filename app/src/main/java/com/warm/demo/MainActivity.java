@@ -21,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.init();
-                Router.build("test/user/detail")
-                        .put("id", 1L)
+                Router.newRequest("test/user/detail")
+                        .putLong("id", 1)
+                        .build()
                         .start(MainActivity.this);
             }
         });
@@ -30,25 +31,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(HomeActivity.this,DetailActivity.class));
-                Router.build("test/detail")
-                        .put("type", 1)
+                Router.newRequest("test/detail")
+                        .putInt("type", 1)
+                        .build()
                         .start(MainActivity.this);
             }
         });
         mBinding.bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("https://www.jianshu.com/p/d57abb5b87f3")
-                        .put("type", 1)
+                Router.newRequest("https://www.jianshu.com/p/d57abb5b87f3")
+                        .putInt("type", 1)
+                        .build()
                         .start(MainActivity.this);
             }
         });
         mBinding.bt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.build("myapp://demo.app/userdetail?id=10001")
-                        .put("type", 1)
-                        .put("ids", new long[]{1, 2, 3})
+                Router.newRequest("myapp://demo.app/userdetail?id=10001")
+                        .putInt("type", 1)
+                        .putLongArray("ids", new long[]{1, 2, 3})
+                        .build()
                         .start(MainActivity.this);
             }
         });
