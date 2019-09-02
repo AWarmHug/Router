@@ -9,7 +9,9 @@ buildscript {
         maven {
             url 'https://maven.aliyun.com/repository/google'
         }
-
+        maven {
+            url "https://jitpack.io"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -27,6 +29,9 @@ allprojects {
         }
         maven {
             url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url "https://jitpack.io"
         }
     }
 }
