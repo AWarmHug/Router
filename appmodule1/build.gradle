@@ -39,7 +39,7 @@ dependencies {
     implementation project(':router')
     annotationProcessor project(':processor')
 
-    implementation project(':app2')
+    implementation project(':appmodule2')
     implementation project(':apphybrid')
 
 
