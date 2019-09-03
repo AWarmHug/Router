@@ -26,6 +26,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.warm.router.annotations.Route"})
@@ -81,7 +82,24 @@ public class RouteApiProcessor extends BaseProcessor {
 
                 if (mTypes.isSameType(variableElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
                     builder.addCode(".putString($S,$L)\n", name, name);
+                }else if (variableElement.asType().getKind().isPrimitive()){
+                    switch (variableElement.asType().getKind()){
+                        case INT:
+                            builder.addCode(".putInt($S,$L)\n", name, name);
+                            break;
+                        case BYTE:
+                            builder.addCode(".putByte($S,$L)\n", name, name);
+                            break;
+                        case CHAR:
+                            builder.addCode(".putChar($S,$L)\n", name, name);
+                            break;
+                        case LONG:
+                            builder.addCode(".putLong($S,$L)\n", name, name);
+                            break;
+                    }
                 }
+
+                //TODO
                 builder.addStatement(".build()");
             }
 
