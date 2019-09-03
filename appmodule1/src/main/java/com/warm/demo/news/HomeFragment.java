@@ -11,16 +11,16 @@ import android.view.ViewGroup;
 
 import com.warm.demo.R;
 import com.warm.demo.databinding.FragmentNewsBinding;
-import com.warm.router.annotations.Autowired;
+import com.warm.router.annotations.Parameter;
 import com.warm.router.annotations.Route;
 
 @Route("news/home")
 public class HomeFragment extends Fragment {
-    @Autowired
+    @Parameter
     long id;
-    @Autowired
+    @Parameter
     long typeId;
-    @Autowired
+    @Parameter
     long[] moduleIds;
     private FragmentNewsBinding mBinding;
 

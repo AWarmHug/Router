@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.warm.demo.databinding.ActivityDetailBinding;
 import com.warm.router.Router;
-import com.warm.router.annotations.Autowired;
+import com.warm.router.annotations.Parameter;
 import com.warm.router.annotations.Route;
 
 
@@ -18,9 +18,9 @@ import com.warm.router.annotations.Route;
  */
 @Route("test/detail")
 public class DetailActivity extends AppCompatActivity {
-    @Autowired(name = "type")
+    @Parameter(name = "type")
     int type;
-    @Autowired
+    @Parameter
     String[] name;
     private ActivityDetailBinding mBinding;
 

@@ -11,7 +11,7 @@ import com.warm.demo.data.UserInfo;
 import com.warm.demo.databinding.ActivityUserDetailBinding;
 import com.warm.demo.news.HomeFragment;
 import com.warm.router.Router;
-import com.warm.router.annotations.Autowired;
+import com.warm.router.annotations.Parameter;
 import com.warm.router.annotations.Route;
 
 import java.util.List;
@@ -24,21 +24,21 @@ import java.util.List;
  */
 @Route(value = "test/user/detail", interceptors = {"LoginInterceptor"})
 public class DetailActivity extends AppCompatActivity {
-    @Autowired
+    @Parameter
     long id;
-    @Autowired
+    @Parameter
     long[] ids;
-    @Autowired
+    @Parameter
     List<Long> idList;
-    @Autowired
+    @Parameter
     String from;
-    @Autowired
+    @Parameter
     String[] froms;
-    @Autowired
+    @Parameter
     List<String> fromList;
-    @Autowired
+    @Parameter
     UserInfo mUserInfo;
-    @Autowired
+    @Parameter
     PayInfo mPayInfo;
     private ActivityUserDetailBinding mBinding;
 

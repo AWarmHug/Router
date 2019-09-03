@@ -24,6 +24,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
@@ -46,7 +47,7 @@ public class RouteProcessor extends BaseProcessor {
         int pos = 0;
 
         for (Element element : routes) {
-            if (element instanceof TypeElement) {
+            if (element instanceof TypeElement && element.getKind() == ElementKind.CLASS) {
                 TypeElement e = (TypeElement) element;
                 mMessager.printMessage(Diagnostic.Kind.WARNING, e.getQualifiedName());
                 int type = 0;
@@ -92,7 +93,7 @@ public class RouteProcessor extends BaseProcessor {
             e.printStackTrace();
         }
 
-        return true;
+        return false;
     }
 
 

@@ -10,7 +10,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.warm.router.annotations.Autowired;
+import com.warm.router.annotations.Parameter;
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.Const;
 import com.warm.router.annotations.model.Loader;
@@ -34,6 +34,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
@@ -48,7 +49,7 @@ import javax.lang.model.type.TypeMirror;
  * 描述：
  */
 @AutoService(Processor.class)
-@SupportedAnnotationTypes({"com.warm.router.annotations.Autowired"})
+@SupportedAnnotationTypes({"com.warm.router.annotations.Parameter"})
 @SupportedOptions({"moduleName"})
 public class AutowiredProcessor extends BaseProcessor {
 
@@ -56,9 +57,9 @@ public class AutowiredProcessor extends BaseProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        Set<? extends Element> autowireds = roundEnvironment.getElementsAnnotatedWith(Autowired.class);
-        for (Element element : autowireds) {
-            if (element instanceof VariableElement) {
+        Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(Parameter.class);
+        for (Element element : elements) {
+            if (element instanceof VariableElement && element.getKind() == ElementKind.FIELD) {
                 VariableElement vElement = (VariableElement) element;
                 //这是获取owner 可能是fragment也可能是activity，或者其他
                 Element tElement = vElement.getEnclosingElement();
@@ -136,8 +137,8 @@ public class AutowiredProcessor extends BaseProcessor {
     public CodeBlock getBundleCode(String name, Element element, VariableElement vElement) {
         boolean isIntent = isActivity(element);
 
-        Autowired autowired = vElement.getAnnotation(Autowired.class);
-        String eName = "\"" + (!autowired.name().isEmpty() ? autowired.name() : vElement.getSimpleName().toString()) + "\"";
+        Parameter parameter = vElement.getAnnotation(Parameter.class);
+        String eName = "\"" + (!parameter.name().isEmpty() ? parameter.name() : vElement.getSimpleName().toString()) + "\"";
 
         if (vElement.asType().getKind().isPrimitive()) {
             String kindName = vElement.asType().toString().substring(0, 1).toUpperCase() + vElement.asType().toString().substring(1);

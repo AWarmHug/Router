@@ -118,7 +118,7 @@ public class Request implements Serializable {
         return this;
     }
 
-    public Request withBoolean(@Nullable String key, boolean value) {
+    public Request putBoolean(@Nullable String key, boolean value) {
         mExtras.putBoolean(key, value);
         return this;
     }

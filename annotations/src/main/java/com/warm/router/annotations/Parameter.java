@@ -7,13 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * 作者：warm
- * 时间：2019-07-20 14:50
+ * 时间：2019-07-20 15:05
  * 描述：
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.FIELD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.CLASS)
-public @interface Route {
-    String value();
-
-    String[] interceptors() default {};
+public @interface Parameter {
+    String name() default "";
 }

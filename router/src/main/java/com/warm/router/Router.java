@@ -5,6 +5,9 @@ import android.net.Uri;
 import com.warm.router.annotations.model.AutowiredBinder;
 import com.warm.router.annotations.model.RouteInfo;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -62,6 +65,10 @@ public class Router {
 
     public static IRoute build(Uri uri) {
         return newRequest(uri).build();
+    }
+
+    public static <T> T build(Class<T> clazz) {
+        return null;
     }
 
 }
