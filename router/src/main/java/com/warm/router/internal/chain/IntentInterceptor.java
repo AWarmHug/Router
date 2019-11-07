@@ -2,7 +2,7 @@ package com.warm.router.internal.chain;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import com.warm.router.Interceptor;
 import com.warm.router.Request;

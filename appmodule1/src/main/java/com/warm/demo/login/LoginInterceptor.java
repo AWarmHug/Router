@@ -1,8 +1,8 @@
 package com.warm.demo.login;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.warm.demo.login.rx.RxLogin;

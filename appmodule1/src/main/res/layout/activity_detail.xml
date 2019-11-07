@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -81,7 +81,7 @@
         </com.warm.demo.utils.NoScrollNestedScrollView>
 
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,6 +89,6 @@
             app:layout_behavior="com.warm.demo.utils.ToolbarBehavior"
             app:title="标题">
 
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.CoordinatorLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
