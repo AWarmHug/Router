@@ -5,7 +5,7 @@ import com.android.build.gradle.AppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class RoutePlugin implements Plugin<Project> {
+class RouterPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {

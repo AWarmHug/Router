@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: com.warm.RoutePlugin
+apply plugin: com.warm.RouterPlugin
 
 android {
     compileSdkVersion 29
