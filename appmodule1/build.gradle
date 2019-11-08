@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: com.warm.RouterPlugin
+apply plugin: com.bingo.RouterPlugin
 
 android {
     compileSdkVersion 29
@@ -7,7 +7,7 @@ android {
         enabled true
     }
     defaultConfig {
-        applicationId "com.warm.demo"
+        applicationId "com.bingo.demo"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1

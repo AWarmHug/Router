@@ -24,14 +24,14 @@
         </FrameLayout>
 
 
-        <com.warm.demo.utils.NoScrollNestedScrollView
+        <com.bingo.demo.utils.NoScrollNestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:fitsSystemWindows="true"
             app:behavior_peekHeight="500dp"
-            app:layout_behavior="com.warm.demo.utils.BottomSheetBehavior2">
+            app:layout_behavior="com.bingo.demo.utils.BottomSheetBehavior2">
 
 
             <LinearLayout
@@ -78,7 +78,7 @@
 
             </LinearLayout>
 
-        </com.warm.demo.utils.NoScrollNestedScrollView>
+        </com.bingo.demo.utils.NoScrollNestedScrollView>
 
 
         <androidx.appcompat.widget.Toolbar
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            app:layout_behavior="com.warm.demo.utils.ToolbarBehavior"
+            app:layout_behavior="com.bingo.demo.utils.ToolbarBehavior"
             app:title="标题">
 
         </androidx.appcompat.widget.Toolbar>

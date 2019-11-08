@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.warm.app2">
+    package="com.bingo.app2">
 
     <application
         android:allowBackup="true"
@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".CarActivity" />
+        <activity android:name="com.bingo.app2.HomeActivity" />
+        <activity android:name="com.bingo.app2.CarActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: com.warm.RouterPlugin
+apply plugin: com.bingo.RouterPlugin
 
 android {
     compileSdkVersion 29

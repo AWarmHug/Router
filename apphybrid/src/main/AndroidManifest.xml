@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.warm.apphybrid">
+    package="com.bingo.apphybrid">
 
     <application>
-        <activity android:name=".WebActivity" />
+        <activity android:name="com.bingo.apphybrid.WebActivity" />
     </application>
 
 
