@@ -13,7 +13,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
 public @interface Route {
-    String value();
+    String value() default "";
+
+    Class<?> pathClass() default Object.class;
 
     String[] interceptors() default {};
 }

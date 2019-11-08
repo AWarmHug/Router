@@ -1,6 +1,11 @@
 package com.bingo.router.processor;
 
 
+import com.bingo.router.annotations.Route;
+import com.bingo.router.annotations.model.Const;
+import com.bingo.router.annotations.model.Loader;
+import com.bingo.router.annotations.model.RouteInfo;
+import com.bingo.router.annotations.model.Utils;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
@@ -9,10 +14,6 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.bingo.router.annotations.Route;
-import com.bingo.router.annotations.model.Const;
-import com.bingo.router.annotations.model.Loader;
-import com.bingo.router.annotations.model.RouteInfo;
 
 import java.io.IOException;
 import java.util.Map;
@@ -59,6 +60,11 @@ public class RouteProcessor extends BaseProcessor {
                 String className = e.getQualifiedName().toString();
                 Route route = e.getAnnotation(Route.class);
                 String path = route.value();
+                if (path.isEmpty()) {
+                    if (route.pathClass() != Object.class) {
+                        path = Utils.pathByPathClass(route.pathClass());
+                    }
+                }
                 builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), pos, TypeName.get(RouteInfo.class), path, ClassName.get(e));
 
                 if (route.interceptors().length != 0) {

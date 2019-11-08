@@ -2,8 +2,10 @@ package com.bingo.router;
 
 import android.net.Uri;
 
+import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.model.AutowiredBinder;
 import com.bingo.router.annotations.model.RouteInfo;
+import com.bingo.router.annotations.model.Utils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +46,10 @@ public class Router {
         if (binder != null) {
             binder.bind(obj);
         }
+    }
+
+    public static Request newRequest(Class<?> pathClass) {
+        return newRequest(Utils.pathByPathClass(pathClass));
     }
 
     public static Request newRequest(String path) {

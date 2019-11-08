@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
+import com.bingo.demo.routeapi.RouterPath;
 import com.bingo.router.Router;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,17 @@ public class MainActivity extends AppCompatActivity {
                         .start(MainActivity.this);
             }
         });
+
+        mBinding.bt01.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Router.init();
+                Router.newRequest(RouterPath.Login.Logina.class)
+                        .build()
+                        .start(MainActivity.this);
+            }
+        });
+
         mBinding.bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
