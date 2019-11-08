@@ -6,3 +6,12 @@ dependencies {
 
 sourceCompatibility = "7"
 targetCompatibility = "7"
+
+ext {
+    GROUP = 'com.bingo.router'
+    ARTIFACT = 'annotation'
+    VERSION = '0.1.0'
+    BINTRAY_NAME = 'router-annotation'
+}
+
+//apply from: '../publish.gradle'

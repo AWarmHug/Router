@@ -37,3 +37,12 @@ dependencies {
     api project(':annotations')
 
 }
+
+ext {
+    GROUP = 'com.bingo.router'
+    ARTIFACT = 'router'
+    VERSION = '0.1.0'
+    BINTRAY_NAME = 'router'
+}
+
+//apply from: '../publish.gradle'

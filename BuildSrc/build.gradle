@@ -1,21 +1,32 @@
-apply plugin: 'groovy'
+Properties properties = new Properties()
+properties.load(file('../gradle.properties').newDataInputStream())
+def applyRemotePlugin = properties.containsKey('applyRemotePlugin') ? properties.get('applyRemotePlugin'): false
 
-repositories {
-    maven {
-        url 'https://maven.aliyun.com/repository/jcenter'
+if (!Boolean.valueOf(applyRemotePlugin)) {
+    apply plugin: 'groovy'
+
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
     }
-    maven {
-        url 'https://maven.aliyun.com/repository/google'
+
+    dependencies {
+        implementation gradleApi() //gradle sdk
+        implementation localGroovy() //groovy sdk
+        implementation 'com.android.tools.build:gradle:3.3.2'
+        implementation 'org.javassist:javassist:3.25.0-GA'
+        implementation 'com.google.android:android:4.1.1.4'
     }
-}
 
-dependencies {
-    testImplementation 'junit:junit:4.12'
-
-    implementation gradleApi() //gradle sdk
-    implementation localGroovy() //groovy sdk
-    implementation 'com.android.tools.build:gradle:3.3.2'
-    implementation 'org.javassist:javassist:3.25.0-GA'
-    implementation 'com.google.android:android:4.1.1.4'
-
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', '../plugin/src/main/java']
+            groovy.srcDirs = ['src/main/groovy', '../plugin/src/main/groovy']
+            resources.srcDirs = ['src/main/resources', '../plugin/src/main/resources']
+        }
+    }
 }
