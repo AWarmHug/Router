@@ -1,6 +1,7 @@
 package com.bingo.router.processor;
 
 
+import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
 import com.bingo.router.annotations.model.Const;
 import com.bingo.router.annotations.model.Loader;
@@ -28,6 +29,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)
@@ -61,8 +64,13 @@ public class RouteProcessor extends BaseProcessor {
                 Route route = e.getAnnotation(Route.class);
                 String path = route.value();
                 if (path.isEmpty()) {
-                    if (route.pathClass() != Object.class) {
-                        path = Utils.pathByPathClass(route.pathClass());
+                    try {
+                        route.pathClass();
+                    } catch (MirroredTypeException mte) {
+                        TypeMirror value = mte.getTypeMirror();
+                        String valueClass = value.toString();
+                        TypeElement typeElement = mElementUtils.getTypeElement(valueClass);
+                        path = Utils.pathByPathClass(typeElement.getAnnotation(PathClass.class));
                     }
                 }
                 builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), pos, TypeName.get(RouteInfo.class), path, ClassName.get(e));

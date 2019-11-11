@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/plugin" />
             <option value="$PROJECT_DIR$/processor" />
             <option value="$PROJECT_DIR$/router" />
+            <option value="$PROJECT_DIR$/routerpath" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

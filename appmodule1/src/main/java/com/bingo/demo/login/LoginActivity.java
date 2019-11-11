@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import com.bingo.demo.R;
 import com.bingo.demo.databinding.LoginActivityBinding;
 import com.bingo.demo.login.rx.RxLogin;
-import com.bingo.demo.routeapi.RouterPath;
+import com.bingo.demo.routerpath.RouterPath;
 import com.bingo.router.annotations.Route;
 
 @Route(pathClass = RouterPath.Login.Logina.class)
