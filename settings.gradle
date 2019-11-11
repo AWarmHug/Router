@@ -1,1 +1,1 @@
-include ':appmodule1', ':annotations', ':processor', ':router', ':appmodule2', ':apphybrid', ':plugin', ':routerpath'
+include ':appmodule1', ':annotations', ':processor', ':router', ':appmodule2', ':apphybrid', ':plugin', ':approuterpath'
