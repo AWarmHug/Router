@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: com.bingo.RouterPlugin
+apply plugin: com.bingo.plugin.RouterPlugin
 
 android {
     compileSdkVersion 29

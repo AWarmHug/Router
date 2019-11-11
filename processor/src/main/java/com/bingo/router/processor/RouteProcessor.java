@@ -65,6 +65,9 @@ public class RouteProcessor extends BaseProcessor {
                 String path = route.value();
                 if (path.isEmpty()) {
                     try {
+                        //查看相关内容
+                        //https://www.cnblogs.com/fuckingaway/p/6703021.html
+                        //https://area-51.blog/2009/02/13/getting-class-values-from-annotations-in-an-annotationprocessor/
                         route.pathClass();
                     } catch (MirroredTypeException mte) {
                         TypeMirror value = mte.getTypeMirror();

@@ -9,7 +9,7 @@ dependencies {
     implementation 'com.google.auto.service:auto-service:1.0-rc4'
     implementation 'com.squareup:javapoet:1.11.1'
     implementation 'com.google.android:android:4.1.1.4'
-    implementation project(':annotations')
+    implementation "com.bingo.router:annotation:${ANNOTATION_VERSION}"
 }
 
 sourceCompatibility = "7"
@@ -22,8 +22,8 @@ tasks.withType(JavaCompile) {
 ext {
     GROUP = 'com.bingo.router'
     ARTIFACT = 'processor'
-    VERSION = '0.1.0'
+    VERSION = PROCESSOR_VERSION
     BINTRAY_NAME = 'router-processor'
 }
 
-//apply from: '../publish.gradle'
+apply from: '../publish.gradle'

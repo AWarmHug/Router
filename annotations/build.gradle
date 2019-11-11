@@ -11,7 +11,7 @@ targetCompatibility = "7"
 ext {
     GROUP = 'com.bingo.router'
     ARTIFACT = 'annotation'
-    VERSION = '0.1.0'
+    VERSION = ANNOTATION_VERSION
     BINTRAY_NAME = 'router-annotation'
 }
 

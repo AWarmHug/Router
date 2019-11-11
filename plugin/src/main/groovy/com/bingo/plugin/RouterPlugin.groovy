@@ -1,4 +1,4 @@
-package com.bingo
+package com.bingo.plugin
 
 
 import com.android.build.gradle.AppPlugin

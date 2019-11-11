@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName ROUTER_VERSION
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -34,15 +34,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    api project(':annotations')
-
+//    implementation project(':annotations')
+    implementation "com.bingo.router:annotation:${ANNOTATION_VERSION}"
 }
 
 ext {
     GROUP = 'com.bingo.router'
     ARTIFACT = 'router'
-    VERSION = '0.1.0'
+    VERSION = ROUTER_VERSION
     BINTRAY_NAME = 'router'
 }
 
-//apply from: '../publish.gradle'
+apply from: '../publish.gradle'

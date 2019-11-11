@@ -24,7 +24,7 @@ dependencies {
 ext {
     GROUP = 'com.bingo.router'
     ARTIFACT = 'gradle-plugin'
-    VERSION = '0.1.0'
+    VERSION = PLUGIN_VERSION
     BINTRAY_NAME = 'router-gradle-plugin'
 }
 apply from: '../publish.gradle'

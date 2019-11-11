@@ -1,4 +1,4 @@
-package com.bingo
+package com.bingo.plugin
 
 class Config {
     public static final String KEY_MODULE_NAME = "moduleName";
