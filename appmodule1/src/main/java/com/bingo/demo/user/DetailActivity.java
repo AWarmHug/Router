@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bingo.demo.R;
+import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.data.PayInfo;
 import com.bingo.demo.data.UserInfo;
 import com.bingo.demo.databinding.ActivityUserDetailBinding;
@@ -22,7 +23,7 @@ import java.util.List;
  * 时间：2019-07-20 14:52
  * 描述：
  */
-@Route(value = "test/user/detail", interceptors = {"LoginInterceptor"})
+@Route(pathClass = User.Detail.class, interceptors = {"LoginInterceptor"})
 public class DetailActivity extends AppCompatActivity {
     @Parameter
     long id;

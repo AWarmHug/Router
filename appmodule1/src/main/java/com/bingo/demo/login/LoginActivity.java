@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.bingo.demo.R;
+import com.bingo.demo.approuterpath.Login;
 import com.bingo.demo.databinding.LoginActivityBinding;
 import com.bingo.demo.login.rx.RxLogin;
-import com.bingo.demo.routerpath.RouterPath;
 import com.bingo.router.annotations.Route;
 
-@Route(pathClass = RouterPath.Login.Logina.class)
+@Route(pathClass = Login.Logina.class)
 public class LoginActivity extends AppCompatActivity {
 
     public static final String NAME_IS_LOGIN = "isLogin";

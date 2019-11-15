@@ -6,9 +6,10 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.bingo.demo.approuterpath.AppHybrid;
+import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
-import com.bingo.demo.routerpath.RouterPath;
 import com.bingo.router.Router;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.init();
-                Router.newRequest("test/user/detail")
+                Router.newRequest("user/detail")
                         .putLong("id", 1)
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
 
@@ -34,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.init();
-                Router.newRequest(RouterPath.Login.Logina.class)
+                Router.create(User.Detail.class)
+                        .getDetail(1)
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
 
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 Router.newRequest("test/detail")
                         .putInt("type", 1)
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
         mBinding.bt2.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 Router.newRequest("https://www.jianshu.com/p/d57abb5b87f3")
                         .putInt("type", 1)
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
         mBinding.bt3.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         .putInt("type", 1)
                         .putLongArray("ids", new long[]{1, 2, 3})
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
 
@@ -74,16 +76,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.build("app2/car")
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
 
         mBinding.bt5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.newRequest(RouterPath.PathHybrid.Web.class)
+                Router.newRequest(AppHybrid.Web.class)
                         .build()
-                        .start(MainActivity.this);
+                        .startBy(MainActivity.this);
             }
         });
     }

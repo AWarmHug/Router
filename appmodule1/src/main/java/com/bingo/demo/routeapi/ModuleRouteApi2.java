@@ -1,14 +1,15 @@
 package com.bingo.demo.routeapi;
 
-import com.bingo.router.IRoute;
+import com.bingo.router.Request;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.Route;
 
-public interface ModuleRouteApi {
+public interface ModuleRouteApi2 {
 
     @Route("app/read")
-    IRoute goRead(@Parameter String title);
+    Request goRead(@Parameter String title);
 
     @Route("test/user/detail")
-    IRoute goUserDetail(@Parameter long id);
+    Request goUserDetail(@Parameter long id);
+
 }

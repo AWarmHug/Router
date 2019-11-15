@@ -72,7 +72,7 @@ class RealRoute implements IRoute {
     }
 
     @Override
-    public void start(final Object obj) {
+    public void startBy(final Object obj) {
 
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);

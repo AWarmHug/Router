@@ -1,10 +1,5 @@
 package com.bingo.router.annotations.model;
 
-/**
- * 作者：warm
- * 时间：2019-07-20 15:48
- * 描述：
- */
 public class RouteInfo {
     public static final int TYPE_ACTIVITY = 1;
     public static final int TYPE_FRAGMENT = 2;

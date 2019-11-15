@@ -12,7 +12,7 @@ import android.widget.Space;
 import com.bingo.demo.R;
 
 /**
- * Created by dingli.li on 2019/7/4
+ * Created startBy dingli.li on 2019/7/4
  */
 public class NoScrollNestedScrollView extends NestedScrollView {
 

@@ -2,7 +2,6 @@ package com.bingo.router;
 
 import android.net.Uri;
 
-import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.model.AutowiredBinder;
 import com.bingo.router.annotations.model.RouteInfo;
 import com.bingo.router.annotations.model.Utils;
@@ -59,7 +58,6 @@ public class Router {
 
     public static Request newRequest(Uri uri) {
         return new Request(uri);
-
     }
 
     public static IRoute build(String path) {
@@ -70,8 +68,24 @@ public class Router {
         return newRequest(uri).build();
     }
 
-    public static <T> T build(Class<T> clazz) {
-        return null;
+    private static Map<Class, Object> map = new HashMap<>();
+
+    public static <T> T create(Class<T> clazz) {
+
+        if (map.get(clazz) == null) {
+            try {
+                T t = (T) Class.forName(clazz.getName()+ "Impl").newInstance();
+                map.put(clazz, t);
+                return t;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return (T) map.get(clazz);
     }
 
 }

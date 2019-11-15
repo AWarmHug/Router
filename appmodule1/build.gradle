@@ -36,17 +36,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-
+    implementation 'com.github.AWarmHug:FlowLayout:1.0.4'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation project(":annotations")
     implementation project(':router')
     annotationProcessor project(':processor')
 
     implementation project(':appmodule2')
     implementation project(':apphybrid')
-
-    implementation 'com.github.AWarmHug:FlowLayout:1.0.4'
-
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation project(':approuterpath')
-
 }

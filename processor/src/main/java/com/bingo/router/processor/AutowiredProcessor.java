@@ -138,7 +138,7 @@ public class AutowiredProcessor extends BaseProcessor {
         boolean isIntent = isActivity(element);
 
         Parameter parameter = vElement.getAnnotation(Parameter.class);
-        String eName = "\"" + (!parameter.name().isEmpty() ? parameter.name() : vElement.getSimpleName().toString()) + "\"";
+        String eName = "\"" + (!parameter.value().isEmpty() ? parameter.value() : vElement.getSimpleName().toString()) + "\"";
 
         if (vElement.asType().getKind().isPrimitive()) {
             String kindName = vElement.asType().toString().substring(0, 1).toUpperCase() + vElement.asType().toString().substring(1);
@@ -202,14 +202,14 @@ public class AutowiredProcessor extends BaseProcessor {
                     .beginControlFlow("if(" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")!=null)")
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + ")")
                     .endControlFlow()
-//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
+//                    .addStatement(value + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),value,eName,value,vElement.getSimpleName())
                     .build();
         } else {
             return CodeBlock.builder()
                     .beginControlFlow("if(" + name + ".getArguments().get" + kindName + "(" + eName + ")!=null)")
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + ")")
                     .endControlFlow()
-//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
+//                    .addStatement(value + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),value,eName,value,vElement.getSimpleName())
                     .build();
         }
     }
@@ -219,12 +219,12 @@ public class AutowiredProcessor extends BaseProcessor {
         if (isIntent) {
             return CodeBlock.builder()
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getIntent().get" + kindName + "Extra(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
-//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
+//                    .addStatement(value + "." + vElement.getSimpleName() + "="+"$T.get($L.getIntent().getExtras(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),value,eName,value,vElement.getSimpleName())
                     .build();
         } else {
             return CodeBlock.builder()
                     .addStatement(name + "." + vElement.getSimpleName() + "=" + name + ".getArguments().get" + kindName + "(" + eName + "," + name + "." + vElement.getSimpleName() + ")")
-//                    .addStatement(name + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),name,eName,name,vElement.getSimpleName())
+//                    .addStatement(value + "." + vElement.getSimpleName() + "="+"$T.get($L.getArguments(),$L,$L.$L)",TypeName.get(mElementUtils.getTypeElement("com.bingo.router.utils.BundleUtils").asType()),value,eName,value,vElement.getSimpleName())
                     .build();
         }
     }

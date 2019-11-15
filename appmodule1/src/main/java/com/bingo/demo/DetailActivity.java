@@ -19,7 +19,7 @@ import com.bingo.router.annotations.Route;
  */
 @Route("test/detail")
 public class DetailActivity extends AppCompatActivity {
-    @Parameter(name = "type")
+    @Parameter(value = "type")
     int type;
     @Parameter
     String[] name;

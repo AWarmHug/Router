@@ -6,14 +6,15 @@ tasks.withType(JavaCompile) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.auto.service:auto-service:1.0-rc4'
+    implementation 'com.google.auto.service:auto-service:1.0-rc6'
     implementation 'com.squareup:javapoet:1.11.1'
     implementation 'com.google.android:android:4.1.1.4'
-    implementation "com.bingo.router:annotation:${ANNOTATION_VERSION}"
+    implementation project(':annotations')
+//    implementation "com.bingo.router:annotation:${ANNOTATION_VERSION}"
 }
 
-sourceCompatibility = "7"
-targetCompatibility = "7"
+sourceCompatibility = "8"
+targetCompatibility = "8"
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

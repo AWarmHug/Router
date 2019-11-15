@@ -9,7 +9,7 @@ import com.bingo.router.annotations.Route;
 @Route("app2/home")
 public class HomeActivity extends AppCompatActivity {
 
-    @Parameter(name = "type")
+    @Parameter(value = "type")
     int type;
 
 
