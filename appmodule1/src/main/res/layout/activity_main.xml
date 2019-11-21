@@ -4,19 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.bingo.demo.main.MainActivityViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.bingo.demo.MainActivity">
+        tools:context="com.bingo.demo.main.MainActivity">
 
         <com.warm.flowlayout.FlowLayout
             android:layout_width="match_parent"
-            app:horizontalSize="3"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:horizontalSize="3">
 
             <Button
                 android:id="@+id/bt0"
@@ -60,6 +62,12 @@
                 android:layout_height="wrap_content"
                 android:text="apphybrid/web" />
         </com.warm.flowlayout.FlowLayout>
+
+        <TextView
+            android:id="@+id/click_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.path}" />
 
     </LinearLayout>
 </layout>

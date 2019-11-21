@@ -122,6 +122,7 @@ public class RouteApiProcessor extends BaseProcessor {
                         case LONG:
                             builder.addCode(".putLong($S,$L)\n", name, variableElement.getSimpleName());
                             break;
+                        // TODO: 2019/11/21 更多类型
                     }
                 }
                 TYPE_REQUEST = mElementUtils.getTypeElement("com.bingo.router.Request").asType();

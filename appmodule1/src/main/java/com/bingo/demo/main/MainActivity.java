@@ -1,11 +1,14 @@
-package com.bingo.demo;
+package com.bingo.demo.main;
 
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
@@ -14,15 +17,19 @@ import com.bingo.router.Router;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
+    private MainActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RxLogin.isLogin = false;
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setVm(mViewModel);
         mBinding.bt0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mViewModel.path.set("user/detail");
 //                Router.init();
                 Router.newRequest("user/detail")
                         .putLong("id", 1)
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(HomeActivity.this,DetailActivity.class));
+                mViewModel.path.set("test/detail");
                 Router.newRequest("test/detail")
                         .putInt("type", 1)
                         .build()
@@ -55,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mViewModel.path.set("https://www.jianshu.com/p/d57abb5b87f3");
+
                 Router.newRequest("https://www.jianshu.com/p/d57abb5b87f3")
                         .putInt("type", 1)
                         .build()
@@ -88,5 +98,12 @@ public class MainActivity extends AppCompatActivity {
                         .startBy(MainActivity.this);
             }
         });
+//        mViewModel.clickPath.observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(String s) {
+//                mBinding.clickPath.setText(s);
+//            }
+//        });
+
     }
 }
