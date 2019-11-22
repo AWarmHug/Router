@@ -2,7 +2,7 @@ package com.bingo.demo.model;
 
 import java.util.List;
 
-public class Gank {
+public class Gank<R> {
 
     /**
      * error : false
@@ -10,7 +10,7 @@ public class Gank {
      */
 
     private boolean error;
-    private List<Result> results;
+    private R results;
 
     public boolean isError() {
         return error;
@@ -20,11 +20,11 @@ public class Gank {
         this.error = error;
     }
 
-    public List<Result> getResults() {
+    public R getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(R results) {
         this.results = results;
     }
 }
