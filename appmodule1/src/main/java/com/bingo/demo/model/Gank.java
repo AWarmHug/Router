@@ -6,7 +6,7 @@ public class Gank<R> {
 
     /**
      * error : false
-     * results : []
+     * mResults : []
      */
 
     private boolean error;

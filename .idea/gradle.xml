@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/appmodule1" />
             <option value="$PROJECT_DIR$/appmodule2" />
             <option value="$PROJECT_DIR$/approuterpath" />
+            <option value="$PROJECT_DIR$/libpublic" />
+            <option value="$PROJECT_DIR$/libui" />
             <option value="$PROJECT_DIR$/plugin" />
             <option value="$PROJECT_DIR$/processor" />
             <option value="$PROJECT_DIR$/router" />

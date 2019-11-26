@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="editPath"
+            type="String" />
+
         <variable
             name="vm"
             type="com.bingo.demo.main.MainActivityViewModel" />
@@ -61,12 +66,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="apphybrid/web" />
+
             <Button
                 android:id="@+id/bt6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="meizi" />
+
+            <Button
+                android:id="@+id/bt7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="d/n" />
+
+            <Button
+                android:id="@+id/bt8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="d/r" />
+
+
+            <Button
+                android:id="@+id/bt9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="d/b" />
+
         </com.warm.flowlayout.FlowLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={editPath}">
+
+            </EditText>
+
+            <Button
+                android:id="@+id/btEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{editPath}" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/click_path"

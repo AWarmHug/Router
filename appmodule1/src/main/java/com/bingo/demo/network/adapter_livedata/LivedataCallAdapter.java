@@ -33,20 +33,25 @@ public class LivedataCallAdapter<R> implements CallAdapter<R, Object> {
 
 
     public static class RLiveData<R> extends LiveData<R> {
-        private Call<R> call;
+        private Call<R> mCall;
+        private boolean isSuccess;
 
-        public RLiveData(Call<R> call) {
-            this.call = call;
+        public RLiveData(Call<R> mCall) {
+            this.mCall = mCall;
         }
 
         @Override
         protected void onActive() {
             super.onActive();
-            this.call.enqueue(new Callback<R>() {
+            if (isSuccess){
+                return;
+            }
+            this.mCall.enqueue(new Callback<R>() {
                 @Override
                 public void onResponse(Call<R> call, Response<R> response) {
                     if (call.isCanceled()) return;
                     postValue(response.body());
+                    isSuccess=true;
                 }
                 @Override
                 public void onFailure(Call<R> call, Throwable t) {
@@ -58,8 +63,11 @@ public class LivedataCallAdapter<R> implements CallAdapter<R, Object> {
         @Override
         protected void onInactive() {
             super.onInactive();
-            if (!this.call.isCanceled()) {
-                this.call.cancel();
+            if (this.mCall.isExecuted()){
+                this.mCall.cancel();
+            }
+            if (!this.mCall.isCanceled()) {
+                this.mCall.cancel();
             }
         }
     }

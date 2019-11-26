@@ -6,13 +6,17 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.Meizi;
 import com.bingo.demo.databinding.ActivityMeiziBinding;
+import com.bingo.demo.model.Gank;
+import com.bingo.demo.model.Result;
 import com.bingo.router.annotations.Route;
 
+import java.util.List;
 import java.util.Random;
 
 @Route(pathClass = Meizi.class)
@@ -28,10 +32,15 @@ public class MeiziActivity extends AppCompatActivity {
         mModel = ViewModelProviders.of(this).get(MeiziActivityViewModel.class);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_meizi);
         mBinding.setVm(mModel);
-        mBinding.bt.setOnClickListener(new View.OnClickListener() {
+        PagerAdapter adapter=new PagerAdapter();
+        mBinding.pager.setAdapter(adapter);
+        mModel.loadMeizi(1).observe(this, new Observer<Gank<List<Result>>>() {
             @Override
-            public void onClick(View v) {
-                mModel.loadMeizi(1, MeiziActivity.this);
+            public void onChanged(Gank<List<Result>> listGank) {
+                if (!listGank.isError()) {
+                    adapter.mResults.addAll(listGank.getResults());
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }

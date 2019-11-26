@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="vm"
+            type="com.bingo.demo.databinding.bindingMethods.ViewModel1" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.bingo.demo.databinding.bindingMethods.JokeTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showText="@{text}" />
+
+
+            <Button
+                android:id="@+id/bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(vm.isDisplay)}" />
+
+        </LinearLayout>
+
+        <com.bingo.demo.databinding.bindingMethods.DisplayProgressBar
+            android:id="@+id/dv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            app:display="@={vm.isDisplay}" />
+
+    </RelativeLayout>
+
+</layout>

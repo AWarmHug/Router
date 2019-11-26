@@ -36,6 +36,9 @@
 
         </activity>
         <activity android:name="com.bingo.demo.login.LoginActivity" />
+        <activity android:name=".databinding.notifyPropertyChanged.Activity" />
+        <activity android:name=".databinding.recyclerView.Activity"/>
+        <activity android:name=".databinding.bindingMethods.Activity"/>
     </application>
 
 </manifest>

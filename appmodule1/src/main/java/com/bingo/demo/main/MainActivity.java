@@ -5,16 +5,17 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
+import com.bingo.demo.approuterpath.DataBinding;
 import com.bingo.demo.approuterpath.Meizi;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
 import com.bingo.router.Router;
+import com.bingo.router.annotations.Route;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
@@ -106,6 +107,37 @@ public class MainActivity extends AppCompatActivity {
                 Router.newRequest(Meizi.class)
                         .build()
                         .startBy(MainActivity.this);
+            }
+        });
+
+        mBinding.bt7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest(DataBinding.NotifyPropertyChanged.class)
+                        .build().startBy(MainActivity.this);
+            }
+        });
+
+        mBinding.bt8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest(DataBinding.RecyclerView.class)
+                        .build().startBy(MainActivity.this);
+            }
+        });
+
+        mBinding.bt9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest(DataBinding.BindingMethods.class)
+                        .build().startBy(MainActivity.this);
+            }
+        });
+        mBinding.btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest(mBinding.btEdit.getText().toString())
+                        .build().startBy(MainActivity.this);
             }
         });
 //        mViewModel.clickPath.observe(this, new Observer<String>() {
