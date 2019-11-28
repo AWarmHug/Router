@@ -1,4 +1,4 @@
-package com.bingo.demo.network.adapter_livedata;
+package com.bingo.libpublic.adapter_livedata;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,25 +9,24 @@ import java.lang.reflect.Type;
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
-public class LivedataCallAdapterFactory extends CallAdapter.Factory {
+public class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 
     private boolean isAsync;
 
-    public static LivedataCallAdapterFactory create() {
-        return new LivedataCallAdapterFactory(false);
+    public static LiveDataCallAdapterFactory create() {
+        return new LiveDataCallAdapterFactory(false);
     }
 
-    public LivedataCallAdapterFactory(boolean isAsync) {
+    public LiveDataCallAdapterFactory(boolean isAsync) {
         this.isAsync = isAsync;
     }
 
     @Override
     public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
         Class<?> rawType = getRawType(returnType);
-
-        if (rawType == LiveData.class) {
+        if (rawType == RLiveData.class) {
             Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
-            return new LivedataCallAdapter<>(observableType);
+            return new LiveDataCallAdapter<>(observableType);
         }else {
             return retrofit.nextCallAdapter(this,returnType,annotations);
         }

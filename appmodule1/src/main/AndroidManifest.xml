@@ -39,6 +39,8 @@
         <activity android:name=".databinding.notifyPropertyChanged.Activity" />
         <activity android:name=".databinding.recyclerView.Activity"/>
         <activity android:name=".databinding.bindingMethods.Activity"/>
+        <activity android:name=".lifecycle.Activity"/>
+
     </application>
 
 </manifest>

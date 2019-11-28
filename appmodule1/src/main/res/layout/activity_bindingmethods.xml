@@ -43,7 +43,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            app:display="@={vm.isDisplay}" />
+            app:dis="@={vm.isDisplay}" />
 
     </RelativeLayout>
 

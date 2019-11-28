@@ -1,6 +1,7 @@
 package com.bingo.demo.meizi;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.bingo.demo.approuterpath.Meizi;
 import com.bingo.demo.databinding.ActivityMeiziBinding;
 import com.bingo.demo.model.Gank;
 import com.bingo.demo.model.Result;
+import com.bingo.libpublic.adapter_livedata.ResultObserver;
 import com.bingo.router.annotations.Route;
 
 import java.util.List;
@@ -34,13 +36,19 @@ public class MeiziActivity extends AppCompatActivity {
         mBinding.setVm(mModel);
         PagerAdapter adapter=new PagerAdapter();
         mBinding.pager.setAdapter(adapter);
-        mModel.loadMeizi(1).observe(this, new Observer<Gank<List<Result>>>() {
+        mModel.loadMeizi(1).observe(this, new ResultObserver<Gank<List<Result>>>() {
             @Override
             public void onChanged(Gank<List<Result>> listGank) {
                 if (!listGank.isError()) {
                     adapter.mResults.addAll(listGank.getResults());
                     adapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.d(TAG, "onError: "+t.toString());
+
             }
         });
     }

@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.DataBinding;
+import com.bingo.demo.approuterpath.Lifecycle;
 import com.bingo.demo.approuterpath.Meizi;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
 import com.bingo.router.Router;
-import com.bingo.router.annotations.Route;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
@@ -130,6 +130,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.newRequest(DataBinding.BindingMethods.class)
+                        .build().startBy(MainActivity.this);
+            }
+        });
+        mBinding.bt10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest(Lifecycle.class)
                         .build().startBy(MainActivity.this);
             }
         });

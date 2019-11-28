@@ -3,8 +3,7 @@ package com.bingo.demo.network;
 import com.bingo.demo.App;
 import com.bingo.demo.BuildConfig;
 import com.bingo.demo.Config;
-import com.bingo.demo.network.adapter_livedata.LivedataCallAdapterFactory;
-import com.bingo.demo.utils.CommonInterceptor;
+import com.bingo.libpublic.adapter_livedata.LiveDataCallAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,7 +14,6 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
@@ -85,7 +83,7 @@ public class RetrofitHelper {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
 //                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addCallAdapterFactory(LivedataCallAdapterFactory.create())
+                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
                 .build();
     }
 
