@@ -1,7 +1,5 @@
 package com.bingo.libpublic.adapter_livedata;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;

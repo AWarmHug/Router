@@ -99,6 +99,12 @@
                 android:layout_height="wrap_content"
                 android:text="lifecycle" />
 
+            <Button
+                android:id="@+id/bt11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="camera" />
+
         </com.warm.flowlayout.FlowLayout>
 
         <LinearLayout

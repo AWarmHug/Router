@@ -1,7 +1,9 @@
 package com.bingo.demo.main;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -9,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
+import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.demo.approuterpath.DataBinding;
 import com.bingo.demo.approuterpath.Lifecycle;
 import com.bingo.demo.approuterpath.Meizi;
@@ -16,6 +19,9 @@ import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
 import com.bingo.router.Router;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
@@ -153,6 +159,23 @@ public class MainActivity extends AppCompatActivity {
 //                mBinding.clickPath.setText(s);
 //            }
 //        });
-
+        mBinding.bt11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxPermissions rxPermissions=new RxPermissions(MainActivity.this);
+                rxPermissions.request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean){
+                                    Router.newRequest(CameraPath.class)
+                                            .build().startBy(MainActivity.this);
+                                }else {
+                                    Toast.makeText(MainActivity.this, "失败", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
     }
 }
