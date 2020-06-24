@@ -9,6 +9,11 @@ public interface Login {
 
     }
 
+    @PathClass("login/LoginService")
+    public interface LoginService {
+
+    }
+
     @PathClass("login/reg")
     public interface Reg {
 

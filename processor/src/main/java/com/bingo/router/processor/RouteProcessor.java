@@ -57,6 +57,8 @@ public class RouteProcessor extends BaseProcessor {
                 int type = 0;
                 if (isActivity(e)) {
                     type = RouteInfo.TYPE_ACTIVITY;
+                } else if (isBroadcastReceiver(e)) {
+                    type = RouteInfo.TYPE_BROADCAST_RECEIVER;
                 } else if (isFragment(e)) {
                     type = RouteInfo.TYPE_FRAGMENT;
                 }

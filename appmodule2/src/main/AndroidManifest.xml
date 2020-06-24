@@ -21,6 +21,7 @@
         <activity android:name="com.bingo.app2.HomeActivity" />
         <activity android:name="com.bingo.app2.CarActivity" />
         <activity android:name=".CameraActivity"/>
+        <activity android:name=".Camera2Activity"/>
     </application>
 
 </manifest>

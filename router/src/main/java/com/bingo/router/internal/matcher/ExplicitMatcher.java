@@ -1,6 +1,7 @@
 package com.bingo.router.internal.matcher;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,7 +21,9 @@ abstract class ExplicitMatcher extends Matcher {
         }
         if (Activity.class.isAssignableFrom(clazz)) {
             return new Intent(context, clazz);
-        } else if (Fragment.class.isAssignableFrom(clazz)) {
+        } else if (Service.class.isAssignableFrom(clazz)){
+            return new Intent(context, clazz);
+        }else if (Fragment.class.isAssignableFrom(clazz)) {
             return Fragment.instantiate(context, clazz.getName());
         }
         return null;

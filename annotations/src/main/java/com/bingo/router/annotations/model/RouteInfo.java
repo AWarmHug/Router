@@ -2,6 +2,8 @@ package com.bingo.router.annotations.model;
 
 public class RouteInfo {
     public static final int TYPE_ACTIVITY = 1;
+    public static final int TYPE_BROADCAST_RECEIVER = 2;
+    public static final int TYPE_SERVICE = 2;
     public static final int TYPE_FRAGMENT = 2;
 
 

@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
+import android.util.SparseArray;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import android.util.SparseArray;
 
 import com.bingo.router.annotations.model.RouteInfo;
+import com.bingo.router.internal.matcher.Matcher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class Request implements Serializable {
 
     public Request(Uri uri) {
         mUri = uri;
-        mExtras=new Bundle();
+        mExtras = new Bundle();
     }
 
     public Uri getUri() {
@@ -104,8 +106,13 @@ public class Request implements Serializable {
     }
 
     @Nullable
+    public RouteInfo getRouteInfo() {
+        return Router.mRouteInfoMap.get(getUri().getPath());
+    }
+
+    @Nullable
     public Class<?> getTarget() {
-        RouteInfo info = Router.mRouteInfoMap.get(getUri().getPath());
+        RouteInfo info = getRouteInfo();
         if (info != null) {
             return info.getTarget();
         }
@@ -267,6 +274,12 @@ public class Request implements Serializable {
         if (bundle != null && !bundle.isEmpty()) {
             mExtras.putAll(bundle);
         }
+        return this;
+    }
+
+    public Request putParameter() {
+        mUri = Uri.parse(mUri.getPath().substring(1));
+        Matcher.putParameter(mUri, mExtras);
         return this;
     }
 

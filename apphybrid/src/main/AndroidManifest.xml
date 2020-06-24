@@ -3,13 +3,6 @@
 
     <application>
         <activity android:name="com.bingo.apphybrid.WebActivity" />
-        <activity android:name=".IntentFilterActivity">
-            <intent-filter>
-                <data
-                    android:host="filter"
-                    android:scheme="router"/>
-            </intent-filter>
-        </activity>
     </application>
 
 

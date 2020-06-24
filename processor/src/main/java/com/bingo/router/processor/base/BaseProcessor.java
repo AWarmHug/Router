@@ -22,6 +22,7 @@ import javax.lang.model.util.Types;
  */
 public abstract class BaseProcessor extends AbstractProcessor {
     public static final String ACTIVITY = "android.app.Activity";
+    public static final String BROADCAST_RECEIVER = "android.content.BroadcastReceiver";
     public static final String FRAGMENT = "android.support.v4.app.Fragment";
 
 
@@ -52,6 +53,10 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     protected boolean isActivity(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(ACTIVITY).asType());
+    }
+
+    protected boolean isBroadcastReceiver(Element typeElement){
+        return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(BROADCAST_RECEIVER).asType());
     }
 
     protected boolean isFragment(Element typeElement) {

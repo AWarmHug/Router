@@ -177,5 +177,24 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         });
+
+        mBinding.bt12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RxPermissions rxPermissions=new RxPermissions(MainActivity.this);
+                rxPermissions.request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean){
+                                    Router.newRequest(CameraPath.Camera2Path.class)
+                                            .build().startBy(MainActivity.this);
+                                }else {
+                                    Toast.makeText(MainActivity.this, "失败", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        });
     }
 }

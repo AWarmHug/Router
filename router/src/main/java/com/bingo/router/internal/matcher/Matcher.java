@@ -13,7 +13,7 @@ public abstract class Matcher {
 
     public abstract Object generate(Context context, Uri uri, Request request);
 
-    protected void putParameter(Uri uri, Bundle bundle) {
+    public static void putParameter(Uri uri, Bundle bundle) {
         if (TextUtils.isEmpty(uri.getQuery())) {
             return;
         }

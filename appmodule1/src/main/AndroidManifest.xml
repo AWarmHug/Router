@@ -36,10 +36,21 @@
 
         </activity>
         <activity android:name="com.bingo.demo.login.LoginActivity" />
+        <service android:name=".login.LoginService"/>
         <activity android:name=".databinding.notifyPropertyChanged.Activity" />
-        <activity android:name=".databinding.recyclerView.Activity"/>
-        <activity android:name=".databinding.bindingMethods.Activity"/>
-        <activity android:name=".lifecycle.Activity"/>
+        <activity android:name=".databinding.recyclerView.Activity" />
+        <activity android:name=".databinding.bindingMethods.Activity" />
+        <activity android:name=".lifecycle.Activity" />
+
+        <receiver
+            android:name="com.bingo.demo.login.LoginReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.bingo.demo.login.LoginReceiver" />
+            </intent-filter>
+
+        </receiver>
 
     </application>
 
