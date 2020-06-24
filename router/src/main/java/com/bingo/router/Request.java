@@ -278,8 +278,8 @@ public class Request implements Serializable {
     }
 
     public Request putParameter() {
-        mUri = Uri.parse(mUri.getPath().substring(1));
         Matcher.putParameter(mUri, mExtras);
+        mUri = Uri.parse(mUri.getPath().substring(1));
         return this;
     }
 
