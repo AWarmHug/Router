@@ -11,7 +11,7 @@ public class CommonInterceptor implements Interceptor {
     @Override
     public void intercept(final Chain chain) {
         final Request request = chain.request();
-        Toast.makeText(chain.getContext(), "这是CommonInterceptor", Toast.LENGTH_SHORT).show();
+        Toast.makeText(chain.getContext(), request.getUri().toString(), Toast.LENGTH_SHORT).show();
         chain.proceed(request);
     }
 }

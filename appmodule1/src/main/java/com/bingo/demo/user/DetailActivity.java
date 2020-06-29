@@ -1,7 +1,10 @@
 package com.bingo.demo.user;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,5 +55,10 @@ public class DetailActivity extends AppCompatActivity {
         HomeFragment fragment = (HomeFragment) Router.build("news/home").getFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 }

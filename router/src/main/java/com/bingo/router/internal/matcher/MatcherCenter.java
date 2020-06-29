@@ -1,6 +1,7 @@
 package com.bingo.router.internal.matcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MatcherCenter {
@@ -12,5 +13,9 @@ public class MatcherCenter {
         sMatcher.add(new ClassMatcher());
     }
 
+
+    public static void register(Matcher matcher) {
+        sMatcher.add(matcher);
+    }
 
 }
