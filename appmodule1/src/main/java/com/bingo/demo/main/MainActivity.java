@@ -111,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.newRequest(AppHybrid.Web.class)
-                        .putString("url", "file:///android_asset/scheme.html")
+                Router.newRequest("apphybrid/web?url=file:///android_asset/scheme.html")
                         .build()
                         .startBy(MainActivity.this);
             }

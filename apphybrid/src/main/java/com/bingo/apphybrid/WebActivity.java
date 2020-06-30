@@ -18,6 +18,8 @@ import com.bingo.router.Router;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.Route;
 
+import java.net.URI;
+
 
 @Route(pathClass = AppHybrid.Web.class)
 public class WebActivity extends AppCompatActivity {
@@ -47,7 +49,7 @@ public class WebActivity extends AppCompatActivity {
             private boolean aaa(String url) {
                 Uri uri = Uri.parse(url);
                 if ("router".equals(uri.getScheme()) && "filter.com".equals(uri.getHost())) {
-                    Router.newRequest(uri).putParameter().build().startBy(WebActivity.this);
+                    Router.newRequest(uri).build().startBy(WebActivity.this);
                     return true;
                 } else {
                     return false;

@@ -6,7 +6,6 @@ import com.bingo.demo.App;
 import com.bingo.router.Interceptor;
 import com.bingo.router.Request;
 import com.bingo.router.annotations.RouteInterceptor;
-import com.bingo.router.internal.matcher.Matcher;
 
 @RouteInterceptor(name = "ErrorInterceptor", isGlobal = true)
 public class ErrorInterceptor implements Interceptor {
@@ -17,8 +16,6 @@ public class ErrorInterceptor implements Interceptor {
         String newPath = App.getInstance().getErrorRoute().get(path);
         if (newPath != null) {
             request.setUri(Uri.parse(newPath));
-            Matcher.putParameter(request.getUri(), request.getExtras());
-
         }
         chain.proceed(request);
     }

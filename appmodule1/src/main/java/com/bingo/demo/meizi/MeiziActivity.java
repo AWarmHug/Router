@@ -18,6 +18,7 @@ import com.bingo.demo.model.Result;
 import com.bingo.libpublic.adapter_livedata.ResultObserver;
 import com.bingo.router.annotations.Route;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Random;
 

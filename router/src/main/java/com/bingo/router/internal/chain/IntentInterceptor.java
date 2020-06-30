@@ -37,6 +37,7 @@ public class IntentInterceptor implements Interceptor {
             }
         }
         if (intent != null) {
+            request.putParameter();
             intent.putExtras(request.getExtras());
             intent.addFlags(request.getFlags());
             intent.setAction(request.getAction());
