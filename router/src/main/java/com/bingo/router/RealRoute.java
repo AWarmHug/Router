@@ -2,6 +2,7 @@ package com.bingo.router;
 
 import android.content.Context;
 import android.net.Uri;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -31,6 +32,7 @@ class RealRoute implements IRoute {
     public Request newRequest(Request request) {
         return request;
     }
+
 
     @Nullable
     @Override
@@ -72,7 +74,12 @@ class RealRoute implements IRoute {
     }
 
     @Override
-    public void startBy(final Object obj) {
+    public void startBy(Object obj) {
+        startBy(obj, null);
+    }
+
+    @Override
+    public void startBy(final Object obj, @Nullable RouteCallback callback) {
 
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
@@ -89,7 +96,7 @@ class RealRoute implements IRoute {
         }
 
 
-        IntentInterceptor intentInterceptor = new IntentInterceptor();
+        IntentInterceptor intentInterceptor = new IntentInterceptor(callback);
 
         interceptors.add(intentInterceptor);
 

@@ -17,4 +17,6 @@ public interface IRoute {
 
     void startBy(Object obj);
 
+    void startBy(Object obj, @Nullable RouteCallback callback);
+
 }

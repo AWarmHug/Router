@@ -5,13 +5,7 @@ import com.bingo.router.Request;
 
 public class FragmentInterceptor implements Interceptor {
 
-    private Callback mCallback;
-
     public FragmentInterceptor() {
-    }
-
-    public FragmentInterceptor(Callback callback) {
-        mCallback = callback;
     }
 
     @Override
@@ -19,9 +13,6 @@ public class FragmentInterceptor implements Interceptor {
         Request request = chain.request();
         if (request.getUri() == null) {
             return;
-        }
-        if (mCallback != null) {
-            mCallback.callback();
         }
     }
 

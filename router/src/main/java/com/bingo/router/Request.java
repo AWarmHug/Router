@@ -33,6 +33,8 @@ public class Request implements Serializable {
 
     private List<Interceptor> mInterceptors = new ArrayList<>();
 
+    private RouteCallback mRouteCallback;
+
     public Request(Uri uri) {
         mUri = uri;
         mExtras = new Bundle();
