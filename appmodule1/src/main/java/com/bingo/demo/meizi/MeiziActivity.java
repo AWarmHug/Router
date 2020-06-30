@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
-@Route(pathClass = Meizi.class)
+@Route(pathClass = Meizi.Home.class)
 public class MeiziActivity extends AppCompatActivity {
     private static final String TAG = "MeiziActivityTag";
 

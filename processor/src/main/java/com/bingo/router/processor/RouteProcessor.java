@@ -9,6 +9,7 @@ import com.bingo.router.annotations.model.RouteInfo;
 import com.bingo.router.annotations.model.Utils;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
+import com.google.gson.Gson;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -17,9 +18,12 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -32,15 +36,33 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.bingo.router.annotations.Route"})
 @SupportedOptions({"moduleName"})
 public class RouteProcessor extends BaseProcessor {
 
+    public static final String ASSET_PATH = "router.doc";
+
+    private Writer mDocWriter;
+
+    @Override
+    public synchronized void init(ProcessingEnvironment processingEnvironment) {
+        super.init(processingEnvironment);
+        try {
+            FileObject fileObject = mFiler.createResource(StandardLocation.SOURCE_OUTPUT, ASSET_PATH, getModuleName() + ".json");
+            mDocWriter = fileObject.openWriter();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        Map<String, String> routeClass = new HashMap<>();
         Set<? extends Element> routes = roundEnvironment.getElementsAnnotatedWith(Route.class);
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
@@ -80,7 +102,7 @@ public class RouteProcessor extends BaseProcessor {
                 }
                 path = "/" + path;
                 builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), pos, TypeName.get(RouteInfo.class), path, ClassName.get(e));
-
+                routeClass.put(path, className);
                 if (route.interceptors().length != 0) {
                     StringBuilder interceptorKeys = new StringBuilder("new String[]{");
                     for (int i = 0; i < route.interceptors().length; i++) {
@@ -108,8 +130,10 @@ public class RouteProcessor extends BaseProcessor {
                 .build();
         JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG + Const.DOT + getModuleName(), typeSpec).build();
         try {
+            writeFile(routeClass);
+
             javaFile.writeTo(mFiler);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -121,4 +145,15 @@ public class RouteProcessor extends BaseProcessor {
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
     }
+
+    /**
+     *
+     * @throws Exception
+     */
+    private void writeFile(Map<String, String> routeClass) throws Exception {
+        String content = new Gson().toJson(routeClass);
+        mDocWriter.write(content);
+        mDocWriter.close();
+    }
+
 }
