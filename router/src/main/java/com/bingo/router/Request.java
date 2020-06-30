@@ -42,8 +42,9 @@ public class Request implements Serializable {
         return mUri;
     }
 
-    public void setUri(Uri uri) {
+    public Request setUri(Uri uri) {
         mUri = uri;
+        return this;
     }
 
     @NonNull
@@ -51,58 +52,67 @@ public class Request implements Serializable {
         return mExtras;
     }
 
-    public void setExtras(Bundle extra) {
+    public Request setExtras(Bundle extra) {
         mExtras = extra;
+        return this;
     }
 
     public Bundle getOptionsBundle() {
         return mOptionsBundle;
     }
 
-    public void setOptionsBundle(Bundle optionsBundle) {
+    public Request setOptionsBundle(Bundle optionsBundle) {
         mOptionsBundle = optionsBundle;
+        return this;
     }
 
     public int getRequestCode() {
         return mRequestCode;
     }
 
-    public void setRequestCode(int requestCode) {
+    public Request setRequestCode(int requestCode) {
         mRequestCode = requestCode;
+        return this;
     }
 
     public List<Interceptor> getInterceptors() {
         return mInterceptors;
     }
 
-    public void addInterceptor(Interceptor interceptor) {
+    public Request addInterceptor(Interceptor interceptor) {
         if (!mInterceptors.contains(interceptor)) {
             mInterceptors.add(interceptor);
         }
+        return this;
     }
 
-    public void removeInterceptor(Interceptor interceptor) {
+    public Request removeInterceptor(Interceptor interceptor) {
         mInterceptors.remove(interceptor);
+        return this;
     }
 
     public int getFlags() {
         return mFlags;
     }
 
-    public void setFlags(int flags) {
+    public Request setFlags(int flags) {
         mFlags = flags;
+        return this;
     }
 
-    public void addFlags(int flags) {
+    public Request addFlags(int flags) {
         mFlags |= flags;
+        return this;
+
     }
 
     public String getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public Request setAction(String action) {
         this.action = action;
+        return this;
     }
 
     @Nullable

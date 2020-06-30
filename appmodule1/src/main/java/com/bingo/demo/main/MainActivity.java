@@ -1,10 +1,12 @@
 package com.bingo.demo.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +28,11 @@ import io.reactivex.functions.Consumer;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
     private MainActivityViewModel mViewModel;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 //                Router.init();
                 Router.create(User.Detail.class)
                         .getDetail(1)
+                        .setRequestCode(100)
                         .build()
                         .startBy(MainActivity.this);
             }

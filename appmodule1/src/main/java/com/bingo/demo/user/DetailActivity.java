@@ -1,14 +1,16 @@
 package com.bingo.demo.user;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import com.bingo.demo.R;
+import com.bingo.demo.approuterpath.News;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.data.PayInfo;
 import com.bingo.demo.data.UserInfo;
@@ -52,9 +54,15 @@ public class DetailActivity extends AppCompatActivity {
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
         mBinding.tvInfo.setText(String.valueOf(id));
-        HomeFragment fragment = (HomeFragment) Router.build("news/home").getFragment(this);
+        HomeFragment fragment = (HomeFragment) Router.newRequest(News.Home.class).build().getFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
-
+        mBinding.tvInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     @Override
