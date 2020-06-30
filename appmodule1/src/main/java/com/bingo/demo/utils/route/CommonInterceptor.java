@@ -1,4 +1,4 @@
-package com.bingo.demo.utils;
+package com.bingo.demo.utils.route;
 
 import android.util.Log;
 import android.widget.Toast;

@@ -17,7 +17,6 @@ import java.util.Set;
  * 描述：
  */
 public class Router {
-
     public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
     public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
@@ -52,11 +51,15 @@ public class Router {
     }
 
     public static Request newRequest(String path) {
+        path = "app://route/" + path;
         return newRequest(Uri.parse(path));
     }
 
 
     public static Request newRequest(Uri uri) {
+        if (uri.getScheme() == null) {
+            uri = uri.buildUpon().scheme("app").authority("route").build();
+        }
         return new Request(uri);
     }
 
@@ -74,7 +77,7 @@ public class Router {
 
         if (map.get(clazz) == null) {
             try {
-                T t = (T) Class.forName(clazz.getName()+ "Impl").newInstance();
+                T t = (T) Class.forName(clazz.getName() + "Impl").newInstance();
                 map.put(clazz, t);
                 return t;
             } catch (IllegalAccessException e) {

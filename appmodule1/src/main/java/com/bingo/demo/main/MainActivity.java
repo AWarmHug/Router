@@ -20,6 +20,8 @@ import com.bingo.demo.approuterpath.Meizi;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
+import com.bingo.router.Request;
+import com.bingo.router.RouteCallback;
 import com.bingo.router.Router;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Router.newRequest(AppHybrid.Web.class)
+                        .putString("url", "file:///android_asset/scheme.html")
                         .build()
                         .startBy(MainActivity.this);
             }
@@ -121,6 +124,30 @@ public class MainActivity extends AppCompatActivity {
                 Router.newRequest(Meizi.class)
                         .build()
                         .startBy(MainActivity.this);
+            }
+        });
+
+        mBinding.btEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Router.newRequest("empty")
+                        .build()
+                        .startBy(MainActivity.this, new RouteCallback() {
+                            @Override
+                            public void onNoFound(Request request) {
+                                Toast.makeText(MainActivity.this, "未找到", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSuccess(Request request) {
+
+                            }
+
+                            @Override
+                            public void onFail(Request request, Exception e) {
+
+                            }
+                        });
             }
         });
 
@@ -170,15 +197,15 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RxPermissions rxPermissions=new RxPermissions(MainActivity.this);
-                rxPermissions.request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                RxPermissions rxPermissions = new RxPermissions(MainActivity.this);
+                rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribe(new Consumer<Boolean>() {
                             @Override
                             public void accept(Boolean aBoolean) throws Exception {
-                                if (aBoolean){
+                                if (aBoolean) {
                                     Router.newRequest(CameraPath.class)
                                             .build().startBy(MainActivity.this);
-                                }else {
+                                } else {
                                     Toast.makeText(MainActivity.this, "失败", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -189,15 +216,15 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RxPermissions rxPermissions=new RxPermissions(MainActivity.this);
-                rxPermissions.request(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                RxPermissions rxPermissions = new RxPermissions(MainActivity.this);
+                rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .subscribe(new Consumer<Boolean>() {
                             @Override
                             public void accept(Boolean aBoolean) throws Exception {
-                                if (aBoolean){
+                                if (aBoolean) {
                                     Router.newRequest(CameraPath.Camera2Path.class)
                                             .build().startBy(MainActivity.this);
-                                }else {
+                                } else {
                                     Toast.makeText(MainActivity.this, "失败", Toast.LENGTH_SHORT).show();
                                 }
                             }

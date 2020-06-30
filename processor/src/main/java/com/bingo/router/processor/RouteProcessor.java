@@ -78,6 +78,7 @@ public class RouteProcessor extends BaseProcessor {
                         path = Utils.pathByPathClass(typeElement.getAnnotation(PathClass.class));
                     }
                 }
+                path = "/" + path;
                 builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), pos, TypeName.get(RouteInfo.class), path, ClassName.get(e));
 
                 if (route.interceptors().length != 0) {
