@@ -15,8 +15,6 @@ public class RxLoginFragment extends Fragment {
 
     public static final int REQUEST_CODE = 1;
 
-
-    private static final String TAG = "RxPhotoFragment--";
     private PublishSubject<Boolean> publishSubject;
 
 
