@@ -1,7 +1,7 @@
 package com.bingo.router.processor.base;
 
-import com.bingo.router.annotations.model.Const;
-import com.bingo.router.annotations.model.RouteInfo;
+import com.bingo.router.Const;
+import com.bingo.router.RouteInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +61,12 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     protected boolean isFragment(Element typeElement) {
         return mTypes.isSubtype(typeElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType());
+    }
+
+    public String upperFirstLatter(String name) {
+        char[] cs = name.toCharArray();
+        cs[0] -= 32;
+        return String.valueOf(cs);
     }
 
     protected String getModuleName() {

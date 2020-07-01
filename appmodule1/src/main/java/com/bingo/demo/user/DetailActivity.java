@@ -31,7 +31,7 @@ import java.util.List;
 @Route(pathClass = User.Detail.class, interceptors = {"LoginInterceptor"})
 public class DetailActivity extends AppCompatActivity {
     @Parameter
-    long id;
+    String id;
     @Parameter
     long[] ids;
     @Parameter
@@ -53,7 +53,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Router.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail);
-        mBinding.tvInfo.setText(String.valueOf(id));
+        mBinding.tvInfo.setText(id);
         HomeFragment fragment = (HomeFragment) Router.newRequest(News.Home.class).build().getFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
         mBinding.tvInfo.setOnClickListener(new View.OnClickListener() {

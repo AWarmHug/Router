@@ -1,17 +1,14 @@
-package com.bingo.router.internal.chain;
+package com.bingo.router;
 
 import android.app.Activity;
 import android.content.Intent;
 
 import androidx.core.app.ActivityCompat;
 
-import com.bingo.router.Interceptor;
-import com.bingo.router.Request;
-import com.bingo.router.RouteCallback;
-import com.bingo.router.internal.matcher.Matcher;
-import com.bingo.router.internal.matcher.MatcherCenter;
+import com.bingo.router.matcher.Matcher;
+import com.bingo.router.matcher.MatcherCenter;
 
-public class IntentInterceptor implements Interceptor {
+final class IntentInterceptor implements Interceptor {
 
     private RouteCallback mRouteCallback;
 

@@ -1,5 +1,6 @@
 package com.bingo.router.annotations.model;
 
+import com.bingo.router.Utils;
 import com.bingo.router.annotations.PathClass;
 
 import org.junit.Assert;

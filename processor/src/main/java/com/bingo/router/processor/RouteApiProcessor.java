@@ -3,7 +3,7 @@ package com.bingo.router.processor;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
-import com.bingo.router.annotations.model.Utils;
+import com.bingo.router.Utils;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;

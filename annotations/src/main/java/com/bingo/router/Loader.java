@@ -1,4 +1,4 @@
-package com.bingo.router.annotations.model;
+package com.bingo.router;
 
 import java.util.Map;
 

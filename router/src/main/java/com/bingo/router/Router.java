@@ -1,10 +1,9 @@
 package com.bingo.router;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
-import com.bingo.router.annotations.model.AutowiredBinder;
-import com.bingo.router.annotations.model.RouteInfo;
-import com.bingo.router.annotations.model.Utils;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,10 +16,17 @@ import java.util.Set;
  * 描述：
  */
 public class Router {
-    public static final Map<String, RouteInfo> mRouteInfoMap = new HashMap<>();
+    public static final String URI_SCHEME = "app";
+    public static final String URI_AUTHORITY = "route";
+    public static final String URI_SCHEME_AUTHORITY = URI_SCHEME + "://" + URI_AUTHORITY + "/";
+
+
+    private static final Map<String, Loader<RouteInfo>> mGroupMap = new HashMap<>();
+    private static final Map<String, RouteInfo> mRouteMap = new HashMap<>();
     public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
     public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
+
 
     static {
         init();
@@ -28,6 +34,25 @@ public class Router {
 
     public static void init() {
 
+    }
+
+    @Nullable
+    public static RouteInfo getRouteInfo(@Nullable String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        RouteInfo routeInfo = mRouteMap.get(path);
+        if (routeInfo == null) {
+            String group = path.substring(1).split("/")[0];
+            Loader<RouteInfo> routeInfoLoader = mGroupMap.get(group);
+            if (routeInfoLoader != null) {
+                routeInfoLoader.load(mRouteMap);
+                return mRouteMap.get(path);
+            }
+        } else {
+            return routeInfo;
+        }
+        return null;
     }
 
     private static void loadGlobalInterceptors(String[] keys) {
@@ -51,14 +76,17 @@ public class Router {
     }
 
     public static Request newRequest(String path) {
-        path = "app://route/" + path;
+
         return newRequest(Uri.parse(path));
     }
 
 
     public static Request newRequest(Uri uri) {
-        if (uri.getScheme() == null) {
-            uri = uri.buildUpon().scheme("app").authority("route").build();
+        if (TextUtils.isEmpty(uri.getScheme()) || TextUtils.isEmpty(uri.getAuthority())) {
+            String uriStr = uri.toString();
+            if (!uriStr.startsWith(Router.URI_SCHEME_AUTHORITY)) {
+                uri = Uri.parse(Router.URI_SCHEME_AUTHORITY + uriStr);
+            }
         }
         return new Request(uri);
     }

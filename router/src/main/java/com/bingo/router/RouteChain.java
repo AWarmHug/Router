@@ -1,4 +1,4 @@
-package com.bingo.router.internal;
+package com.bingo.router;
 
 import android.content.Context;
 import androidx.annotation.NonNull;

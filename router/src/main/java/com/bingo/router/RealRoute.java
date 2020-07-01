@@ -6,12 +6,8 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bingo.router.annotations.model.RouteInfo;
-import com.bingo.router.internal.RouteChain;
-import com.bingo.router.internal.chain.FragmentInterceptor;
-import com.bingo.router.internal.chain.IntentInterceptor;
-import com.bingo.router.internal.matcher.Matcher;
-import com.bingo.router.internal.matcher.MatcherCenter;
+import com.bingo.router.matcher.Matcher;
+import com.bingo.router.matcher.MatcherCenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +37,7 @@ class RealRoute implements IRoute {
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
         //添加针对拦截器
-        RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
+        RouteInfo info = Router.getRouteInfo(mRequest.getUri().getPath());
         if (info != null && info.getInterceptorKeys() != null) {
             for (String key : info.getInterceptorKeys()) {
                 interceptors.add(Router.mInterceptorMap.get(key));
@@ -84,7 +80,7 @@ class RealRoute implements IRoute {
         //添加全局拦截器
         List<Interceptor> interceptors = new ArrayList<>(Router.sGlobalInterceptors);
         //添加针对拦截器
-        final RouteInfo info = Router.mRouteInfoMap.get(mRequest.getUri().getPath());
+        final RouteInfo info = Router.getRouteInfo(mRequest.getUri().getPath());
         if (info != null && info.getInterceptorKeys() != null) {
             for (String key : info.getInterceptorKeys()) {
                 interceptors.add(Router.mInterceptorMap.get(key));

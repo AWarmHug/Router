@@ -1,9 +1,6 @@
-package com.bingo.router.internal.chain;
+package com.bingo.router;
 
-import com.bingo.router.Interceptor;
-import com.bingo.router.Request;
-
-public class FragmentInterceptor implements Interceptor {
+final class FragmentInterceptor implements Interceptor {
 
     public FragmentInterceptor() {
     }

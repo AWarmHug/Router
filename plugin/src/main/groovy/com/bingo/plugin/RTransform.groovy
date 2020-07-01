@@ -21,7 +21,7 @@ class RTransform extends Transform {
 
     String routerJarPath
 
-    Set<String> routerLoaders = new HashSet<>();
+    Set<String> groupLoaders = new HashSet<>();
     Set<String> binderLoaders = new HashSet<>();
     Set<String> interceptorLoaders = new HashSet<>();
 
@@ -121,9 +121,9 @@ class RTransform extends Transform {
                     if (it.isFile() && filePath.endsWith(".class") && !filePath.contains('R$') && !filePath.contains('R.class') && !filePath.contains('BuildConfig.class')) {
                         ClassReader reader = new ClassReader(new FileInputStream(it))
                         CtClass ctClass = pool.get(Utils.getClassName(reader.className))
-                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.ROUTER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
                             println(ctClass.name)
-                            routerLoaders.add(ctClass.name)
+                            groupLoaders.add(ctClass.name)
                         }
 
                         if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
@@ -161,9 +161,9 @@ class RTransform extends Transform {
                         continue
                     }
 
-                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.ROUTER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
                         println(ctClass.name)
-                        routerLoaders.add(ctClass.name)
+                        groupLoaders.add(ctClass.name)
                     }
 
                     if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
@@ -219,8 +219,9 @@ class RTransform extends Transform {
                     CtMethod ctMethod = ctClass.getDeclaredMethod("init")
                     StringBuilder sb = new StringBuilder();
                     sb.append("{\n")
-                    routerLoaders.each {
-                        sb.append("new ${it}().load(mRouteInfoMap);\n")
+                    groupLoaders.each {
+
+                        sb.append("new ${it}().load(mGroupMap);\n")
                     }
 
                     binderLoaders.each {

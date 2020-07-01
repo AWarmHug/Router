@@ -1,4 +1,4 @@
-package com.bingo.router.annotations.model;
+package com.bingo.router;
 
 public class RouteInfo {
     public static final int TYPE_ACTIVITY = 1;

@@ -1,4 +1,4 @@
-package com.bingo.router.internal.matcher;
+package com.bingo.router.matcher;
 
 import android.content.Context;
 import android.net.Uri;

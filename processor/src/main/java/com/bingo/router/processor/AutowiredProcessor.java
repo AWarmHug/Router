@@ -2,6 +2,10 @@ package com.bingo.router.processor;
 
 import android.os.Parcelable;
 
+import com.bingo.router.AutowiredBinder;
+import com.bingo.router.Const;
+import com.bingo.router.Loader;
+import com.bingo.router.annotations.Parameter;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
@@ -11,10 +15,6 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.bingo.router.annotations.Parameter;
-import com.bingo.router.annotations.model.AutowiredBinder;
-import com.bingo.router.annotations.model.Const;
-import com.bingo.router.annotations.model.Loader;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -102,7 +102,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 }
 
 
-                TypeSpec typeSpec = TypeSpec.classBuilder(getModuleName() + element.getSimpleName() + Const.BINDER_CLASS_NAME)
+                TypeSpec typeSpec = TypeSpec.classBuilder(upperFirstLatter(getModuleName()) + element.getSimpleName() + Const.BINDER_CLASS_NAME)
                         .addSuperinterface(AutowiredBinder.class)
                         .addModifiers(Modifier.PUBLIC)
                         .addMethod(builder.build())

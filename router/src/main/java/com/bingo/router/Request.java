@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.bingo.router.annotations.model.RouteInfo;
-import com.bingo.router.internal.matcher.Matcher;
+import com.bingo.router.matcher.Matcher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -119,7 +118,7 @@ public class Request implements Serializable {
 
     @Nullable
     public RouteInfo getRouteInfo() {
-        return Router.mRouteInfoMap.get(getUri().getPath());
+        return Router.getRouteInfo(getUri().getPath());
     }
 
     @Nullable

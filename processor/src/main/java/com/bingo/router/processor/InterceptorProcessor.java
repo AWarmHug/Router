@@ -10,8 +10,8 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.bingo.router.annotations.RouteInterceptor;
-import com.bingo.router.annotations.model.Const;
-import com.bingo.router.annotations.model.Loader;
+import com.bingo.router.Const;
+import com.bingo.router.Loader;
 
 import java.io.IOException;
 import java.util.ArrayList;
