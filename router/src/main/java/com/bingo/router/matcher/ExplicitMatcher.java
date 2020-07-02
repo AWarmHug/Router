@@ -15,7 +15,7 @@ abstract class ExplicitMatcher extends Matcher {
 
 
     @Override
-    public Object generate(Context context, Uri uri, Request request) {
+    public final Object generate(Context context, Uri uri, Request request) {
         Class<?> clazz = request.getTarget();
 
         if (clazz == null) {
