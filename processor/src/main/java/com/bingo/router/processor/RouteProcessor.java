@@ -1,15 +1,14 @@
 package com.bingo.router.processor;
 
 
-import com.bingo.router.annotations.PathClass;
-import com.bingo.router.annotations.Route;
 import com.bingo.router.Const;
 import com.bingo.router.Loader;
 import com.bingo.router.RouteInfo;
 import com.bingo.router.Utils;
+import com.bingo.router.annotations.PathClass;
+import com.bingo.router.annotations.Route;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
-import com.google.gson.Gson;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -17,14 +16,11 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
@@ -39,8 +35,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
-import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.bingo.router.annotations.Route"})
@@ -76,7 +70,9 @@ public class RouteProcessor extends BaseProcessor {
 
                 Route route = typeElement.getAnnotation(Route.class);
                 String path = getPath(route);
-
+                if (countStr(path, '/') < 2) {
+                    continue;
+                }
                 String group = path.substring(1).split("/")[0];
                 if (!routesMap.containsKey(group)) {
                     List<TypeElement> elements = new LinkedList<>();
@@ -117,6 +113,9 @@ public class RouteProcessor extends BaseProcessor {
     }
 
     private void createGroup(Map<String, List<TypeElement>> routesMap) {
+        if (routesMap.isEmpty()){
+            return;
+        }
         String pkgName = Const.LOADER_PKG + Const.DOT + getModuleName();
         ParameterizedTypeName name = ParameterizedTypeName.get(Loader.class, RouteInfo.class);
 
@@ -203,6 +202,18 @@ public class RouteProcessor extends BaseProcessor {
             e.printStackTrace();
         }
 
+    }
+
+    public static int countStr(String str1, char str2) {
+        int counter = 0;
+        char[] cs = str1.toCharArray();
+        for (char c : cs) {
+            if (c == str2) {
+                counter++;
+            }
+        }
+
+        return counter;
     }
 
 

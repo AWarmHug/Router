@@ -5,7 +5,6 @@ import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
 
-@PathClass("user")
 public class User {
     @PathClass("user/detail")
     public interface Detail {

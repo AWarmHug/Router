@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
-import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.demo.approuterpath.DataBinding;
 import com.bingo.demo.approuterpath.Lifecycle;
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.newRequest(Meizi.class)
+                Router.newRequest(Meizi.Home.class)
                         .build()
                         .startBy(MainActivity.this);
             }

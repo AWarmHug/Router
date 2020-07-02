@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.router.annotations.Route;
 
-@Route(pathClass = CameraPath.class)
+@Route(pathClass = CameraPath.Camera1Path.class)
 public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "CameraPreviewView1111";
     private CameraPreviewView camera;
