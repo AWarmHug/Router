@@ -7,6 +7,8 @@ class Config {
     static final String PKG_ROUTER = "com.bingo.router";
     static final String LOADER_PKG = PKG_ROUTER + DOT + "loader";
 
+    static final String LOADER_CLASS_NAME = "Loader";
+
     static final String GROUP_LOADER_CLASS_NAME = "GroupLoader";
     static final String ROUTER_LOADER_CLASS_NAME = "RouteLoader";
     static final String BINDER_LOADER_CLASS_NAME = "BinderLoader";

@@ -56,6 +56,7 @@ class RTransform extends Transform {
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
         println "Track-Plugin-----transform开始------"
+        def loaderClass = Config.PKG_ROUTER + Config.DOT + Config.LOADER_CLASS_NAME
         def outputProvider = transformInvocation.outputProvider
 
         def inputs = transformInvocation.inputs
@@ -121,17 +122,17 @@ class RTransform extends Transform {
                     if (it.isFile() && filePath.endsWith(".class") && !filePath.contains('R$') && !filePath.contains('R.class') && !filePath.contains('BuildConfig.class')) {
                         ClassReader reader = new ClassReader(new FileInputStream(it))
                         CtClass ctClass = pool.get(Utils.getClassName(reader.className))
-                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                             println(ctClass.name)
                             groupLoaders.add(ctClass.name)
                         }
 
-                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                             println(ctClass.name)
                             binderLoaders.add(ctClass.name)
                         }
 
-                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                             println(ctClass.name)
                             interceptorLoaders.add(ctClass.name)
                         }
@@ -161,17 +162,17 @@ class RTransform extends Transform {
                         continue
                     }
 
-                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                         println(ctClass.name)
                         groupLoaders.add(ctClass.name)
                     }
 
-                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                         println(ctClass.name)
                         binderLoaders.add(ctClass.name)
                     }
 
-                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == "com.bingo.router.annotations.model.Loader") {
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                         println(ctClass.name)
                         interceptorLoaders.add(ctClass.name)
                     }
