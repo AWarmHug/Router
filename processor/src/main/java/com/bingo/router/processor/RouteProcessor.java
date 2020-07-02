@@ -49,18 +49,18 @@ public class RouteProcessor extends BaseProcessor {
 
     public static final String ASSET_PATH = "router.doc";
 
-    private Writer mDocWriter;
+//    private Writer mDocWriter;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
-        try {
-            FileObject fileObject = mFiler.createResource(StandardLocation.SOURCE_OUTPUT, ASSET_PATH, getModuleName() + ".json");
-            mDocWriter = fileObject.openWriter();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileObject fileObject = mFiler.createResource(StandardLocation.SOURCE_OUTPUT, ASSET_PATH, getModuleName() + ".json");
+//            mDocWriter = fileObject.openWriter();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -215,12 +215,12 @@ public class RouteProcessor extends BaseProcessor {
      * @param routeClass
      * @throws Exception
      */
-    private void writeFile(Map<String, List<TypeElement>> routeClass) throws Exception {
-//        typeElement.getQualifiedName().toString();
-
-        String content = new Gson().toJson(routeClass);
-        mDocWriter.write(content);
-        mDocWriter.close();
-    }
+//    private void writeFile(Map<String, List<TypeElement>> routeClass) throws Exception {
+////        typeElement.getQualifiedName().toString();
+//
+//        String content = new Gson().toJson(routeClass);
+//        mDocWriter.write(content);
+//        mDocWriter.close();
+//    }
 
 }
