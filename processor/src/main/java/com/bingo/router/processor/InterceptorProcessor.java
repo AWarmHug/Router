@@ -51,9 +51,8 @@ public class InterceptorProcessor extends BaseProcessor {
                 String className = e.getQualifiedName().toString();
                 RouteInterceptor routeInterceptor = e.getAnnotation(RouteInterceptor.class);
 
-                builder.addStatement("interceptors.put($S,new $T())", routeInterceptor.name(), ClassName.get(e));
-
                 if (routeInterceptor.isGlobal()) {
+                    builder.addStatement("interceptors.put($S,new $T())", routeInterceptor.name(), ClassName.get(e));
                     globalKeys.add(routeInterceptor.name());
                 }
             }
