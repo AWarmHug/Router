@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
+import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.demo.approuterpath.DataBinding;
 import com.bingo.demo.approuterpath.Lifecycle;
@@ -110,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
         mBinding.bt5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.newRequest("apphybrid/web?url=file:///android_asset/scheme.html")
+//                Router.newRequest("apphybrid/web?url=file:///android_asset/scheme.html")
+                AppHybrid.Web web = new AppHybrid.Web();
+                web.createRequest(AppHybrid.Web.WebInfo.justUrl("file:///android_asset/scheme.html"))
                         .build()
                         .startBy(MainActivity.this);
             }
