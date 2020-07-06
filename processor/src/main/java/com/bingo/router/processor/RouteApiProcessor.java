@@ -1,9 +1,9 @@
 package com.bingo.router.processor;
 
+import com.bingo.router.Utils;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
-import com.bingo.router.Utils;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
@@ -96,8 +96,9 @@ public class RouteApiProcessor extends BaseProcessor {
                 }
             }
             builder.addCode("return $T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
-            for (VariableElement variableElement : element.getParameters()) {
-
+            List<? extends VariableElement> parameters = element.getParameters();
+            for (int i = 0; i < parameters.size(); i++) {
+                VariableElement variableElement = parameters.get(i);
                 Parameter parameter = variableElement.getAnnotation(Parameter.class);
                 String name;
                 if (parameter != null && !parameter.value().isEmpty()) {
@@ -107,36 +108,38 @@ public class RouteApiProcessor extends BaseProcessor {
                 }
 
                 if (mTypes.isSameType(variableElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
-                    builder.addCode(".putString($S,$L)\n", name, name);
+                    builder.addCode(".putString($S,$L)", name, variableElement.getSimpleName());
                 } else if (variableElement.asType().getKind().isPrimitive()) {
                     switch (variableElement.asType().getKind()) {
                         case INT:
-                            builder.addCode(".putInt($S,$L)\n", name, variableElement.getSimpleName());
+                            builder.addCode(".putInt($S,$L)", name, variableElement.getSimpleName());
                             break;
                         case BYTE:
-                            builder.addCode(".putByte($S,$L)\n", name, variableElement.getSimpleName());
+                            builder.addCode(".putByte($S,$L)", name, variableElement.getSimpleName());
                             break;
                         case CHAR:
-                            builder.addCode(".putChar($S,$L)\n", name, variableElement.getSimpleName());
+                            builder.addCode(".putChar($S,$L)", name, variableElement.getSimpleName());
                             break;
                         case LONG:
-                            builder.addCode(".putLong($S,$L)\n", name, variableElement.getSimpleName());
+                            builder.addCode(".putLong($S,$L)", name, variableElement.getSimpleName());
                             break;
                         // TODO: 2019/11/21 更多类型
                     }
                 }
-                TYPE_REQUEST = mElementUtils.getTypeElement("com.bingo.router.Request").asType();
-                TYPE_IROUTE = mElementUtils.getTypeElement("com.bingo.router.IRoute").asType();
-
-
-                TypeMirror returnType = element.getReturnType();
-                if (mTypes.isSameType(returnType, TYPE_REQUEST)) {
-                    builder.addStatement("");
-                } else if (mTypes.isSameType(returnType, TYPE_IROUTE)) {
-                    builder.addStatement(".build()");
-                } else if (returnType.getKind() == TypeKind.VOID) {
-
+                if (i != parameters.size() - 1) {
+                    builder.addCode("\n");
                 }
+            }
+            TYPE_REQUEST = mElementUtils.getTypeElement("com.bingo.router.Request").asType();
+            TYPE_IROUTE = mElementUtils.getTypeElement("com.bingo.router.IRoute").asType();
+
+            TypeMirror returnType = element.getReturnType();
+            if (mTypes.isSameType(returnType, TYPE_REQUEST)) {
+                builder.addCode(";\n");
+            } else if (mTypes.isSameType(returnType, TYPE_IROUTE)) {
+                builder.addCode(".build();\n");
+            } else if (returnType.getKind() == TypeKind.VOID) {
+
             }
 
 

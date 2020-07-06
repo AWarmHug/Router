@@ -1,5 +1,6 @@
 package com.bingo.router;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.bingo.router.matcher.Matcher;
 
@@ -295,6 +297,19 @@ public class Request implements Serializable {
 
     public IRoute build() {
         return new RealRoute(this);
+    }
+
+    @Nullable
+    public Fragment getFragment(Context obj) {
+        return build().getFragment(obj);
+    }
+
+    public void startBy(Object obj) {
+        build().startBy(obj);
+    }
+
+    public void startBy(Object obj, @Nullable RouteCallback callback) {
+        build().startBy(obj);
     }
 
 

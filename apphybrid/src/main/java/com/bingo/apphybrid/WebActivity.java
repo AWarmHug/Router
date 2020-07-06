@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.bingo.apphybrid.databinding.ActivityWebBinding;
 import com.bingo.demo.approuterpath.AppHybrid;
+import com.bingo.demo.approuterpath.AppHybrid.Web.WebInfo;
 import com.bingo.demo.approuterpath.RoutePathClass;
 import com.bingo.router.Router;
 import com.bingo.router.annotations.Parameter;
@@ -23,7 +24,7 @@ import com.bingo.router.annotations.Route;
 @Route(pathClass = AppHybrid.Web.class)
 public class WebActivity extends AppCompatActivity {
     @Parameter(RoutePathClass.KEY_NAME)
-    AppHybrid.Web.WebInfo webInfo;
+    WebInfo webInfo;
 
     private ActivityWebBinding mBinding;
 

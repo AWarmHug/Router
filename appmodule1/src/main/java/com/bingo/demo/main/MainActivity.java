@@ -13,10 +13,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
+import com.bingo.demo.approuterpath.AppHybrid.Web.WebInfo;
 import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.demo.approuterpath.DataBinding;
+import com.bingo.demo.approuterpath.HomeParams;
 import com.bingo.demo.approuterpath.Lifecycle;
 import com.bingo.demo.approuterpath.Meizi;
+import com.bingo.demo.approuterpath.Train;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
@@ -48,10 +51,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mViewModel.path.set("user/detail");
 //                Router.init();
-                Router.newRequest("user/detail")
-                        .putLong("id", 1)
-                        .build()
-                        .startBy(MainActivity.this);
+                Router.create(User.Detail.class).getDetail("10001").startBy(MainActivity.this);
+//                Router.newRequest("user/detail")
+//                        .putLong("id", 1)
+//                        .build()
+//                        .startBy(MainActivity.this);
+                HomeParams params=new HomeParams();
+                Router.create(Train.class).openHome(params,"1000").startBy(MainActivity.class);
+                Router.create(Train.class).getOrderDetail("1000").startBy(MainActivity.class);
+
             }
         });
 
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Router.init();
                 Router.create(User.Detail.class)
-                        .getDetail(1)
+                        .getDetail("1")
                         .setRequestCode(100)
                         .build()
                         .startBy(MainActivity.this);
@@ -113,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                Router.newRequest("apphybrid/web?url=file:///android_asset/scheme.html")
                 AppHybrid.Web web = new AppHybrid.Web();
-                web.createRequest(AppHybrid.Web.WebInfo.justUrl("file:///android_asset/scheme.html"))
+                web.createRequest(WebInfo.justUrl("file:///android_asset/scheme.html"))
                         .build()
                         .startBy(MainActivity.this);
             }

@@ -9,6 +9,10 @@ public class User {
     @PathClass("user/detail")
     public interface Detail {
         @Route(pathClass = Detail.class)
-        Request getDetail(@Parameter long id);
+        Request getDetail(@Parameter String id);
+
+        @Route(pathClass = Detail.class)
+        Request getDetail(@Parameter String id, @Parameter HomeParams params);
+
     }
 }

@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Router.create(User.Detail.class)
-                        .getDetail(1)
+                        .getDetail("1")
                         .setRequestCode(100)
                         .build()
                         .startBy(HomeFragment.this);
