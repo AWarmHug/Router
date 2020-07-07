@@ -8,11 +8,11 @@ import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
 
-public class User {
-    @PathClass("user/detail")
+public interface User {
+    @PathClass("/user/detail")
     public interface Detail {
         @Route(pathClass = Detail.class)
-        Request getDetail(@Parameter String id);
+        Request getDetail(@Parameter("id") String id);
 
         @Route(pathClass = Detail.class)
         IRoute getDetail(@Parameter String id, @Parameter HomeParams params);

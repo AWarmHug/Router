@@ -6,9 +6,9 @@ import com.bingo.router.annotations.PathClass;
 
 import java.io.Serializable;
 
-public class AppHybrid {
-    @PathClass("apphybrid/web")
-    public static class Web extends RoutePathClass{
+public interface AppHybrid {
+    @PathClass("/apphybrid/web")
+    public static interface Web{
 
         public static class WebInfo implements Serializable {
             private String title;
@@ -30,8 +30,8 @@ public class AppHybrid {
         }
     }
 
-    @PathClass("apphybrid/empty")
-    public class Empty {
+    @PathClass("/apphybrid/empty")
+    public interface Empty {
 
     }
 }

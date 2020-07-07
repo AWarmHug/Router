@@ -16,10 +16,8 @@ import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.AppHybrid.Web.WebInfo;
 import com.bingo.demo.approuterpath.CameraPath;
 import com.bingo.demo.approuterpath.DataBinding;
-import com.bingo.demo.approuterpath.HomeParams;
 import com.bingo.demo.approuterpath.Lifecycle;
 import com.bingo.demo.approuterpath.Meizi;
-import com.bingo.demo.approuterpath.Train;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.ActivityMainBinding;
 import com.bingo.demo.login.rx.RxLogin;
@@ -50,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mViewModel.path.set("user/detail");
-                Router.create(User.Detail.class).openDetail(MainActivity.this, "10001");
+                Request request = Router.create(User.Detail.class).getDetail("10001");
+                request.startBy(MainActivity.this);
             }
         });
 
@@ -111,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.newRequest("apphybrid/web?url=file:///android_asset/scheme.html")
-                AppHybrid.Web web = new AppHybrid.Web();
-                web.createRequest(WebInfo.justUrl("file:///android_asset/scheme.html"))
+                Router.newRequest(AppHybrid.Web.class)
+                        .putSerializable("name", WebInfo.justUrl("file:///android_asset/scheme.html"))
                         .build()
                         .startBy(MainActivity.this);
             }

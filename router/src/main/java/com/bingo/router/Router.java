@@ -1,12 +1,19 @@
 package com.bingo.router;
 
+import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.Route;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +27,7 @@ import java.util.Set;
 public class Router {
     public static final String URI_SCHEME = "app";
     public static final String URI_AUTHORITY = "route";
-    public static final String URI_SCHEME_AUTHORITY = URI_SCHEME + "://" + URI_AUTHORITY + "/";
+    public static final String URI_SCHEME_AUTHORITY = URI_SCHEME + "://" + URI_AUTHORITY;
 
 
     private static final Map<String, Loader<RouteInfo>> mGroupMap = new HashMap<>();
@@ -94,6 +101,9 @@ public class Router {
         if (TextUtils.isEmpty(uri.getScheme()) || TextUtils.isEmpty(uri.getAuthority())) {
             String uriStr = uri.toString();
             if (!uriStr.startsWith(Router.URI_SCHEME_AUTHORITY)) {
+                if (!uriStr.startsWith("/")) {
+                    uriStr = "/" + uriStr;
+                }
                 uri = Uri.parse(Router.URI_SCHEME_AUTHORITY + uriStr);
             }
         }
@@ -113,19 +123,63 @@ public class Router {
     public static <T> T create(Class<T> clazz) {
 
         if (map.get(clazz) == null) {
-            try {
-                T t = (T) Class.forName(clazz.getName() + "Impl").newInstance();
-                map.put(clazz, t);
-                return t;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            T t = createTByReflex(clazz);
+            map.put(clazz, t);
+            return t;
         }
         return (T) map.get(clazz);
+    }
+
+    private static <T> T createTByProxy(Class<T> clazz) {
+        T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                Log.d("******", "invoke: name=");
+                Route route = method.getAnnotation(Route.class);
+                Request request = Router.newRequest(Utils.getPath(route));
+                Object obj = null;
+                for (int i = 0; i < args.length; i++) {
+                    if (args[i] instanceof Context || args[i] instanceof Fragment) {
+                        obj = args[i];
+                    } else {
+                        String name;
+                        Parameter parameter = (Parameter) method.getParameterAnnotations()[i][0];
+                        if (!TextUtils.isEmpty(parameter.value())) {
+                            name = parameter.value();
+                        } else {
+                            name = "";// TODO: 2020/7/7动态代理无法获取参数的名字，注解必须写name
+                        }
+                        if (args[i] instanceof String) {
+                            request.putString(name, (String) args[i]);
+                        }
+                        Log.d("******", "invoke: name=" + name + "arg=" + args[i]);
+                    }
+                }
+                if (method.getReturnType() == Request.class) {
+                    return request;
+                } else if (method.getReturnType() == IRoute.class) {
+                    return request.build();
+                } else if (method.getReturnType() == void.class) {
+                    request.startBy(obj);
+                }
+                return null;
+            }
+        });
+        return t;
+    }
+
+    private static <T> T createTByReflex(Class<T> clazz) {
+        T t = null;
+        try {
+            t = (T) Class.forName(clazz.getName() + "Impl").newInstance();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return t;
     }
 
 }

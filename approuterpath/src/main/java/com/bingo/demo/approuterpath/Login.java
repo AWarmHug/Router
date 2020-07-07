@@ -3,17 +3,17 @@ package com.bingo.demo.approuterpath;
 import com.bingo.router.annotations.PathClass;
 
 public interface Login {
-    @PathClass("login/logina")
+    @PathClass("/login/logina")
     public interface Logina {
 
     }
 
-    @PathClass("login/LoginService")
+    @PathClass("/login/LoginService")
     public interface LoginService {
 
     }
 
-    @PathClass("login/reg")
+    @PathClass("/login/reg")
     public interface Reg {
 
     }

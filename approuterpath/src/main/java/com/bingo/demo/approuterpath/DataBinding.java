@@ -2,19 +2,19 @@ package com.bingo.demo.approuterpath;
 
 import com.bingo.router.annotations.PathClass;
 
-public class DataBinding {
-    @PathClass("databinding/notifyPropertyChanged")
-    public class NotifyPropertyChanged {
+public interface DataBinding {
+    @PathClass("/databinding/notifyPropertyChanged")
+    public interface NotifyPropertyChanged {
 
     }
 
-    @PathClass("databinding/recyclerView")
-    public class RecyclerView {
+    @PathClass("/databinding/recyclerView")
+    public interface RecyclerView {
 
     }
 
-    @PathClass("databinding/bindingMethods")
-    public class BindingMethods {
+    @PathClass("/databinding/bindingMethods")
+    public interface BindingMethods {
 
     }
 
