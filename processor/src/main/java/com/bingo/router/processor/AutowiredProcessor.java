@@ -4,7 +4,6 @@ import android.os.Parcelable;
 
 import com.bingo.router.AutowiredBinder;
 import com.bingo.router.Const;
-import com.bingo.router.Loader;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
@@ -12,7 +11,6 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
@@ -73,14 +71,6 @@ public class AutowiredProcessor extends BaseProcessor {
             }
         }
 
-
-        final MethodSpec.Builder loadBuilder = MethodSpec.methodBuilder(Const.METHOD_LODE)
-                .addAnnotation(Override.class)
-                .addModifiers(Modifier.PUBLIC)
-                .returns(void.class)
-                .addParameter(ParameterizedTypeName.get(Map.class, String.class, AutowiredBinder.class), "binders");
-
-
         mMap.forEach(new BiConsumer<Element, Set<VariableElement>>() {
             @Override
             public void accept(Element element, Set<VariableElement> variableElements) {
@@ -102,7 +92,7 @@ public class AutowiredProcessor extends BaseProcessor {
                 }
 
 
-                TypeSpec typeSpec = TypeSpec.classBuilder(upperFirstLatter(getModuleName()) + element.getSimpleName() + Const.BINDER_CLASS_NAME)
+                TypeSpec typeSpec = TypeSpec.classBuilder(element.getSimpleName() + Const.BINDER_CLASS_NAME)
                         .addSuperinterface(AutowiredBinder.class)
                         .addModifiers(Modifier.PUBLIC)
                         .addMethod(builder.build())
@@ -115,21 +105,8 @@ public class AutowiredProcessor extends BaseProcessor {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                loadBuilder.addStatement("binders.put($T.class.getName(),new $T())", ClassName.get(element.asType()), ClassName.get(pElement.getQualifiedName().toString(), typeSpec.name));
             }
         });
-
-        TypeSpec typeSpec = TypeSpec.classBuilder(Const.BINDER_LOADER_CLASS_NAME)
-                .addSuperinterface(ParameterizedTypeName.get(Loader.class, AutowiredBinder.class))
-                .addModifiers(Modifier.PUBLIC)
-                .addMethod(loadBuilder.build())
-                .build();
-        JavaFile javaFile = JavaFile.builder(Const.LOADER_PKG + Const.DOT + getModuleName(), typeSpec).build();
-        try {
-            javaFile.writeTo(mFiler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return true;
     }

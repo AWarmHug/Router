@@ -1,9 +1,7 @@
 package com.bingo.router;
 
 import com.bingo.router.annotations.PathClass;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.bingo.router.annotations.Route;
 
 public class Utils {
 
@@ -11,8 +9,19 @@ public class Utils {
         return pathByPathClass(pathClass.getAnnotation(PathClass.class));
     }
 
-    public static String pathByPathClass(PathClass pathClass){
+    public static String pathByPathClass(PathClass pathClass) {
         return pathClass.value();
+    }
+
+    public static String getPath(Route route) {
+        String path = route.value();
+        if (path.isEmpty()) {
+            path = Utils.pathByPathClass(route.pathClass());
+        }
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        return path;
     }
 
 }

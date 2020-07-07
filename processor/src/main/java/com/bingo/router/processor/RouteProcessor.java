@@ -5,6 +5,7 @@ import com.bingo.router.Const;
 import com.bingo.router.Loader;
 import com.bingo.router.RouteInfo;
 import com.bingo.router.Utils;
+import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
 import com.bingo.router.processor.base.BaseProcessor;
@@ -31,13 +32,15 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes({"com.bingo.router.annotations.Route"})
+@SupportedAnnotationTypes({"com.bingo.router.annotations.Route", "com.bingo.router.annotations.Parameter"})
 @SupportedOptions({"moduleName"})
 public class RouteProcessor extends BaseProcessor {
 
@@ -61,7 +64,6 @@ public class RouteProcessor extends BaseProcessor {
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Map<String, List<TypeElement>> routesMap = new HashMap<>();
         Set<? extends Element> routes = roundEnvironment.getElementsAnnotatedWith(Route.class);
-
         for (Element element : routes) {
             if (element instanceof TypeElement && element.getKind() == ElementKind.CLASS) {
                 TypeElement typeElement = (TypeElement) element;
@@ -81,13 +83,23 @@ public class RouteProcessor extends BaseProcessor {
                 routesMap.get(group).add(typeElement);
             }
         }
-        createGroup(routesMap);
+        Map<TypeElement, String> autowiredMap = new HashMap<>();
+        Set<? extends Element> parameter = roundEnvironment.getElementsAnnotatedWith(Parameter.class);
+        for (Element element : parameter) {
+            if (element instanceof VariableElement && element.getEnclosingElement().getKind() == ElementKind.CLASS && element.getKind() == ElementKind.FIELD) {
+                VariableElement vElement = (VariableElement) element;
+                //这是获取owner 可能是fragment也可能是activity，或者其他
+                TypeElement tElement = (TypeElement) vElement.getEnclosingElement();
+                PackageElement pElement = (PackageElement) tElement.getEnclosingElement();
+                if (autowiredMap.get(tElement) == null) {
+                    String className = pElement.getQualifiedName().toString() + "." + tElement.getSimpleName() + Const.BINDER_CLASS_NAME;
+                    autowiredMap.put(tElement, className);
+                }
+            }
+        }
 
-//        try {
-//            writeFile(routesMap);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        createGroup(routesMap, autowiredMap);
+
         return false;
     }
 
@@ -112,8 +124,8 @@ public class RouteProcessor extends BaseProcessor {
         return path;
     }
 
-    private void createGroup(Map<String, List<TypeElement>> routesMap) {
-        if (routesMap.isEmpty()){
+    private void createGroup(Map<String, List<TypeElement>> routesMap, Map<TypeElement, String> autowiredMap) {
+        if (routesMap.isEmpty()) {
             return;
         }
         String pkgName = Const.LOADER_PKG + Const.DOT + getModuleName();
@@ -128,7 +140,7 @@ public class RouteProcessor extends BaseProcessor {
         int pos = 0;
         for (String key : routesMap.keySet()) {
             String className = upperFirstLatter(key) + Const.ROUTER_LOADER_CLASS_NAME;
-            createRoute(pkgName, className, routesMap.get(key));
+            createRoute(pkgName, className, routesMap.get(key), autowiredMap);
             builder.addStatement("$T loader$L =new $T()", ClassName.get(pkgName, className), pos, ClassName.get(pkgName, className));
             builder.addStatement("loaders.put($S,loader$L)", key, pos);
             pos++;
@@ -147,7 +159,7 @@ public class RouteProcessor extends BaseProcessor {
         }
     }
 
-    private void createRoute(String pkgName, String className, List<TypeElement> list) {
+    private void createRoute(String pkgName, String className, List<TypeElement> list, Map<TypeElement, String> autowiredMap) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
@@ -173,6 +185,14 @@ public class RouteProcessor extends BaseProcessor {
             }
 
             builder.addStatement("$T route$L =new $T(" + type + ",$S,$T.class)", TypeName.get(RouteInfo.class), i, TypeName.get(RouteInfo.class), path, ClassName.get(typeElement));
+            if (autowiredMap.get(typeElement) != null) {
+                String clazz = autowiredMap.get(typeElement);
+                int lastIndex = clazz.lastIndexOf(".");
+                String pn = clazz.substring(0, lastIndex);
+                String cn = clazz.substring(lastIndex + 1);
+                builder.addStatement("route$L.setAutowiredBinder(new $T())", i, ClassName.get(pn, cn));
+            }
+
             if (route.interceptors().length != 0) {
                 StringBuilder interceptorKeys = new StringBuilder("new String[]{");
                 for (int j = 0; j < route.interceptors().length; j++) {

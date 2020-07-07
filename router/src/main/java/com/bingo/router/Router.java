@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.bingo.router.annotations.Route;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -23,7 +25,6 @@ public class Router {
 
     private static final Map<String, Loader<RouteInfo>> mGroupMap = new HashMap<>();
     private static final Map<String, RouteInfo> mRouteMap = new HashMap<>();
-    public static final Map<String, AutowiredBinder> mBinderInfoMap = new HashMap<>();
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
     public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
 
@@ -64,7 +65,15 @@ public class Router {
     }
 
     public static <T> void bind(T obj) {
-        AutowiredBinder binder = mBinderInfoMap.get(obj.getClass().getName());
+        Route route = obj.getClass().getAnnotation(Route.class);
+        if (route == null) {
+            throw new RuntimeException("请添加Route注解");
+        }
+        RouteInfo routeInfo = getRouteInfo(Utils.getPath(route));
+        if (routeInfo == null) {
+            throw new RuntimeException("获取不到路由信息");
+        }
+        AutowiredBinder binder = routeInfo.getAutowiredBinder();
         //此处进行拦截
         if (binder != null) {
             binder.bind(obj);

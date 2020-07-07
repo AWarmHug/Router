@@ -81,12 +81,6 @@ public class RouteApiProcessor extends BaseProcessor {
                     .returns(TypeName.get(element.getReturnType()))
                     .addParameters(parameterSpecs);
 
-            /**
-             * Router.newRequest("test/detail")
-             *                         .putInt("type", 1)
-             *                         .build()
-             *                         .start(MainActivity.this);
-             */
             Route route = element.getAnnotation(Route.class);
 
             String path = route.value();
@@ -106,9 +100,9 @@ public class RouteApiProcessor extends BaseProcessor {
 
             TypeMirror returnType = element.getReturnType();
             if (returnType.getKind() == TypeKind.VOID) {
-                builder.addCode("$T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
+                builder.addCode("$T.newRequest($S)", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
             } else {
-                builder.addCode("return $T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
+                builder.addCode("return $T.newRequest($S)", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
             }
 
 
@@ -158,25 +152,16 @@ public class RouteApiProcessor extends BaseProcessor {
                             putParameter("putParcelable", builder, variableElement);
                         }
                     }
-                    if (objName != null) {
-                        if (i != parameters.size() - 2) {
-                            builder.addCode("\n");
-                        }
-                    } else {
-                        if (i != parameters.size() - 1) {
-                            builder.addCode("\n");
-                        }
-                    }
                 }
             }
 
             if (mTypes.isSameType(returnType, TYPE_REQUEST)) {
                 builder.addCode(";\n");
             } else if (mTypes.isSameType(returnType, TYPE_IROUTE)) {
-                builder.addCode(".build();\n");
+                builder.addCode("\n.build();\n");
             } else if (returnType.getKind() == TypeKind.VOID) {
                 if (objName != null) {
-                    builder.addStatement(".startBy($L)", objName);
+                    builder.addCode("\n.startBy($L);\n", objName);
                 }
             }
 
@@ -196,7 +181,6 @@ public class RouteApiProcessor extends BaseProcessor {
 
                 String pkgName = mElementUtils.getPackageOf(typeElement).toString();
                 String typeName = typeElement.getQualifiedName().toString().replace(pkgName + ".", "").replace(".", "$") + "Impl";
-
 
                 TypeSpec typeSpec = TypeSpec.classBuilder(typeName)
                         .addSuperinterface(TypeName.get(typeElement.asType()))
@@ -222,7 +206,7 @@ public class RouteApiProcessor extends BaseProcessor {
 
     private void putParameter(String code, MethodSpec.Builder builder, VariableElement variableElement) {
         String name = getName(variableElement, variableElement.getAnnotation(Parameter.class));
-        builder.addCode("." + code + "($S,$L)", name, variableElement.getSimpleName());
+        builder.addCode("\n." + code + "($S,$L)", name, variableElement.getSimpleName());
     }
 
     private String getName(VariableElement variableElement, Parameter parameter) {

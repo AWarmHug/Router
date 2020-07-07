@@ -10,6 +10,7 @@ public class RouteInfo {
     protected int type;
     protected String path;
     protected Class<?> target;
+    private AutowiredBinder autowiredBinder;
     private String[] interceptorKeys;
 
     public RouteInfo(int type, String path, Class<?> target) {
@@ -24,6 +25,15 @@ public class RouteInfo {
 
     public void setInterceptorKeys(String[] interceptorKeys) {
         this.interceptorKeys = interceptorKeys;
+    }
+
+    public AutowiredBinder getAutowiredBinder() {
+        return autowiredBinder;
+    }
+
+    public RouteInfo setAutowiredBinder(AutowiredBinder autowiredBinder) {
+        this.autowiredBinder = autowiredBinder;
+        return this;
     }
 
     public Class<?> getTarget() {

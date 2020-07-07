@@ -22,7 +22,6 @@ class RTransform extends Transform {
     String routerJarPath
 
     Set<String> groupLoaders = new HashSet<>();
-    Set<String> binderLoaders = new HashSet<>();
     Set<String> interceptorLoaders = new HashSet<>();
 
 
@@ -127,11 +126,6 @@ class RTransform extends Transform {
                             groupLoaders.add(ctClass.name)
                         }
 
-                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
-                            println(ctClass.name)
-                            binderLoaders.add(ctClass.name)
-                        }
-
                         if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                             println(ctClass.name)
                             interceptorLoaders.add(ctClass.name)
@@ -165,11 +159,6 @@ class RTransform extends Transform {
                     if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.GROUP_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                         println(ctClass.name)
                         groupLoaders.add(ctClass.name)
-                    }
-
-                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.BINDER_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
-                        println(ctClass.name)
-                        binderLoaders.add(ctClass.name)
                     }
 
                     if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
@@ -223,10 +212,6 @@ class RTransform extends Transform {
                     groupLoaders.each {
 
                         sb.append("new ${it}().load(mGroupMap);\n")
-                    }
-
-                    binderLoaders.each {
-                        sb.append("new ${it}().load(mBinderInfoMap);\n")
                     }
 
                     int a = 0
