@@ -21,6 +21,8 @@ import javax.lang.model.util.Types;
  * 描述：
  */
 public abstract class BaseProcessor extends AbstractProcessor {
+    public static final String CONTEXT = "android.content.Context";
+
     public static final String ACTIVITY = "android.app.Activity";
     public static final String BROADCAST_RECEIVER = "android.content.BroadcastReceiver";
     public static final String FRAGMENT = "android.support.v4.app.Fragment";

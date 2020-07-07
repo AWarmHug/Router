@@ -1,5 +1,7 @@
 package com.bingo.demo.approuterpath;
 
+import android.content.Context;
+
 import com.bingo.router.Request;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
@@ -13,6 +15,9 @@ public class User {
 
         @Route(pathClass = Detail.class)
         Request getDetail(@Parameter String id, @Parameter HomeParams params);
+
+        @Route(pathClass = Detail.class)
+        void openDetail(Context context, @Parameter String id);
 
     }
 }

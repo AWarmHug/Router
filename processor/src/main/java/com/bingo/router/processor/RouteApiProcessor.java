@@ -1,9 +1,12 @@
 package com.bingo.router.processor;
 
+import android.os.Parcelable;
+
 import com.bingo.router.Utils;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.PathClass;
 import com.bingo.router.annotations.Route;
+import com.bingo.router.annotations.StartBy;
 import com.bingo.router.processor.base.BaseProcessor;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
@@ -13,6 +16,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +34,10 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -46,6 +52,8 @@ public class RouteApiProcessor extends BaseProcessor {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
+        TYPE_REQUEST = mElementUtils.getTypeElement("com.bingo.router.Request").asType();
+        TYPE_IROUTE = mElementUtils.getTypeElement("com.bingo.router.IRoute").asType();
     }
 
     @Override
@@ -95,51 +103,81 @@ public class RouteApiProcessor extends BaseProcessor {
                     path = Utils.pathByPathClass(typeElement.getAnnotation(PathClass.class));
                 }
             }
-            builder.addCode("return $T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
-            List<? extends VariableElement> parameters = element.getParameters();
-            for (int i = 0; i < parameters.size(); i++) {
-                VariableElement variableElement = parameters.get(i);
-                Parameter parameter = variableElement.getAnnotation(Parameter.class);
-                String name;
-                if (parameter != null && !parameter.value().isEmpty()) {
-                    name = parameter.value();
-                } else {
-                    name = variableElement.getSimpleName().toString();
-                }
-
-                if (mTypes.isSameType(variableElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
-                    builder.addCode(".putString($S,$L)", name, variableElement.getSimpleName());
-                } else if (variableElement.asType().getKind().isPrimitive()) {
-                    switch (variableElement.asType().getKind()) {
-                        case INT:
-                            builder.addCode(".putInt($S,$L)", name, variableElement.getSimpleName());
-                            break;
-                        case BYTE:
-                            builder.addCode(".putByte($S,$L)", name, variableElement.getSimpleName());
-                            break;
-                        case CHAR:
-                            builder.addCode(".putChar($S,$L)", name, variableElement.getSimpleName());
-                            break;
-                        case LONG:
-                            builder.addCode(".putLong($S,$L)", name, variableElement.getSimpleName());
-                            break;
-                        // TODO: 2019/11/21 更多类型
-                    }
-                }
-                if (i != parameters.size() - 1) {
-                    builder.addCode("\n");
-                }
-            }
-            TYPE_REQUEST = mElementUtils.getTypeElement("com.bingo.router.Request").asType();
-            TYPE_IROUTE = mElementUtils.getTypeElement("com.bingo.router.IRoute").asType();
 
             TypeMirror returnType = element.getReturnType();
+            if (returnType.getKind() == TypeKind.VOID) {
+                builder.addCode("$T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
+            } else {
+                builder.addCode("return $T.newRequest($S)\n", TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Router").asType()), path);
+            }
+
+
+            List<? extends VariableElement> parameters = element.getParameters();
+            Name objName = null;//obj==Context or Fragment
+            for (int i = 0; i < parameters.size(); i++) {
+                VariableElement variableElement = parameters.get(i);
+
+                StartBy startBy = variableElement.getAnnotation(StartBy.class);
+                if (startBy != null) {
+                    objName = variableElement.getSimpleName();
+                } else if (mTypes.isSubtype(variableElement.asType(), mElementUtils.getTypeElement(CONTEXT).asType()) || mTypes.isSubtype(variableElement.asType(), mElementUtils.getTypeElement(FRAGMENT).asType())) {
+                    if (objName == null) {
+                        objName = variableElement.getSimpleName();
+                    }
+                }
+
+                Parameter parameter = variableElement.getAnnotation(Parameter.class);
+                if (parameter != null) {
+                    if (variableElement.asType().getKind().isPrimitive()) {
+                        putPrimitiveParameter(builder, variableElement);
+                    } else if (variableElement.asType().getKind() == TypeKind.ARRAY) {
+                        TypeMirror typeMirror = ((ArrayType) variableElement.asType()).getComponentType();
+//                        if (typeMirror.getKind().isPrimitive()) {
+//                            String kindName = typeMirror.toString().substring(0, 1).toUpperCase() + typeMirror.toString().substring(1) + "Array";
+//                            return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
+//                        } else {
+//                            String kindName = ClassName.get(mElementUtils.getTypeElement(typeMirror.toString())).simpleName() + "Array";
+//                            if (mTypes.isSameType(typeMirror, mElementUtils.getTypeElement(String.class.getName()).asType())) {
+//                                return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
+//                            }
+//                            if (mTypes.isSameType(typeMirror, mElementUtils.getTypeElement(CharSequence.class.getName()).asType())) {
+//                                return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
+//                            }
+//                            if (mTypes.isSubtype(typeMirror, mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
+//                                return getNoDefaultTemplate(name, vElement, isIntent, eName, kindName);
+//                            }
+//                        }
+                    } else {
+                        if (mTypes.isSameType(variableElement.asType(), mElementUtils.getTypeElement(String.class.getName()).asType())) {
+                            putParameter("putString", builder, variableElement);
+                        } else if (mTypes.isSameType(variableElement.asType(), mElementUtils.getTypeElement(CharSequence.class.getName()).asType())) {
+                            putParameter("putCharSequence", builder, variableElement);
+                        } else if (mTypes.isSubtype(variableElement.asType(), mElementUtils.getTypeElement(Serializable.class.getName()).asType())) {
+                            putParameter("putSerializable", builder, variableElement);
+                        } else if (mTypes.isSubtype(variableElement.asType(), mElementUtils.getTypeElement(Parcelable.class.getName()).asType())) {
+                            putParameter("putParcelable", builder, variableElement);
+                        }
+                    }
+                    if (objName != null) {
+                        if (i != parameters.size() - 2) {
+                            builder.addCode("\n");
+                        }
+                    } else {
+                        if (i != parameters.size() - 1) {
+                            builder.addCode("\n");
+                        }
+                    }
+                }
+            }
+
             if (mTypes.isSameType(returnType, TYPE_REQUEST)) {
                 builder.addCode(";\n");
             } else if (mTypes.isSameType(returnType, TYPE_IROUTE)) {
                 builder.addCode(".build();\n");
             } else if (returnType.getKind() == TypeKind.VOID) {
-
+                if (objName != null) {
+                    builder.addStatement(".startBy($L)", objName);
+                }
             }
 
 
@@ -174,6 +212,27 @@ public class RouteApiProcessor extends BaseProcessor {
             }
         });
         return false;
+    }
+
+
+    private void putPrimitiveParameter(MethodSpec.Builder builder, VariableElement variableElement) {
+        String kindName = variableElement.asType().toString().substring(0, 1).toUpperCase() + variableElement.asType().toString().substring(1);
+        putParameter("put" + kindName, builder, variableElement);
+    }
+
+    private void putParameter(String code, MethodSpec.Builder builder, VariableElement variableElement) {
+        String name = getName(variableElement, variableElement.getAnnotation(Parameter.class));
+        builder.addCode("." + code + "($S,$L)", name, variableElement.getSimpleName());
+    }
+
+    private String getName(VariableElement variableElement, Parameter parameter) {
+        String name;
+        if (!parameter.value().isEmpty()) {
+            name = parameter.value();
+        } else {
+            name = variableElement.getSimpleName().toString();
+        }
+        return name;
     }
 
 

@@ -50,16 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mViewModel.path.set("user/detail");
-//                Router.init();
-                Router.create(User.Detail.class).getDetail("10001").startBy(MainActivity.this);
-//                Router.newRequest("user/detail")
-//                        .putLong("id", 1)
-//                        .build()
-//                        .startBy(MainActivity.this);
-                HomeParams params=new HomeParams();
-                Router.create(Train.class).openHome(params,"1000").startBy(MainActivity.class);
-                Router.create(Train.class).getOrderDetail("1000").startBy(MainActivity.class);
-
+                Router.create(User.Detail.class).openDetail(MainActivity.this, "10001");
             }
         });
 
