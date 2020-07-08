@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mViewModel.path.set("user/detail");
-                Request request = Router.create(User.Detail.class).getDetail("10001");
-                request.startBy(MainActivity.this);
+                Router.create(User.Detail.class).openDetail(MainActivity.this,"10001");
             }
         });
 

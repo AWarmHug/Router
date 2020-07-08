@@ -130,6 +130,9 @@ public class Router {
         return (T) map.get(clazz);
     }
 
+    /**
+     * TODO: 2020/7/7动态代理无法获取参数的名字，注解必须写name
+     */
     private static <T> T createTByProxy(Class<T> clazz) {
         T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, new InvocationHandler() {
             @Override
@@ -168,6 +171,12 @@ public class Router {
         return t;
     }
 
+    /**
+     * 注意防混淆
+     * @param clazz
+     * @param <T>
+     * @return
+     */
     private static <T> T createTByReflex(Class<T> clazz) {
         T t = null;
         try {
