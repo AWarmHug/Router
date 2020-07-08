@@ -11,7 +11,7 @@ class Config {
 
     static final String GROUP_LOADER_CLASS_NAME = "GroupLoader";
     static final String ROUTER_LOADER_CLASS_NAME = "RouteLoader";
-    static final String BINDER_LOADER_CLASS_NAME = "BinderLoader";
+    static final String ROUTER_PATH_LOADER_CLASS_NAME = "RouterPathLoader";
     static final String INTERCEPTOR_LOADER_CLASS_NAME = "InterceptorLoader";
 
     static final String METHOD_LODE = "load";

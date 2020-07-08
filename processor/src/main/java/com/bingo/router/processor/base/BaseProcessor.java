@@ -25,7 +25,7 @@ public abstract class BaseProcessor extends AbstractProcessor {
 
     public static final String ACTIVITY = "android.app.Activity";
     public static final String BROADCAST_RECEIVER = "android.content.BroadcastReceiver";
-    public static final String FRAGMENT = "android.support.v4.app.Fragment";
+    public static final String FRAGMENT = "androidx.fragment.app.Fragment";
 
 
     public static Map<String, Integer> TYPE_MAP = new HashMap<>();

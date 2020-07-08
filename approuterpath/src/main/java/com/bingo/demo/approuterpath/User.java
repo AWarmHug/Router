@@ -1,7 +1,5 @@
 package com.bingo.demo.approuterpath;
 
-import android.content.Context;
-
 import com.bingo.router.IRoute;
 import com.bingo.router.Request;
 import com.bingo.router.annotations.Parameter;
@@ -18,7 +16,7 @@ public interface User {
         IRoute getDetail(@Parameter String id, @Parameter HomeParams params);
 
         @Route(pathClass = Detail.class)
-        void openDetail(Context context, @Parameter String id);
+        void openDetail(@Parameter String id);
 
     }
 }

@@ -11,6 +11,7 @@ public class Const {
     public static final String GROUP_LOADER_CLASS_NAME = "GroupLoader";
     public static final String ROUTER_LOADER_CLASS_NAME = "RouteLoader";
     public static final String INTERCEPTOR_LOADER_CLASS_NAME = "InterceptorLoader";
+    public static final String ROUTER_PATH_LOADER_CLASS_NAME = "RouterPathLoader";
 
     public static final String METHOD_LODE = "load";
 

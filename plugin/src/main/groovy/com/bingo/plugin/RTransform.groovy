@@ -3,10 +3,7 @@ package com.bingo.plugin
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.google.common.io.Files
-import javassist.ClassPool
-import javassist.CtClass
-import javassist.CtMethod
-import javassist.JarClassPath
+import javassist.*
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
@@ -22,6 +19,7 @@ class RTransform extends Transform {
     String routerJarPath
 
     Set<String> groupLoaders = new HashSet<>();
+    Set<String> routerPathLoaders = new HashSet<>();
     Set<String> interceptorLoaders = new HashSet<>();
 
 
@@ -125,6 +123,10 @@ class RTransform extends Transform {
                             println(ctClass.name)
                             groupLoaders.add(ctClass.name)
                         }
+                        if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.ROUTER_PATH_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
+                            println(ctClass.name)
+                            routerPathLoaders.add(ctClass.name)
+                        }
 
                         if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                             println(ctClass.name)
@@ -161,6 +163,12 @@ class RTransform extends Transform {
                         groupLoaders.add(ctClass.name)
                     }
 
+                    if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.ROUTER_PATH_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
+                        println(ctClass.name)
+                        routerPathLoaders.add(ctClass.name)
+                    }
+
+
                     if (ctClass.name.startsWith(Config.LOADER_PKG) && ctClass.name.endsWith(Config.INTERCEPTOR_LOADER_CLASS_NAME) && ctClass.interfaces[0].name == loaderClass) {
                         println(ctClass.name)
                         interceptorLoaders.add(ctClass.name)
@@ -174,10 +182,7 @@ class RTransform extends Transform {
         inject(pool, jarMap)
     }
 
-    /**
-     * 往Router类中注入初始化代码
-     * static{*     new BinderLoader().load(mMap);
-     *}*/
+
     void inject(ClassPool pool, Map<String, String> jarMap) {
 
         String dest = jarMap.get(routerJarPath)
@@ -200,38 +205,47 @@ class RTransform extends Transform {
             zos.putNextEntry(new ZipEntry(entryName))
 
             if (!jarEntry.isDirectory()) {
-
                 ClassReader reader = new ClassReader(inJarFile.getInputStream(jarEntry))
                 CtClass ctClass = pool.get(Utils.getClassName(reader.className))
+                print("::::::action:::::"+ctClass)
+                switch (ctClass.name) {
+                    case "com.bingo.router.Router":
+                        CtMethod ctMethod = ctClass.getDeclaredMethod("init")
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("{\n")
 
-                if (ctClass.name == "com.bingo.router.Router") {
-
-                    CtMethod ctMethod = ctClass.getDeclaredMethod("init")
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("{\n")
-                    groupLoaders.each {
-
-                        sb.append("new ${it}().load(mGroupMap);\n")
-                    }
-
-                    int a = 0
-                    interceptorLoaders.each {
-                        sb.append("${it} interceptorLoader${a}=new ${it}();\n")
-                        sb.append("interceptorLoader${a}.load(mInterceptorMap);\n")
-                        sb.append("loadGlobalInterceptors(interceptorLoader${a}.mGlobalInterceptorKeys);\n")
-                        a++
-                    }
-
-                    sb.append("}\n")
-
-
-                    ctMethod.setBody(sb.toString())
-                    IOUtils.write(ctClass.toBytecode(), zos)
-                    ctClass.detach()
-                } else {
-                    IOUtils.copy(inJarFile.getInputStream(jarEntry), zos)
+                        int a = 0
+                        interceptorLoaders.each {
+                            sb.append("${it} interceptorLoader${a}=new ${it}();\n")
+                            sb.append("interceptorLoader${a}.load(mInterceptorMap);\n")
+                            sb.append("loadGlobalInterceptors(interceptorLoader${a}.mGlobalInterceptorKeys);\n")
+                            a++
+                        }
+                        sb.append("}\n")
+                        ctMethod.setBody(sb.toString())
+                        IOUtils.write(ctClass.toBytecode(), zos)
+                        ctClass.detach()
+                        break
+                    case "com.bingo.router.internal.RouteMapper":
+                        CtConstructor ctConstructor = ctClass.getDeclaredConstructor()
+                        groupLoaders.each {
+                            ctConstructor.insertAfter("new ${it}().load(this.mMap);\n")
+                        }
+                        IOUtils.write(ctClass.toBytecode(), zos)
+                        ctClass.detach()
+                        break
+                    case "com.bingo.router.internal.RoutePathMapper":
+                        CtConstructor ctConstructor = ctClass.getDeclaredConstructor()
+                        routerPathLoaders.each {
+                            ctConstructor.insertAfter("new ${it}().load(this.mMap);\n")
+                        }
+                        IOUtils.write(ctClass.toBytecode(), zos)
+                        ctClass.detach()
+                        break
+                    default:
+                        IOUtils.copy(inJarFile.getInputStream(jarEntry), zos)
+                        break
                 }
-
             } else {
                 IOUtils.copy(inJarFile.getInputStream(jarEntry), zos)
             }

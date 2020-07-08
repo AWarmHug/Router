@@ -70,7 +70,7 @@ public class InterceptorProcessor extends BaseProcessor {
             }
         }
         TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(Const.INTERCEPTOR_LOADER_CLASS_NAME)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Loader.class), TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Interceptor").asType())))
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Loader.class),TypeName.get(String.class), TypeName.get(mElementUtils.getTypeElement("com.bingo.router.Interceptor").asType())))
                 .addModifiers(Modifier.PUBLIC)
                 .addField(mGlobalInterceptorKeys)
                 .addMethod(builder.build());

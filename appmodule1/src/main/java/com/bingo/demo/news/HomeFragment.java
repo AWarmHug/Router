@@ -15,7 +15,6 @@ import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.News;
 import com.bingo.demo.approuterpath.User;
 import com.bingo.demo.databinding.FragmentNewsBinding;
-import com.bingo.demo.main.MainActivity;
 import com.bingo.router.Router;
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.Route;
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment {
         mBinding.tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Router.create(User.Detail.class)
+                Router.create(HomeFragment.this, User.Detail.class)
                         .getDetail("1")
                         .setRequestCode(100)
                         .build()

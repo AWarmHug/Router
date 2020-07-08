@@ -129,7 +129,7 @@ public class RouteProcessor extends BaseProcessor {
             return;
         }
         String pkgName = Const.LOADER_PKG + Const.DOT + getModuleName();
-        ParameterizedTypeName name = ParameterizedTypeName.get(Loader.class, RouteInfo.class);
+        ParameterizedTypeName name = ParameterizedTypeName.get(Loader.class, String.class, RouteInfo.class);
 
         MethodSpec.Builder builder = MethodSpec.methodBuilder(Const.METHOD_LODE)
                 .addAnnotation(Override.class)
@@ -147,7 +147,7 @@ public class RouteProcessor extends BaseProcessor {
         }
 
         TypeSpec typeSpec = TypeSpec.classBuilder(Const.GROUP_LOADER_CLASS_NAME)
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Loader.class), name))
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(Loader.class), TypeName.get(String.class), name))
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(builder.build())
                 .build();
@@ -210,7 +210,7 @@ public class RouteProcessor extends BaseProcessor {
         }
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addSuperinterface(ParameterizedTypeName.get(Loader.class, RouteInfo.class))
+                .addSuperinterface(ParameterizedTypeName.get(Loader.class, String.class, RouteInfo.class))
                 .addMethod(builder.build())
                 .build();
         JavaFile javaFile = JavaFile.builder(pkgName, typeSpec).build();

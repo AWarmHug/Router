@@ -51,11 +51,13 @@ import javax.lang.model.type.TypeMirror;
 @SupportedOptions({"moduleName"})
 public class AutowiredProcessor extends BaseProcessor {
 
-    private Map<Element, Set<VariableElement>> mMap = new HashMap<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(Parameter.class);
+        Map<Element, Set<VariableElement>> mMap = new HashMap<>();
+
         for (Element element : elements) {
             if (element instanceof VariableElement && element.getKind() == ElementKind.FIELD) {
                 VariableElement vElement = (VariableElement) element;

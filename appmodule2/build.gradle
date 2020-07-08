@@ -3,6 +3,9 @@ apply plugin: com.bingo.plugin.RouterPlugin
 
 android {
     compileSdkVersion 29
+    dataBinding {
+        enabled true
+    }
 
     defaultConfig {
         minSdkVersion 14

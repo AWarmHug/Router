@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment;
 
 import com.bingo.router.annotations.Parameter;
 import com.bingo.router.annotations.Route;
+import com.bingo.router.internal.RouteMapper;
+import com.bingo.router.internal.RoutePathMapper;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -30,11 +33,11 @@ public class Router {
     public static final String URI_SCHEME_AUTHORITY = URI_SCHEME + "://" + URI_AUTHORITY;
 
 
-    private static final Map<String, Loader<RouteInfo>> mGroupMap = new HashMap<>();
-    private static final Map<String, RouteInfo> mRouteMap = new HashMap<>();
+    private static RouteMapper sRouteMapper;
+    private static RoutePathMapper sRoutePathMapper;
+
     public static final Map<String, Interceptor> mInterceptorMap = new HashMap<>();
     public static Set<Interceptor> sGlobalInterceptors = new HashSet<>();
-
 
     static {
         init();
@@ -46,21 +49,10 @@ public class Router {
 
     @Nullable
     public static RouteInfo getRouteInfo(@Nullable String path) {
-        if (TextUtils.isEmpty(path)) {
-            return null;
+        if (sRouteMapper==null){
+            sRouteMapper=new RouteMapper();
         }
-        RouteInfo routeInfo = mRouteMap.get(path);
-        if (routeInfo == null) {
-            String group = path.substring(1).split("/")[0];
-            Loader<RouteInfo> routeInfoLoader = mGroupMap.get(group);
-            if (routeInfoLoader != null) {
-                routeInfoLoader.load(mRouteMap);
-                return mRouteMap.get(path);
-            }
-        } else {
-            return routeInfo;
-        }
-        return null;
+        return sRouteMapper.get(path);
     }
 
     private static void loadGlobalInterceptors(String[] keys) {
@@ -118,16 +110,12 @@ public class Router {
         return newRequest(uri).build();
     }
 
-    private static Map<Class, Object> map = new HashMap<>();
+    public static <T> T create(Context context, Class<T> clazz) {
+        return createTByReflex(context, clazz);
+    }
 
-    public static <T> T create(Class<T> clazz) {
-
-        if (map.get(clazz) == null) {
-            T t = createTByReflex(clazz);
-            map.put(clazz, t);
-            return t;
-        }
-        return (T) map.get(clazz);
+    public static <T> T create(Fragment fragment, Class<T> clazz) {
+        return createTByReflex(fragment, clazz);
     }
 
     /**
@@ -173,19 +161,35 @@ public class Router {
 
     /**
      * 注意防混淆
+     *
      * @param clazz
      * @param <T>
      * @return
      */
-    private static <T> T createTByReflex(Class<T> clazz) {
+    private static <T> T createTByReflex(Object obj, Class<T> clazz) {
+        if (sRoutePathMapper == null) {
+            sRoutePathMapper = new RoutePathMapper();
+        }
+        Class c = sRoutePathMapper.get(clazz);
+        if (c == null) {
+            return null;
+        }
         T t = null;
         try {
-            t = (T) Class.forName(clazz.getName() + "Impl").newInstance();
+            Class<?> parameterType = null;
+            if (obj instanceof Context) {
+                parameterType = Context.class;
+            } else if (obj instanceof Fragment) {
+                parameterType = Fragment.class;
+            }
+            t = (T) c.getConstructor(parameterType).newInstance(obj);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         return t;

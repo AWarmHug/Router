@@ -2,6 +2,6 @@ package com.bingo.router;
 
 import java.util.Map;
 
-public interface Loader<T> {
-    void load(Map<String, T> map);
+public interface Loader<K,V> {
+    void load(Map<K, V> map);
 }
