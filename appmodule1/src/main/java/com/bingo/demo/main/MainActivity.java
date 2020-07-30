@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bingo.activityresult.OnResultCallback;
 import com.bingo.demo.R;
 import com.bingo.demo.approuterpath.AppHybrid;
 import com.bingo.demo.approuterpath.AppHybrid.Web.WebInfo;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mViewModel.path.set("user/detail");
-                Router.create(MainActivity.this,User.Detail.class).openDetail("10001");
+                Router.create(MainActivity.this, User.Detail.class).openDetail("10001");
             }
         });
 
@@ -56,9 +57,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Router.init();
-                Router.create(MainActivity.this,User.Detail.class)
+                Router.create(MainActivity.this, User.Detail.class)
                         .getDetail("1")
-                        .setRequestCode(100)
+                        .setOnResultCallback(new OnResultCallback() {
+                            @Override
+                            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                                if (resultCode == RESULT_OK) {
+                                    mBinding.bt01.setText(data.getStringExtra("back"));
+                                }
+                            }
+                        })
                         .build()
                         .startBy(MainActivity.this);
             }

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.bingo.activityresult.ActivityResult;
 import com.bingo.router.matcher.Matcher;
 import com.bingo.router.matcher.MatcherCenter;
 
@@ -43,21 +45,38 @@ final class IntentInterceptor implements Interceptor {
 
         if (intent != null) {
             try {
-                if (requestCode != -1) {
+                if (request.mOnResultCallback != null) {
+                    ActivityResult result;
                     if (chain.getFragment() != null) {
-                        chain.getFragment().startActivityForResult(intent, requestCode, request.getOptionsBundle());
+                        result = new ActivityResult(chain.getFragment());
                     } else {
-                        ActivityCompat.startActivityForResult((Activity) chain.getContext(), intent, requestCode, request.getOptionsBundle());
+                        if (chain.getContext() instanceof FragmentActivity) {
+                            result = new ActivityResult((FragmentActivity) chain.getContext());
+                        } else {
+                            throw new RuntimeException("context !instanceof FragmentActivity");
+                        }
+                    }
+                    result.startActivityForResult(intent,request.mOnResultCallback);
+                    if (mRouteCallback != null) {
+                        mRouteCallback.onFail(request, new RuntimeException("context !instanceof FragmentActivity"));
                     }
                 } else {
-                    if (chain.getFragment() != null) {
-                        chain.getFragment().startActivityForResult(intent, requestCode, request.getOptionsBundle());
+                    if (requestCode != -1) {
+                        if (chain.getFragment() != null) {
+                            chain.getFragment().startActivityForResult(intent, requestCode, request.getOptionsBundle());
+                        } else {
+                            ActivityCompat.startActivityForResult((Activity) chain.getContext(), intent, requestCode, request.getOptionsBundle());
+                        }
                     } else {
-                        ActivityCompat.startActivity(chain.getContext(), intent, request.getOptionsBundle());
+                        if (chain.getFragment() != null) {
+                            chain.getFragment().startActivityForResult(intent, requestCode, request.getOptionsBundle());
+                        } else {
+                            ActivityCompat.startActivity(chain.getContext(), intent, request.getOptionsBundle());
+                        }
                     }
-                }
-                if (mRouteCallback != null) {
-                    mRouteCallback.onSuccess(request);
+                    if (mRouteCallback != null) {
+                        mRouteCallback.onSuccess(request);
+                    }
                 }
             } catch (Exception e) {
                 if (mRouteCallback != null) {

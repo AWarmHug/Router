@@ -41,6 +41,8 @@ allprojects {
         maven {
             url 'https://dl.bintray.com/bingo/maven'
         }
+        maven { url 'http://nexus.17usoft.com/repository/mvn-chebada-android/' } // 同程maven库地址
+        maven {url 'http://nexus.17usoft.com/repository/mvn-lib-release'} // 同程maven库地址
     }
 }
 

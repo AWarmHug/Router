@@ -1,5 +1,6 @@
 package com.bingo.demo.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -59,7 +60,9 @@ public class DetailActivity extends AppCompatActivity {
         mBinding.tvInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_OK);
+                Intent intent = getIntent();
+                intent.putExtra("back", "我有返回值了");
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

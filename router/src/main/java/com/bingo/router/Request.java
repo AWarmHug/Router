@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.bingo.activityresult.OnResultCallback;
 import com.bingo.router.matcher.Matcher;
 
 import java.io.Serializable;
@@ -34,7 +35,10 @@ public class Request implements Serializable {
 
     private List<Interceptor> mInterceptors = new ArrayList<>();
 
-    private RouteCallback mRouteCallback;
+    RouteCallback mRouteCallback;
+
+    OnResultCallback mOnResultCallback;
+
 
     public Request(Uri uri) {
         mUri = uri;
@@ -292,6 +296,16 @@ public class Request implements Serializable {
 
     public Request putParameter() {
         Matcher.putParameter(mUri, mExtras);
+        return this;
+    }
+
+    public Request setRouteCallback(RouteCallback routeCallback) {
+        this.mRouteCallback = routeCallback;
+        return this;
+    }
+
+    public Request setOnResultCallback(OnResultCallback onResultCallback) {
+        this.mOnResultCallback = onResultCallback;
         return this;
     }
 

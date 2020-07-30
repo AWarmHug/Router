@@ -1,1 +1,2 @@
+include ':activityresult'
 include ':appmodule1', ':annotations', ':processor', ':router', ':appmodule2', ':apphybrid', ':plugin', ':approuterpath', ':libui', ':libpublic'
