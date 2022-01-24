@@ -39,12 +39,3 @@ dependencies {
     api project(':activityresult')
 
 }
-
-ext {
-    GROUP = 'com.bingo.router'
-    ARTIFACT = 'router'
-    VERSION = ROUTER_VERSION
-    BINTRAY_NAME = 'router'
-}
-
-apply from: '../publish.gradle'

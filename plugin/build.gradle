@@ -20,11 +20,3 @@ dependencies {
     implementation 'com.google.android:android:4.1.1.4'
 
 }
-
-ext {
-    GROUP = 'com.bingo.router'
-    ARTIFACT = 'gradle-plugin'
-    VERSION = PLUGIN_VERSION
-    BINTRAY_NAME = 'router-gradle-plugin'
-}
-apply from: '../publish.gradle'

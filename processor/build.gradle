@@ -20,12 +20,3 @@ targetCompatibility = "8"
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
-
-ext {
-    GROUP = 'com.bingo.router'
-    ARTIFACT = 'processor'
-    VERSION = PROCESSOR_VERSION
-    BINTRAY_NAME = 'router-processor'
-}
-
-apply from: '../publish.gradle'

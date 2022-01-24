@@ -9,4 +9,15 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="MyDialog" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item><!--设置是否浮在页面之上（true的时候会出现在页面中间）-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimAmount">0.2</item><!--设置四周灰色部分的透明度-->
+    </style>
+
 </resources>
