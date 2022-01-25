@@ -68,7 +68,7 @@ public class RouteProcessor extends BaseProcessor {
             if (element instanceof TypeElement && element.getKind() == ElementKind.CLASS) {
                 TypeElement typeElement = (TypeElement) element;
 
-                mMessager.printMessage(Diagnostic.Kind.WARNING, typeElement.getQualifiedName());
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "我在构建---"+typeElement.getQualifiedName());
 
                 Route route = typeElement.getAnnotation(Route.class);
                 String path = getPath(route);
