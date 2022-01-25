@@ -68,7 +68,7 @@ public class RouteProcessor extends BaseProcessor {
             if (element instanceof TypeElement && element.getKind() == ElementKind.CLASS) {
                 TypeElement typeElement = (TypeElement) element;
 
-                mMessager.printMessage(Diagnostic.Kind.WARNING, "我在构建---"+typeElement.getQualifiedName());
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::"+typeElement.getQualifiedName());
 
                 Route route = typeElement.getAnnotation(Route.class);
                 String path = getPath(route);
@@ -81,6 +81,10 @@ public class RouteProcessor extends BaseProcessor {
                     routesMap.put(group, elements);
                 }
                 routesMap.get(group).add(typeElement);
+
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::group===="+group);
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::path===="+path);
+
             }
         }
         Map<TypeElement, String> autowiredMap = new HashMap<>();
