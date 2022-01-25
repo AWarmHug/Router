@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply plugin: com.bingo.plugin.RouterPlugin
+apply plugin: com.bingo.plugin.RouterPlugin
 
 android {
     compileSdkVersion 29
@@ -32,7 +32,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(":annotations")
-    implementation project(':router')
-    annotationProcessor project(':processor')
+    implementation 'com.github.AWarmHug.Router:annotations:0.0.1'
+    implementation 'com.github.AWarmHug.Router:activityresult:0.0.1'
+    implementation 'com.github.AWarmHug.Router:router:0.0.1'
+    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
 }

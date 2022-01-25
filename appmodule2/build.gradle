@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply plugin: com.bingo.plugin.RouterPlugin
+apply plugin: com.bingo.plugin.RouterPlugin
 
 android {
     compileSdkVersion 29
@@ -37,8 +37,9 @@ dependencies {
     implementation "androidx.exifinterface:exifinterface:1.1.0"
     implementation project(':libui')
     implementation project(':libpublic')
-    implementation project(":annotations")
-    implementation project(':router')
-    annotationProcessor project(':processor')
     implementation project(':approuterpath')
+    implementation 'com.github.AWarmHug.Router:annotations:0.0.1'
+    implementation 'com.github.AWarmHug.Router:activityresult:0.0.1'
+    implementation 'com.github.AWarmHug.Router:router:0.0.1'
+    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
 }
