@@ -11,8 +11,8 @@ dependencies {
     implementation 'com.google.auto.service:auto-service:1.0-rc6'
     implementation 'com.squareup:javapoet:1.11.1'
     implementation 'com.google.android:android:4.1.1.4'
-//    implementation 'com.github.AWarmHug.Router:annotations:0.0.1'
-    implementation project(':annotations')
+    implementation 'com.github.AWarmHug.Router:annotations:0.0.7'
+//    implementation project(':annotations')
     implementation 'com.google.code.gson:gson:2.8.6'
 }
 
