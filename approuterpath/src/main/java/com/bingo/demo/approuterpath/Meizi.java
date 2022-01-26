@@ -4,7 +4,7 @@ import com.bingo.router.annotations.PathClass;
 
 public interface Meizi {
 
-    @PathClass("/meizi/home")
+    @PathClass("/meizi")
     public interface Home{
 
     }

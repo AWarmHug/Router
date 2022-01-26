@@ -39,9 +39,8 @@ dependencies {
     implementation project(':apphybrid')
     implementation project(':approuterpath')
 
-    implementation 'com.github.AWarmHug.Router:annotations:0.0.1'
-    implementation 'com.github.AWarmHug.Router:activityresult:0.0.1'
-    implementation 'com.github.AWarmHug.Router:router:0.0.1'
-    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
-//    annotationProcessor project(':processor')
+//    implementation 'com.github.AWarmHug.Router:router:0.0.5'
+    implementation project(':router')
+//    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
+    annotationProcessor project(':processor')
 }

@@ -38,8 +38,8 @@ dependencies {
     implementation project(':libui')
     implementation project(':libpublic')
     implementation project(':approuterpath')
-    implementation 'com.github.AWarmHug.Router:annotations:0.0.1'
-    implementation 'com.github.AWarmHug.Router:activityresult:0.0.1'
-    implementation 'com.github.AWarmHug.Router:router:0.0.1'
-    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
+//    implementation 'com.github.AWarmHug.Router:router:0.0.5'
+//    annotationProcessor 'com.github.AWarmHug.Router:processor:0.0.1'
+    implementation project(':router')
+    annotationProcessor project(':processor')
 }

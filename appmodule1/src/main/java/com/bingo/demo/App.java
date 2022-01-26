@@ -11,7 +11,7 @@ public class App extends Application {
     private Map<String, String> mErrorRoute = new HashMap<>();
 
     {
-        mErrorRoute.put("/meizi/home", "app://route/apphybrid/web?url=https://www.baidu.com/");
+//        mErrorRoute.put("/meizi/home", "app://route/apphybrid/web?url=https://www.baidu.com/");
     }
 
     @Override

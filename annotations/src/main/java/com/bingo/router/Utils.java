@@ -24,4 +24,16 @@ public class Utils {
         return path;
     }
 
+    public static int countStr(String str1, char str2) {
+        int counter = 0;
+        char[] cs = str1.toCharArray();
+        for (char c : cs) {
+            if (c == str2) {
+                counter++;
+            }
+        }
+
+        return counter;
+    }
+
 }

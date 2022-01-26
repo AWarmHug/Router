@@ -18,6 +18,7 @@ public class Const {
     public static final String BINDER_CLASS_NAME = "AutowiredBinder";
     public static final String METHOD_BIND = "bind";
 
+    public static final String DEFAULT_GROUP = "mmain";
 
 
 }

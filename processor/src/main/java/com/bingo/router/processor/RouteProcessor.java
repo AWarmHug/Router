@@ -68,22 +68,24 @@ public class RouteProcessor extends BaseProcessor {
             if (element instanceof TypeElement && element.getKind() == ElementKind.CLASS) {
                 TypeElement typeElement = (TypeElement) element;
 
-                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::"+typeElement.getQualifiedName());
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::" + typeElement.getQualifiedName());
 
                 Route route = typeElement.getAnnotation(Route.class);
                 String path = getPath(route);
-                if (countStr(path, '/') < 2) {
-                    continue;
+                String group;
+                if (Utils.countStr(path, '/') < 2) {
+                    group = Const.DEFAULT_GROUP;
+                } else {
+                    group = path.substring(1).split("/")[0];
                 }
-                String group = path.substring(1).split("/")[0];
                 if (!routesMap.containsKey(group)) {
                     List<TypeElement> elements = new LinkedList<>();
                     routesMap.put(group, elements);
                 }
                 routesMap.get(group).add(typeElement);
 
-                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::group===="+group);
-                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::path===="+path);
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::group====" + group);
+                mMessager.printMessage(Diagnostic.Kind.WARNING, "in building::::::path====" + path);
 
             }
         }
@@ -226,18 +228,6 @@ public class RouteProcessor extends BaseProcessor {
             e.printStackTrace();
         }
 
-    }
-
-    public static int countStr(String str1, char str2) {
-        int counter = 0;
-        char[] cs = str1.toCharArray();
-        for (char c : cs) {
-            if (c == str2) {
-                counter++;
-            }
-        }
-
-        return counter;
     }
 
 
