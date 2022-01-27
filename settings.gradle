@@ -4,6 +4,6 @@
 //include ':approuterpath'
 include ':annotations'
 //include ':router'
-//include ':activityresult'
+include ':activityresult'
 //include ':processor'
 //include ':plugin'
